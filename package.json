@@ -1,0 +1,34 @@
+{
+  "name": "klend-lite",
+  "version": "0.0.1",
+  "description": "Lightweight K-Lend Web UI",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx webpack",
+    "dev": "npx webpack serve"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@ledgerhq/hw-app-solana": "^7.0.14",
+    "@ledgerhq/hw-transport-node-hid": "^6.27.22",
+    "@vanilla-extract/css": "^1.14.0",
+    "@vanilla-extract/webpack-plugin": "^2.3.1",
+    "buffer": "^6.0.3",
+    "css-loader": "^6.8.1",
+    "html-webpack-plugin": "^5.5.3",
+    "mini-css-extract-plugin": "^2.7.6",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "@hubbleprotocol/kamino-lending-sdk": "^2.8.38",
+    "@solana/spl-token": "^0.3.9",
+    "@solana/web3.js": "^1.78.7",
+    "@solflare-wallet/sdk": "^1.4.1"
+  }
+}

@@ -1,0 +1,5 @@
+import { PublicKey } from "@solana/web3.js";
+
+export const MARKET_ADDRESS = new PublicKey("7u3HeHxYDLhnCoErrtycNokbQYbWGzLs6JSDqGAv5PfF");
+// export const RPC_ENDPOINT = "https://rpc.hellomoon.io/85065684-170f-4d1b-8e17-c6ad9a3e9dfb";
+export const RPC_ENDPOINT = "https://wanda-f66b54-fast-mainnet.helius-rpc.com";

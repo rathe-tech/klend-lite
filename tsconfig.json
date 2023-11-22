@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "target": "ES2022",
+        "paths": {
+            "@solana/spl-token": ["./node_modules/@solana/spl-token"]
+        }
+    },
+    "exclude": ["./node_modules"]
+}
