@@ -16,6 +16,10 @@ export class ObligationFeed extends Feed<KaminoObligation | null> {
     this.refresh();
   }
 
+  public get market() {
+    return this.#market;
+  }
+
   public constructor(connection: Connection) {
     super(connection);
     this.#wallet = null;

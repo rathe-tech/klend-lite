@@ -5,8 +5,7 @@ import Solflare from "@solflare-wallet/sdk";
 import { RPC_ENDPOINT } from "./config";
 import { WalletConnect } from "./wallet_connect";
 import { MarketFeed, FeedStatus, ObligationFeed } from "./feeds";
-import { DepositsTable } from "./deposits_table";
-import { BorrowsTable } from "./borrows_table";
+import { BorrowsTable, DepositsTable } from "./obligation_tables";
 import { ReservesTable } from "./reserves_table";
 import { SupplyForm } from "./supply_form";
 
@@ -27,6 +26,7 @@ window.onload = async () => {
   appContainer.classList.add(css.app);
   controlsContainer.classList.add(css.controlsContainer);
   obligationContainer.classList.add(css.obligationContainer);
+  obligationContainer.style.display = "none";
 
   appContainer.appendChild(headerContainer);
   appContainer.appendChild(controlsContainer);
@@ -60,7 +60,6 @@ window.onload = async () => {
     refreshMarketButton.setAttribute("disabled", "true");
   });
   marketFeed.on(FeedStatus.Loaded, market => {
-    reservesTable.enable = true;
     reservesTable.refresh(market);
     obligationFeed.market = market;
     refreshMarketButton.removeAttribute("disabled");
@@ -72,13 +71,21 @@ window.onload = async () => {
   });
 
   obligationFeed.on(FeedStatus.Loading, () => {
-
+    depositsTable.enable = false;
+    borrowsTable.enable = false;
   });
   obligationFeed.on(FeedStatus.Loaded, obligation => {
-    console.log(obligation);
+    depositsTable.refresh(obligationFeed.market, obligation);
+    borrowsTable.refresh(obligationFeed.market, obligation);
+    obligationContainer.style.display = obligation == null ? "none" : "";
   });
   obligationFeed.on(FeedStatus.Error, e => {
+    console.error(e);
     alert(`Can not fetch obligation: ${JSON.stringify(e)}`);
+
+    depositsTable.enable = false;
+    borrowsTable.enable = false;
+    obligationContainer.style.display = "none";
   });
 
   wallet.on("connect", () => {
