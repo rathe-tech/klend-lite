@@ -1,25 +1,40 @@
 import { Connection, PublicKey, Transaction } from "@solana/web3.js";
+import { createAssociatedTokenAccountInstruction, getAssociatedTokenAddress } from "@solana/spl-token";
+import Solflare from "@solflare-wallet/sdk";
 
 import { RPC_ENDPOINT } from "./config";
 import { WalletConnect } from "./wallet_connect";
-import { MarketFeed, MarketStatus } from "./market_feed";
+import { MarketFeed, FeedStatus, ObligationFeed } from "./feeds";
+import { DepositsTable } from "./deposits_table";
+import { BorrowsTable } from "./borrows_table";
 import { ReservesTable } from "./reserves_table";
+import { SupplyForm } from "./supply_form";
 
 import * as css from "./app.css";
-import { createAssociatedTokenAccountInstruction, getAssociatedTokenAddress } from "@solana/spl-token";
 
 window.onload = async () => {
   const connection = new Connection(RPC_ENDPOINT);
+  const wallet = new Solflare({ network: "mainnet-beta" });
   const marketFeed = new MarketFeed(connection);
+  const obligationFeed = new ObligationFeed(connection);
 
   const appContainer = document.getElementById("app")!;
+  const headerContainer = document.createElement("div");
+  const controlsContainer = document.createElement("div");
+  const obligationContainer = document.createElement("div");
+  const reservesContainer = document.createElement("div");
+
   appContainer.classList.add(css.app);
+  controlsContainer.classList.add(css.controlsContainer);
+  obligationContainer.classList.add(css.obligationContainer);
 
-  const walletConnect = new WalletConnect();
-  walletConnect.mount(appContainer);
+  appContainer.appendChild(headerContainer);
+  appContainer.appendChild(controlsContainer);
+  appContainer.appendChild(obligationContainer);
+  appContainer.appendChild(reservesContainer);
 
-  const marketControls = document.createElement("div");
-  marketControls.classList.add(css.marketControls);
+  const walletConnect = new WalletConnect(wallet);
+  walletConnect.mount(headerContainer);
 
   const refreshMarketButton = document.createElement("button");
   refreshMarketButton.textContent = "Refresh market";
@@ -27,30 +42,55 @@ window.onload = async () => {
   refreshMarketButton.addEventListener("click", async () => {
     marketFeed.refresh();
   });
-  marketControls.appendChild(refreshMarketButton);
-  appContainer.appendChild(marketControls);
+  controlsContainer.appendChild(refreshMarketButton);
+
+  const supplyForm = new SupplyForm();
+  supplyForm.mount(appContainer);
+
+  const depositsTable = new DepositsTable();
+  const borrowsTable = new BorrowsTable();
+  depositsTable.mount(obligationContainer);
+  borrowsTable.mount(obligationContainer);
 
   const reservesTable = new ReservesTable();
-  reservesTable.mount(appContainer);
+  reservesTable.mount(reservesContainer);
 
-  marketFeed.on(MarketStatus.Loading, () => {
+  marketFeed.on(FeedStatus.Loading, () => {
     reservesTable.enable = false;
     refreshMarketButton.setAttribute("disabled", "true");
   });
-  marketFeed.on(MarketStatus.Loaded, market => {
+  marketFeed.on(FeedStatus.Loaded, market => {
     reservesTable.enable = true;
     reservesTable.refresh(market);
+    obligationFeed.market = market;
     refreshMarketButton.removeAttribute("disabled");
   });
-  marketFeed.on(MarketStatus.Error, e => {
+  marketFeed.on(FeedStatus.Error, e => {
     console.error(e);
-    alert(JSON.stringify(e));
+    alert(`Can not fetch market: ${JSON.stringify(e)}`);
     refreshMarketButton.removeAttribute("disabled");
+  });
+
+  obligationFeed.on(FeedStatus.Loading, () => {
+
+  });
+  obligationFeed.on(FeedStatus.Loaded, obligation => {
+    console.log(obligation);
+  });
+  obligationFeed.on(FeedStatus.Error, e => {
+    alert(`Can not fetch obligation: ${JSON.stringify(e)}`);
+  });
+
+  wallet.on("connect", () => {
+    obligationFeed.wallet = wallet.publicKey!;
+  });
+  wallet.on("disconnect", () => {
+    obligationFeed.wallet = null;
   });
 
   document.addEventListener("klend:supply", e => {
     const { reserveAddress } = (e as CustomEvent).detail;
-    alert(`Supply to: ${reserveAddress}`);
+    supplyForm.show(reserveAddress);
   });
   document.addEventListener("klend:borrow", e => {
     const { reserveAddress } = (e as CustomEvent).detail;
@@ -58,7 +98,7 @@ window.onload = async () => {
   });
 
   const createTokenBtn = document.createElement("button");
-  createTokenBtn.textContent = "create token";
+  createTokenBtn.textContent = "Create token (test)";
   createTokenBtn.addEventListener("click", async () => {
     const { wallet } = walletConnect;
     const mint = new PublicKey("7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj");
@@ -70,7 +110,7 @@ window.onload = async () => {
     const tx = await wallet.signAndSendTransaction(transaction);
     console.log(tx);
   });
-  marketControls.appendChild(createTokenBtn);
+  controlsContainer.appendChild(createTokenBtn);
 
   await marketFeed.refresh();
 };

@@ -1,15 +1,7 @@
-import { globalStyle, style } from "@vanilla-extract/css";
+import { globalStyle } from "@vanilla-extract/css";
+import { TableBase } from "../control_base";
 
-export const table = style({
-  border: "1px solid green",
-  padding: "1em",
-  width: "100%",
-});
-
-export const disabled = style({
-  opacity: 0.5,
-  pointerEvents: "none",
-});
+const table = TableBase.rootElemStyle;
 
 globalStyle(`${table} th, td`, {
   padding: "0.25em 0.75em",

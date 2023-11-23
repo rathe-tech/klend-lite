@@ -1,25 +1,23 @@
 import { Connection } from "@solana/web3.js";
-import { KaminoMarket } from "@hubbleprotocol/kamino-lending-sdk";
-import { MARKET_ADDRESS } from "./config";
 
-export enum MarketStatus {
+export enum FeedStatus {
   Loading,
   Error,
   Loaded,
 }
 
-export class MarketFeed {
+export abstract class Feed<T> {
   #connection: Connection;
-  #market: KaminoMarket | null;
+  #entity: T | null;
   #isLoading: boolean;
 
   #onLoadingListener: (() => void) | null;
   #onErrorListener: ((error: unknown) => void) | null;
-  #onLoadedListener: ((market: KaminoMarket) => void) | null;
+  #onLoadedListener: ((entity: T) => void) | null;
 
   public constructor(connection: Connection) {
     this.#connection = connection;
-    this.#market = null;
+    this.#entity = null;
     this.#isLoading = false;
 
     this.#onLoadingListener = null;
@@ -36,12 +34,8 @@ export class MarketFeed {
     this.#onLoadingListener?.();
 
     try {
-      if (this.#market == null) {
-        this.#market =  await KaminoMarket.load(this.#connection, MARKET_ADDRESS);
-      } else {
-        await this.#market.refreshAll();
-      }
-      this.#onLoadedListener?.(this.#market!);
+      this.#entity = await this.onRefresh(this.#connection, this.#entity);
+      this.#onLoadedListener?.(this.#entity!);
     } catch (e) {
       this.#onErrorListener?.(e);
     } finally {
@@ -49,18 +43,20 @@ export class MarketFeed {
     }
   }
 
-  public on(status: MarketStatus.Loading, listener: () => void): void;
-  public on(status: MarketStatus.Error, listener: (error: unknown) => void): void;
-  public on(status: MarketStatus.Loaded, listener: (error: KaminoMarket) => void): void;
-  public on(status: MarketStatus, listener: any): void {
+  protected abstract onRefresh(connection: Connection, currentEntity: T | null): Promise<T>;
+
+  public on(status: FeedStatus.Loading, listener: () => void): void;
+  public on(status: FeedStatus.Error, listener: (error: unknown) => void): void;
+  public on(status: FeedStatus.Loaded, listener: (entity: T) => void): void;
+  public on(status: FeedStatus, listener: any): void {
     switch (status) {
-      case MarketStatus.Loading:
+      case FeedStatus.Loading:
         this.#onLoadingListener = listener;
         break;
-      case MarketStatus.Error:
+      case FeedStatus.Error:
         this.#onErrorListener = listener;
         break;
-      case MarketStatus.Loaded:
+      case FeedStatus.Loaded:
         this.#onLoadedListener = listener;
         break;
       default:

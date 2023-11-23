@@ -1,27 +1,18 @@
 import { KaminoMarket, KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 import { MapUtils } from "../utils";
 import { ReserveRow } from "./reserve_row";
-import * as css from "./reserve_table.css";
+import { TableBase } from "../control_base";
+import "./reserve_table.css";
 
-export class ReservesTable {
-  #tableElem: HTMLTableElement;
+export class ReservesTable extends TableBase {
   #headElem: HTMLTableSectionElement;
   #bodyElem: HTMLTableSectionElement;
 
   #reserveKeys: Map<string, number>;
   #reserveRows: ReserveRow[];
 
-  public set enable(value: boolean) {
-    if (value) {
-      this.#tableElem.classList.remove(css.disabled);
-    } else {
-      this.#tableElem.classList.add(css.disabled);
-    }
-  }
-
   public constructor() {
-    this.#tableElem = document.createElement("table");
-    this.#tableElem.classList.add(css.table);
+    super();
 
     this.#headElem = document.createElement("thead");
     this.#bodyElem = document.createElement("tbody");
@@ -55,15 +46,11 @@ export class ReservesTable {
     this.#headElem.appendChild(borrowApyHeader);
     this.#headElem.appendChild(controlsHeader);
 
-    this.#tableElem.appendChild(this.#headElem);
-    this.#tableElem.appendChild(this.#bodyElem);
+    this.rootElem.appendChild(this.#headElem);
+    this.rootElem.appendChild(this.#bodyElem);
 
     this.#reserveKeys = new Map();
     this.#reserveRows = [];
-  }
-
-  public mount(parent: HTMLElement) {
-    parent.appendChild(this.#tableElem);
   }
 
   public refresh({ reservesActive: reserves }: KaminoMarket) {

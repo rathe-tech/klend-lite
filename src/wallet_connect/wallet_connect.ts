@@ -1,22 +1,21 @@
 import Solflare from "@solflare-wallet/sdk";
+import { ControlBase } from "../control_base";
 import * as css from "./wallet_connect.css";
 
-export class WalletConnect {
+export class WalletConnect extends ControlBase<HTMLDivElement> {
   #wallet: Solflare;
-  #rootElem: HTMLElement;
 
   public get wallet() {
     return this.#wallet;
   }
 
-  public constructor() {
-    this.#wallet = new Solflare({ network: "mainnet-beta" });
-    this.#rootElem = document.createElement("div");
-    this.#rootElem.classList.add(css.root);
+  public constructor(wallet: Solflare) {
+    super();
+    this.#wallet = wallet;
 
     const walletLabel = document.createElement("div");
     walletLabel.textContent = this.#wallet.isConnected ? this.#wallet.publicKey!.toBase58() : "";
-    this.#rootElem.appendChild(walletLabel);
+    this.rootElem.appendChild(walletLabel);
 
     const connectButton = document.createElement("button");
     connectButton.classList.add(css.connectButton);
@@ -28,7 +27,7 @@ export class WalletConnect {
         await this.#wallet.connect();
       }
     });
-    this.#rootElem.appendChild(connectButton);
+    this.rootElem.appendChild(connectButton);
 
     this.#wallet.on("connect", () => {
       walletLabel.textContent = this.#wallet.publicKey!.toBase58();
@@ -40,7 +39,9 @@ export class WalletConnect {
     });
   }
 
-  public mount(parent: HTMLElement) {
-    parent.appendChild(this.#rootElem);
+  protected createRootElem(): HTMLDivElement {
+    const rootElem = document.createElement("div");
+    rootElem.classList.add(css.root);
+    return rootElem;
   }
 }
