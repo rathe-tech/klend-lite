@@ -109,15 +109,20 @@ window.onload = async () => {
   const createTokenBtn = document.createElement("button");
   createTokenBtn.textContent = "Create token (test)";
   createTokenBtn.addEventListener("click", async () => {
-    const { wallet } = walletConnect;
+    const { wallet } = store;
     const mint = new PublicKey("7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj");
     const ata = await getAssociatedTokenAddress(mint, wallet.publicKey!);
     const instruction = createAssociatedTokenAccountInstruction(wallet.publicKey!, ata, wallet.publicKey!, mint);
 
     const { blockhash } = await store.connection.getLatestBlockhash();
     const transaction = new Transaction({ recentBlockhash: blockhash, feePayer: wallet.publicKey! }).add(instruction);
-    const tx = await wallet.signAndSendTransaction(transaction);
-    console.log(tx);
+    try {
+      const tx = await wallet.signAndSendTransaction(transaction);
+      console.log(tx);
+    } catch (e) {
+      console.error(e);
+      alert(e);
+    }
   });
   controlsContainer.appendChild(createTokenBtn);
 

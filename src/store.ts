@@ -1,6 +1,11 @@
 import { Connection } from "@solana/web3.js";
 import Solflare from "@solflare-wallet/sdk";
-import { KaminoMarket, KaminoObligation, PROGRAM_ID, VanillaObligation } from "@hubbleprotocol/kamino-lending-sdk";
+import {
+  KaminoMarket,
+  KaminoObligation,
+  VanillaObligation,
+  PROGRAM_ID,
+} from "@hubbleprotocol/kamino-lending-sdk";
 
 import { MARKET_ADDRESS, RPC_ENDPOINT } from "./config";
 import { MarketEventTag, ObligationEventTag, WalletEventTag, emit, listen } from "./events";
@@ -26,7 +31,6 @@ export class Store {
         context: this
       });
     });
-
     this.#wallet.on("disconnect", () => {
       emit(WalletEventTag.Disconnect, { context: this })
     });
@@ -35,14 +39,27 @@ export class Store {
       await this.#loadMarket();
     });
     listen(WalletEventTag.Disconnect, () => {
-      this.#obligation = null;
-      emit(ObligationEventTag.Loaded, { obligation: this.#obligation, context: this });
+      // Invalidate obligation if there's no active loading.
+      // Otherwise it will be invalidated after the active loading is complete.
+      if (!this.#isObligationLoading) {
+        this.#obligation = null;
+        emit(ObligationEventTag.Loaded, { obligation: this.#obligation, context: this });
+      }
+      // Invalidate market if there's no active loading.
+      // Otherwise it will be invalidated after the active loading is complete.
+      // No need to invalidate if it's not loaded.
+      if (!this.#isMarketLoading && this.#market != null) {
+        emit(MarketEventTag.Loaded, { market: this.#market, context: this });
+      }
     });
 
     listen(MarketEventTag.Loaded, async () => {
-      if (this.wallet.isConnected) {
+      // 1. After the market is loaded we can try to load an obligation in case the wallet is connected.
+      // 2. If there's no connected wallet and no active loading presented set the current obligation
+      //    to null and invalidate it.
+      if (this.#wallet.isConnected) {
         await this.#loadObligation();
-      } else {
+      } else if (!this.#isObligationLoading) {
         this.#obligation = null;
         emit(ObligationEventTag.Loaded, { obligation: this.#obligation, context: this });
       }

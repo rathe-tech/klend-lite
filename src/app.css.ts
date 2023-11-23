@@ -18,7 +18,7 @@ globalStyle("button", {
 
 globalStyle("button:disabled", {
   opacity: 0.5,
-  cursor: "wait",
+  cursor: "not-allowed",
 })
 
 export const app = style({
