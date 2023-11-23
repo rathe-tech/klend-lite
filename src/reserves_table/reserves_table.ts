@@ -1,5 +1,6 @@
 import { KaminoMarket, KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 import { MapUtils } from "../utils";
+import { Context } from "../events";
 import { TableBase } from "../control_base";
 import { ReserveRow } from "./reserve_row";
 import "./reserve_table.css";
@@ -53,8 +54,8 @@ export class ReservesTable extends TableBase {
     this.#reserveRows = [];
   }
 
-  public refresh({ reservesActive: reserves }: KaminoMarket) {
-    const newRows = reserves.map(r => this.#renderRow(r));
+  public refresh({ reservesActive: reserves }: KaminoMarket, context: Context) {
+    const newRows = reserves.map(r => this.#renderRow(r, context));
     const newKeys = new Map(newRows.map((r, i) => [r.key, i]));
     const unusedKeys = MapUtils.findUnusedKeys(newKeys, this.#reserveKeys);
 
@@ -70,7 +71,7 @@ export class ReservesTable extends TableBase {
     this.#reserveRows = [];
   }
 
-  #renderRow(reserve: KaminoReserve) {
+  #renderRow(reserve: KaminoReserve, context: Context) {
     const key = reserve.address.toBase58();
     const index = this.#reserveKeys.get(key);
 
@@ -79,7 +80,7 @@ export class ReservesTable extends TableBase {
       row.refresh(reserve);
       return row;
     } else {
-      const row = new ReserveRow(reserve);
+      const row = new ReserveRow(reserve, context);
       row.mount(this.#bodyElem);
       return row;
     }

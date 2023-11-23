@@ -1,21 +1,26 @@
-import { Connection, PublicKey, Transaction } from "@solana/web3.js";
-import { createAssociatedTokenAccountInstruction, getAssociatedTokenAddress } from "@solana/spl-token";
-import Solflare from "@solflare-wallet/sdk";
+import { PublicKey, Transaction } from "@solana/web3.js";
+import {
+  createAssociatedTokenAccountInstruction,
+  getAssociatedTokenAddress
+} from "@solana/spl-token";
 
-import { RPC_ENDPOINT } from "./config";
+import { Store } from "./store";
+
 import { WalletConnect } from "./wallet_connect";
-import { MarketFeed, FeedStatus, ObligationFeed } from "./feeds";
 import { BorrowsTable, DepositsTable } from "./obligation_tables";
 import { ReservesTable } from "./reserves_table";
 import { SupplyForm } from "./supply_form";
+import {
+  listen,
+  ActionEventTag,
+  MarketEventTag,
+  ObligationEventTag,
+} from "./events";
 
 import * as css from "./app.css";
 
 window.onload = async () => {
-  const connection = new Connection(RPC_ENDPOINT);
-  const wallet = new Solflare({ network: "mainnet-beta" });
-  const marketFeed = new MarketFeed(connection);
-  const obligationFeed = new ObligationFeed(connection);
+  const store = new Store();
 
   const appContainer = document.getElementById("app")!;
   const headerContainer = document.createElement("div");
@@ -26,21 +31,20 @@ window.onload = async () => {
   appContainer.classList.add(css.app);
   controlsContainer.classList.add(css.controlsContainer);
   obligationContainer.classList.add(css.obligationContainer);
-  obligationContainer.style.display = "none";
 
   appContainer.appendChild(headerContainer);
   appContainer.appendChild(controlsContainer);
   appContainer.appendChild(obligationContainer);
   appContainer.appendChild(reservesContainer);
 
-  const walletConnect = new WalletConnect(wallet);
+  const walletConnect = new WalletConnect(store.wallet);
   walletConnect.mount(headerContainer);
 
   const refreshMarketButton = document.createElement("button");
   refreshMarketButton.textContent = "Refresh market";
   refreshMarketButton.classList.add(css.updateMarketButton);
   refreshMarketButton.addEventListener("click", async () => {
-    marketFeed.refresh();
+    await store.refresh();
   });
   controlsContainer.appendChild(refreshMarketButton);
 
@@ -55,53 +59,51 @@ window.onload = async () => {
   const reservesTable = new ReservesTable();
   reservesTable.mount(reservesContainer);
 
-  marketFeed.on(FeedStatus.Loading, () => {
+  listen(MarketEventTag.Loading, () => {
+    depositsTable.enable = false;
+    borrowsTable.enable = false;
     reservesTable.enable = false;
     refreshMarketButton.setAttribute("disabled", "true");
   });
-  marketFeed.on(FeedStatus.Loaded, market => {
-    reservesTable.refresh(market);
-    obligationFeed.market = market;
+  listen(MarketEventTag.Loaded, e => {
+    const { detail: { market, context } } = e;
+    reservesTable.refresh(market, context);
     refreshMarketButton.removeAttribute("disabled");
   });
-  marketFeed.on(FeedStatus.Error, e => {
-    console.error(e);
-    alert(`Can not fetch market: ${JSON.stringify(e)}`);
+  listen(MarketEventTag.Error, e => {
+    console.error(e.detail.error);
+    alert(`Can not fetch market: ${JSON.stringify(e.detail.error)}`);
     refreshMarketButton.removeAttribute("disabled");
   });
 
-  obligationFeed.on(FeedStatus.Loading, () => {
+  listen(ObligationEventTag.Loading, () => {
     depositsTable.enable = false;
     borrowsTable.enable = false;
   });
-  obligationFeed.on(FeedStatus.Loaded, obligation => {
-    depositsTable.refresh(obligationFeed.market, obligation);
-    borrowsTable.refresh(obligationFeed.market, obligation);
-    obligationContainer.style.display = obligation == null ? "none" : "";
+  listen(ObligationEventTag.Loaded, e => {
+    const { detail: { obligation, context: { market } } } = e;
+    depositsTable.refresh(market, obligation);
+    borrowsTable.refresh(market, obligation);
   });
-  obligationFeed.on(FeedStatus.Error, e => {
+  listen(ObligationEventTag.Error, e => {
     console.error(e);
-    alert(`Can not fetch obligation: ${JSON.stringify(e)}`);
+    alert(`Can not fetch obligation: ${JSON.stringify(e.detail.error)}`);
 
     depositsTable.enable = false;
     borrowsTable.enable = false;
-    obligationContainer.style.display = "none";
   });
 
-  wallet.on("connect", () => {
-    obligationFeed.wallet = wallet.publicKey!;
+  listen(ActionEventTag.Supply, e => {
+    supplyForm.show(e.detail.reserveAddress);
   });
-  wallet.on("disconnect", () => {
-    obligationFeed.wallet = null;
+  listen(ActionEventTag.Borrow, e => {
+    alert(`Borrow from: ${e.detail.reserveAddress}`);
   });
-
-  document.addEventListener("klend:supply", e => {
-    const { reserveAddress } = (e as CustomEvent).detail;
-    supplyForm.show(reserveAddress);
+  listen(ActionEventTag.Withdraw, e => {
+    alert(`Withdraw for mint: ${e.detail.mintAddress}`);
   });
-  document.addEventListener("klend:borrow", e => {
-    const { reserveAddress } = (e as CustomEvent).detail;
-    alert(`Borrow from: ${reserveAddress}`);
+  listen(ActionEventTag.Repay, e => {
+    alert(`Repay for mint: ${e.detail.mintAddress}`);
   });
 
   const createTokenBtn = document.createElement("button");
@@ -112,12 +114,12 @@ window.onload = async () => {
     const ata = await getAssociatedTokenAddress(mint, wallet.publicKey!);
     const instruction = createAssociatedTokenAccountInstruction(wallet.publicKey!, ata, wallet.publicKey!, mint);
 
-    const { blockhash } = await connection.getLatestBlockhash();
+    const { blockhash } = await store.connection.getLatestBlockhash();
     const transaction = new Transaction({ recentBlockhash: blockhash, feePayer: wallet.publicKey! }).add(instruction);
     const tx = await wallet.signAndSendTransaction(transaction);
     console.log(tx);
   });
   controlsContainer.appendChild(createTokenBtn);
 
-  await marketFeed.refresh();
+  await store.refresh();
 };

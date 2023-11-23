@@ -2,7 +2,7 @@ import { style } from "@vanilla-extract/css";
 
 export const form = style({
   display: "flex",
-  position: "absolute",
+  position: "fixed",
   zIndex: 100,
   left: 0,
   top: 0,

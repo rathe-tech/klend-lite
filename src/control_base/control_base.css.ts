@@ -1,7 +1,7 @@
 import { style } from "@vanilla-extract/css";
 
 export const hidden = style({
-  "display": "none !important"
+  display: "none !important",
 });
 
 export const disabled = style({

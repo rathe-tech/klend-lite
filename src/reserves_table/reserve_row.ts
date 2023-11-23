@@ -1,5 +1,6 @@
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 import { UIUtils } from "../utils";
+import { ActionEventTag, Context, emit } from "../events";
 
 export class ReserveRow {
   #key: string;
@@ -19,7 +20,7 @@ export class ReserveRow {
     return this.#key;
   }
 
-  public constructor(reserve: KaminoReserve) {
+  public constructor(reserve: KaminoReserve, context: Context) {
     this.#key = reserve.address.toBase58();
     this.#rowElem = document.createElement("tr") as HTMLTableRowElement;
 
@@ -40,22 +41,10 @@ export class ReserveRow {
     borrowButton.textContent = "Borrow";
 
     supplyButton.addEventListener("click", () => {
-      const event = new CustomEvent("klend:supply", {
-        bubbles: true,
-        detail: {
-          reserveAddress: reserve.address
-        }
-      });
-      document.dispatchEvent(event);
+      emit(ActionEventTag.Supply, { reserveAddress: reserve.address, context });
     });
     borrowButton.addEventListener("click", () => {
-      const event = new CustomEvent("klend:borrow", {
-        bubbles: true,
-        detail: {
-          reserveAddress: reserve.address
-        }
-      });
-      document.dispatchEvent(event);
+      emit(ActionEventTag.Borrow, { reserveAddress: reserve.address, context });
     });
 
     this.#controlsCell.appendChild(supplyButton);
