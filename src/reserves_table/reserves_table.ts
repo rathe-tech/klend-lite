@@ -3,7 +3,6 @@ import { MapUtils } from "../utils";
 import { Context } from "../events";
 import { TableBase } from "../control_base";
 import { ReserveRow } from "./reserve_row";
-import "./reserve_table.css";
 
 export class ReservesTable extends TableBase {
   #headElem: HTMLTableSectionElement;
@@ -24,7 +23,6 @@ export class ReservesTable extends TableBase {
     const maxSupplyHeader = document.createElement("th");
     const supplyApyHeader = document.createElement("th");
     const borrowHeader = document.createElement("th");
-    // const maxBorrowHeader = document.createElement("th");
     const borrowApyHeader = document.createElement("th");
     const controlsHeader = document.createElement("th");
 
@@ -34,7 +32,6 @@ export class ReservesTable extends TableBase {
     maxSupplyHeader.textContent = "Max Supply";
     supplyApyHeader.textContent = "Supply APY";
     borrowHeader.textContent = "Current Borrow";
-    // maxBorrowHeader.textContent = "Max Borrow";
     borrowApyHeader.textContent = "Borrow APY";
 
     this.#headElem.appendChild(symbolHeader);
@@ -43,7 +40,6 @@ export class ReservesTable extends TableBase {
     this.#headElem.appendChild(maxSupplyHeader);
     this.#headElem.appendChild(supplyApyHeader);
     this.#headElem.appendChild(borrowHeader);
-    // this.#headElem.appendChild(maxBorrowHeader);
     this.#headElem.appendChild(borrowApyHeader);
     this.#headElem.appendChild(controlsHeader);
 
