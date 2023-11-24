@@ -6,7 +6,7 @@ import * as vanilla from "@vanilla-extract/webpack-plugin";
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 const config: webpack.Configuration & { devServer: server.Configuration } = {
-  mode: "development",
+  mode: "production",
   entry: {
     "klend": "./src/index.ts"
   },
