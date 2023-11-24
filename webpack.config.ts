@@ -3,6 +3,7 @@ import * as webpack from "webpack";
 import * as server from "webpack-dev-server";
 import * as html from "html-webpack-plugin";
 import * as vanilla from "@vanilla-extract/webpack-plugin";
+import * as TerserPlugin from "terser-webpack-plugin";
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 const config: webpack.Configuration & { devServer: server.Configuration } = {
@@ -49,6 +50,7 @@ const config: webpack.Configuration & { devServer: server.Configuration } = {
   ],
   optimization: {
     minimize: true,
+    minimizer: [new TerserPlugin()],
     splitChunks: {
       cacheGroups: {
         vendor: {
