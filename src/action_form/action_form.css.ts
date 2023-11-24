@@ -49,6 +49,7 @@ export const formFooter = style({
 
 export const title = style({
   fontSize: "18px",
+  fontWeight: "bold",
 });
 
 export const input = style({

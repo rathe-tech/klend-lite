@@ -13,8 +13,8 @@ export const headerContainer = style({
 });
 
 export const controlsContainer = style({
-  borderTop: `1px solid ${tertiaryGreenColor}`,
-  borderBottom: `1px solid ${tertiaryGreenColor}`,
+  // borderTop: `1px solid ${tertiaryGreenColor}`,
+  // borderBottom: `1px solid ${tertiaryGreenColor}`,
   display: "flex",
   padding: "0.5em 0",
   marginTop: "12px",
@@ -29,6 +29,7 @@ export const obligationContainer = style({
 export const reservesContainer = style({
   display: "flex",
   marginTop: "12px",
+  flexDirection: "column",
 });
 
 export const updateMarketButton = style({

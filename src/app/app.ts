@@ -3,6 +3,7 @@ import { WalletConnect } from "../wallet_connect";
 import { BorrowsTable, DepositsTable } from "../obligation_tables";
 import { ReservesTable } from "../reserves_table";
 import { ActionForm } from "../action_form";
+import { Donation } from "../donation";
 import {
   listen,
   ActionEventTag,
@@ -56,6 +57,9 @@ export class App extends ControlBase<HTMLDivElement> {
     depositsTable.mount(obligationContainer);
     borrowsTable.mount(obligationContainer);
   
+    const donation = new Donation();
+    donation.mount(reservesContainer);
+
     const reservesTable = new ReservesTable(store);
     reservesTable.mount(reservesContainer);
   

@@ -21,6 +21,7 @@ globalStyle(":root", {
 globalStyle("*", {
   boxSizing: "border-box",
   fontFamily: "monospace",
+  WebkitFontSmoothing: "antialiased",
 });
 
 globalStyle("html, body", {
