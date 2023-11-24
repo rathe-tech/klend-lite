@@ -14,6 +14,7 @@ import {
   RPC_ENDPOINT,
   MARKET_ADDRESS,
   LENDING_LUT,
+  DONATION_ADDRESS,
 } from "./config";
 import {
   ActionEventTag,
@@ -143,7 +144,7 @@ export class Store {
       undefined,
       undefined,
       undefined,
-      PublicKey.default
+      DONATION_ADDRESS
     );
     const instructions = [
       ...action.setupIxs,
@@ -178,7 +179,7 @@ export class Store {
       true,
       false,
       true,
-      PublicKey.default,
+      DONATION_ADDRESS,
     );
     const instructions = [
       ...action.setupIxs,
@@ -213,7 +214,7 @@ export class Store {
       true,
       undefined,
       undefined,
-      PublicKey.default
+      DONATION_ADDRESS
     );
     const instructions = [
       ...action.setupIxs,
@@ -248,7 +249,7 @@ export class Store {
       true,
       undefined,
       undefined,
-      PublicKey.default
+      DONATION_ADDRESS
     );
     const instructions = [
       ...action.setupIxs,
