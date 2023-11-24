@@ -3,12 +3,13 @@ import { ControlBase } from "../control_base";
 import { ActionEventTag, TransactionEventTag, listen } from "../events";
 import { Store } from "../store";
 import { UIUtils } from "../utils";
-import * as css from "./supply_form.css";
+import * as css from "./action_form.css";
 
-export class SupplyForm extends ControlBase<HTMLDivElement> {
+export class ActionForm extends ControlBase<HTMLDivElement> {
   #store: Store;
 
   #formElem: HTMLElement;
+  #titleElem: HTMLElement;
   #symbolElem: HTMLElement;
   #valueInput: HTMLInputElement;
   #submitElem: HTMLButtonElement;
@@ -26,6 +27,7 @@ export class SupplyForm extends ControlBase<HTMLDivElement> {
     this.visible = false;
 
     this.#formElem = document.createElement("div");
+    this.#titleElem = document.createElement("div");
     this.#symbolElem = document.createElement("div");
     this.#valueInput = document.createElement("input");
     this.#submitElem = document.createElement("button");
@@ -38,7 +40,7 @@ export class SupplyForm extends ControlBase<HTMLDivElement> {
     this.#valueInput.type = "text";
     this.#valueInput.value = "0";
 
-    this.#submitElem.textContent = "Supply";
+    this.#submitElem.textContent = "Submit";
     this.#submitElem.addEventListener("click", async () => {
       await this.#submit();
     });
@@ -53,6 +55,7 @@ export class SupplyForm extends ControlBase<HTMLDivElement> {
       this.#submitElem.removeAttribute("disabled");
     });
 
+    this.#formElem.appendChild(this.#titleElem);
     this.#formElem.appendChild(this.#symbolElem);
     this.#formElem.appendChild(this.#valueInput);
     this.#formElem.appendChild(this.#submitElem);
@@ -68,7 +71,7 @@ export class SupplyForm extends ControlBase<HTMLDivElement> {
     return rootElem;
   }
 
-  public show(mintAddress: PublicKey) {
+  public show(tag: ActionEventTag, mintAddress: PublicKey) {
     this.visible = true;
 
     document.body.classList.add(css.nonScroll);
@@ -78,7 +81,9 @@ export class SupplyForm extends ControlBase<HTMLDivElement> {
     }
 
     const { symbol, decimals } = this.#store.getMint(mintAddress);
+    const title = chooseTitle(tag, symbol);
 
+    this.#titleElem.textContent = title;
     this.#symbolElem.textContent = symbol;
     this.#submit = async () => {
       const amount = UIUtils.toNativeNumber(this.#valueInput.value, decimals);
@@ -90,5 +95,20 @@ export class SupplyForm extends ControlBase<HTMLDivElement> {
     this.visible = false;
     document.body.classList.remove(css.nonScroll);
     document.body.removeEventListener("keyup", this.#onEscPress);
+  }
+}
+
+export function chooseTitle(tag: ActionEventTag, symbol: string) {
+  switch (tag) {
+    case ActionEventTag.Borrow:
+      return `Borrow ${symbol}`;
+    case ActionEventTag.Supply:
+      return `Supply ${symbol}`;
+    case ActionEventTag.Repay:
+      return `Repay ${symbol}`;
+    case ActionEventTag.Withdraw:
+      return `Withdraw ${symbol}`;
+    default:
+      throw new Error(`Not supported action: ${tag}`);
   }
 }

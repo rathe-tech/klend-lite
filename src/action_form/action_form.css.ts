@@ -9,6 +9,7 @@ export const overlay = style({
   height: "100%",
   backgroundColor: "rgba(0, 0, 0, 0.2)",
   backdropFilter: "blur(3px)",
+  overflowY: "auto",
 });
 
 export const hidden = style({

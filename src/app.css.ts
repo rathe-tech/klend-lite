@@ -1,5 +1,16 @@
 import { globalStyle, style } from "@vanilla-extract/css";
 
+globalStyle(":root", {
+  "@media": {
+    "(prefers-color-scheme: light)": {
+      colorScheme: "light",
+    },
+    "(prefers-color-scheme: dark)": {
+      colorScheme: "dark",
+    },
+  },
+});
+
 globalStyle("html, body", {
   backgroundColor: "black",
   color: "green",

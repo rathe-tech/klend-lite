@@ -1,15 +1,8 @@
-import { PublicKey, Transaction } from "@solana/web3.js";
-import {
-  createAssociatedTokenAccountInstruction,
-  getAssociatedTokenAddress
-} from "@solana/spl-token";
-
 import { Store } from "./store";
-
 import { WalletConnect } from "./wallet_connect";
 import { BorrowsTable, DepositsTable } from "./obligation_tables";
 import { ReservesTable } from "./reserves_table";
-import { SupplyForm } from "./supply_form";
+import { ActionForm } from "./action_form";
 import {
   listen,
   ActionEventTag,
@@ -48,8 +41,8 @@ window.onload = async () => {
   });
   controlsContainer.appendChild(refreshMarketButton);
 
-  const supplyForm = new SupplyForm(store);
-  supplyForm.mount(appContainer);
+  const actionForm = new ActionForm(store);
+  actionForm.mount(appContainer);
 
   const depositsTable = new DepositsTable();
   const borrowsTable = new BorrowsTable();
@@ -93,37 +86,17 @@ window.onload = async () => {
   });
 
   listen(ActionEventTag.Supply, e => {
-    supplyForm.show(e.detail.mintAddress);
+    actionForm.show(ActionEventTag.Supply, e.detail.mintAddress);
   });
   listen(ActionEventTag.Borrow, e => {
-    alert(`Borrow from: ${e.detail.mintAddress}`);
+    actionForm.show(ActionEventTag.Borrow, e.detail.mintAddress);
   });
   listen(ActionEventTag.Withdraw, e => {
-    alert(`Withdraw for mint: ${e.detail.mintAddress}`);
+    actionForm.show(ActionEventTag.Withdraw, e.detail.mintAddress);
   });
   listen(ActionEventTag.Repay, e => {
-    alert(`Repay for mint: ${e.detail.mintAddress}`);
+    actionForm.show(ActionEventTag.Repay, e.detail.mintAddress);
   });
-
-  const createTokenBtn = document.createElement("button");
-  createTokenBtn.textContent = "Create token (test)";
-  createTokenBtn.addEventListener("click", async () => {
-    const { wallet } = store;
-    const mint = new PublicKey("7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj");
-    const ata = await getAssociatedTokenAddress(mint, wallet.publicKey!);
-    const instruction = createAssociatedTokenAccountInstruction(wallet.publicKey!, ata, wallet.publicKey!, mint);
-
-    const { blockhash } = await store.connection.getLatestBlockhash();
-    const transaction = new Transaction({ recentBlockhash: blockhash, feePayer: wallet.publicKey! }).add(instruction);
-    try {
-      const tx = await wallet.signAndSendTransaction(transaction);
-      console.log(tx);
-    } catch (e) {
-      console.error(e);
-      alert(e);
-    }
-  });
-  controlsContainer.appendChild(createTokenBtn);
 
   await store.refresh();
 };

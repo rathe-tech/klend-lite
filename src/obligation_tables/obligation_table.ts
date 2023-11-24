@@ -1,6 +1,8 @@
 import { KaminoMarket, KaminoObligation, Position } from "@hubbleprotocol/kamino-lending-sdk";
 import { TableBase } from "../control_base";
 import { UIUtils } from "../utils";
+import { ActionEventTag, emit } from "../events";
+import { PublicKey } from "@solana/web3.js";
 
 export enum ObligationTableKind {
   Borrows,
@@ -81,13 +83,7 @@ export abstract class ObligationTable extends TableBase {
       const withdraw = document.createElement("button");
       withdraw.textContent = "Withdraw";
       withdraw.addEventListener("click", () => {
-        const event = new CustomEvent("klend:withdraw", {
-          bubbles: true,
-          detail: {
-            mintAddress: position.mintAddress
-          }
-        });
-        document.dispatchEvent(event);
+        emit(ActionEventTag.Withdraw, { mintAddress: new PublicKey(position.mintAddress), context: null as any });
       });
       controls.appendChild(withdraw);
 
@@ -120,13 +116,7 @@ export abstract class ObligationTable extends TableBase {
       const repay = document.createElement("button");
       repay.textContent = "Repay";
       repay.addEventListener("click", () => {
-        const event = new CustomEvent("klend:repay", {
-          bubbles: true,
-          detail: {
-            mintAddress: position.mintAddress
-          }
-        });
-        document.dispatchEvent(event);
+        emit(ActionEventTag.Repay, { mintAddress: new PublicKey(position.mintAddress), context: null as any });
       });
       controls.appendChild(repay);
 
@@ -149,6 +139,6 @@ function pickTitle(kind: ObligationTableKind) {
     case ObligationTableKind.Deposits:
       return "Deposits";
     default:
-      throw new Error(`Unsupported table kind: ${kind}`); 
+      throw new Error(`Unsupported table kind: ${kind}`);
   }
 }

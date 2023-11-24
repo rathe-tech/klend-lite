@@ -1,1 +1,0 @@
-export * from "./supply_form";
