@@ -1,0 +1,50 @@
+import { globalStyle } from "@vanilla-extract/css";
+import {
+  primaryDarkColor,
+  primaryGreenColor,
+  secondaryGreenColor,
+  white,
+  lightGray,
+} from "./constants";
+
+globalStyle(":root", {
+  "@media": {
+    "(prefers-color-scheme: light)": {
+      colorScheme: "light",
+    },
+    "(prefers-color-scheme: dark)": {
+      colorScheme: "dark",
+    },
+  },
+});
+
+globalStyle("*", {
+  boxSizing: "border-box",
+  fontFamily: "monospace",
+});
+
+globalStyle("html, body", {
+  backgroundColor: primaryDarkColor,
+  color: primaryGreenColor,
+  margin: 0,
+  padding: 0,
+});
+
+globalStyle("button", {
+  border: `1px solid ${secondaryGreenColor}`,
+  color: secondaryGreenColor,
+  background: "none",
+  padding: "0.25em 0.75em",
+  cursor: "pointer",
+  borderRadius: "4px",
+});
+
+globalStyle("button:enabled:hover", {
+  backgroundColor: primaryGreenColor,
+  color: white,
+});
+
+globalStyle("button:disabled", {
+  opacity: 0.25,
+  cursor: "not-allowed",
+});

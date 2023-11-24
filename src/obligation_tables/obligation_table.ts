@@ -47,6 +47,7 @@ export abstract class ObligationTable extends TableBase {
 
   public refresh(market: KaminoMarket | null, obligation: KaminoObligation | null) {
     if (market == null || obligation == null) {
+      this.#bodyElem.textContent = "";
       this.enable = false;
       return;
     } else {

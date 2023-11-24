@@ -9,6 +9,11 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
   #store: Store;
 
   #formElem: HTMLElement;
+
+  #headerElem: HTMLDivElement;
+  #bodyElem: HTMLDivElement;
+  #footerElem: HTMLDivElement;
+
   #titleElem: HTMLElement;
   #symbolElem: HTMLElement;
   #valueInput: HTMLInputElement;
@@ -27,15 +32,36 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
     this.visible = false;
 
     this.#formElem = document.createElement("div");
+    this.#formElem.classList.add(css.form);
+    this.#formElem.addEventListener("click", e => {
+      e.stopPropagation();
+    });
+
+    this.#headerElem = document.createElement("div");
+    this.#bodyElem = document.createElement("div");
+    this.#footerElem = document.createElement("div");
+
+    this.#headerElem.classList.add(css.formHeader);
+    this.#bodyElem.classList.add(css.formBody);
+    this.#footerElem.classList.add(css.formFooter);
+
+    this.#formElem.appendChild(this.#headerElem);
+    this.#formElem.appendChild(this.#bodyElem);
+    this.#formElem.appendChild(this.#footerElem);
+
     this.#titleElem = document.createElement("div");
     this.#symbolElem = document.createElement("div");
     this.#valueInput = document.createElement("input");
     this.#submitElem = document.createElement("button");
 
-    this.#formElem.classList.add(css.form);
-    this.#formElem.addEventListener("click", e => {
-      e.stopPropagation();
-    });
+    this.#titleElem.classList.add(css.title);
+    this.#valueInput.classList.add(css.input);
+    this.#submitElem.classList.add(css.submit);
+
+    this.#headerElem.appendChild(this.#titleElem);
+    this.#bodyElem.appendChild(this.#symbolElem);
+    this.#bodyElem.appendChild(this.#valueInput);
+    this.#bodyElem.appendChild(this.#submitElem);
 
     this.#valueInput.type = "text";
     this.#valueInput.value = "0";
@@ -55,10 +81,6 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
       this.#submitElem.removeAttribute("disabled");
     });
 
-    this.#formElem.appendChild(this.#titleElem);
-    this.#formElem.appendChild(this.#symbolElem);
-    this.#formElem.appendChild(this.#valueInput);
-    this.#formElem.appendChild(this.#submitElem);
     this.rootElem.appendChild(this.#formElem);
   }
 
@@ -84,7 +106,7 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
     const title = chooseTitle(tag, symbol);
 
     this.#titleElem.textContent = title;
-    this.#symbolElem.textContent = symbol;
+    this.#symbolElem.textContent = `${symbol} Amount`;
     this.#submit = async () => {
       const amount = UIUtils.toNativeNumber(this.#valueInput.value, decimals);
       await this.#store.process(tag, mintAddress, amount);

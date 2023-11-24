@@ -2,6 +2,7 @@ import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 import { UIUtils } from "../utils";
 import { ActionEventTag, Context, emit } from "../events";
+import * as css from "./reserve_table.css";
 
 export class ReserveRow {
   #key: string;
@@ -16,6 +17,7 @@ export class ReserveRow {
   #borrowApyCell: HTMLTableCellElement;
   #controlsCell: HTMLTableCellElement;
 
+  #controlsWrapper: HTMLDivElement;
   #supplyButton: HTMLButtonElement;
   #borrowButton: HTMLButtonElement;
 
@@ -55,8 +57,11 @@ export class ReserveRow {
       });
     });
 
-    this.#controlsCell.appendChild(this.#supplyButton);
-    this.#controlsCell.appendChild(this.#borrowButton);
+    this.#controlsWrapper = document.createElement("div");
+    this.#controlsWrapper.classList.add(css.controlsWrapper);
+    this.#controlsWrapper.appendChild(this.#supplyButton);
+    this.#controlsWrapper.appendChild(this.#borrowButton);
+    this.#controlsCell.appendChild(this.#controlsWrapper);
 
     this.#rowElem.appendChild(this.#symbolCell);
     this.#rowElem.appendChild(this.#ltvCell);

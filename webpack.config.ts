@@ -8,7 +8,7 @@ import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
 const config: webpack.Configuration & { devServer: server.Configuration } = {
   mode: "development",
   entry: {
-    "klend": "./src/app.ts"
+    "klend": "./src/index.ts"
   },
   output: {
     path: path.resolve(__dirname, "dist"),

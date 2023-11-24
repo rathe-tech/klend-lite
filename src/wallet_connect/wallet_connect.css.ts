@@ -4,7 +4,6 @@ export const root = style({
   display: "flex",
   justifyContent: "right",
   alignItems: "center",
-  marginTop: "1em",
 });
 
 export const connectButton = style({
