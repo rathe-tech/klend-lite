@@ -87,7 +87,7 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
     this.#symbolElem.textContent = symbol;
     this.#submit = async () => {
       const amount = UIUtils.toNativeNumber(this.#valueInput.value, decimals);
-      await this.#store.process(ActionEventTag.Supply, mintAddress, amount);
+      await this.#store.process(tag, mintAddress, amount);
     };
   }
 

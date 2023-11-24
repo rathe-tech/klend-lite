@@ -125,19 +125,19 @@ export class Store {
   }
 
   async #supply(mintAddress: PublicKey, amount: Decimal): Promise<string> {
-    if (this.wallet.publicKey == null) {
+    if (this.#wallet.publicKey == null) {
       throw new Error("Wallet isn't connected");
     }
-    if (this.market == null) {
+    if (this.#market == null) {
       throw new Error("Market isn't loaded");
     }
 
     const type = new VanillaObligation(PROGRAM_ID);
     const action = await KaminoAction.buildDepositTxns(
-      this.market,
+      this.#market,
       amount.toString(),
       mintAddress,
-      this.wallet.publicKey,
+      this.#wallet.publicKey,
       type,
       0,
       undefined,
@@ -152,7 +152,7 @@ export class Store {
     ];
     const transaction = await buildVersionedTransaction(
       this.#connection,
-      this.#wallet.publicKey!,
+      this.#wallet.publicKey,
       instructions,
       [LENDING_LUT]
     );
@@ -160,7 +160,38 @@ export class Store {
   }
 
   async #borrow(mintAddress: PublicKey, amount: Decimal): Promise<string> {
-    throw "Not implemented";
+    if (this.#wallet.publicKey == null) {
+      throw new Error("Wallet isn't connected");
+    }
+    if (this.#market == null) {
+      throw new Error("Market isn't loaded");
+    }
+
+    const type = new VanillaObligation(PROGRAM_ID);
+    const action = await KaminoAction.buildBorrowTxns(
+      this.#market,
+      amount.toString(),
+      mintAddress,
+      this.#wallet.publicKey,
+      type,
+      0,
+      true,
+      false,
+      true,
+      PublicKey.default,
+    );
+    const instructions = [
+      ...action.setupIxs,
+      ...action.lendingIxs,
+      ...action.cleanupIxs,
+    ];
+    const transaction = await buildVersionedTransaction(
+      this.#connection,
+      this.#wallet.publicKey,
+      instructions,
+      [LENDING_LUT]
+    );
+    return await this.#wallet.signAndSendTransaction(transaction);
   }
 
   async #repay(mintAddress: PublicKey, amount: Decimal): Promise<string> {
