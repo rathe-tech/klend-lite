@@ -1,14 +1,14 @@
 import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { Store } from "../store";
 import { UIUtils } from "../utils";
 import { ControlBase } from "../control_base";
-import { ActionEventTag, Context, emit } from "../events";
+import { ActionEventTag, Store } from "../store";
 
 import * as css from "./reserve_table.css";
 
 export class ReserveRow extends ControlBase<HTMLTableRowElement> {
+  #store: Store;
   #key: string;
 
   #symbolCell: HTMLTableCellElement;
@@ -30,6 +30,8 @@ export class ReserveRow extends ControlBase<HTMLTableRowElement> {
 
   public constructor(reserve: KaminoReserve, store: Store) {
     super();
+
+    this.#store = store;
     this.#key = reserve.address.toBase58();
 
     this.#symbolCell = document.createElement("td");
@@ -48,15 +50,15 @@ export class ReserveRow extends ControlBase<HTMLTableRowElement> {
     this.#borrowButton.textContent = "Borrow";
 
     this.#supplyButton.addEventListener("click", () => {
-      emit(ActionEventTag.Supply, {
+      this.#store.emit(ActionEventTag.Supply, {
         mintAddress: new PublicKey(reserve.stats.mintAddress),
-        context: store
+        store
       });
     });
     this.#borrowButton.addEventListener("click", () => {
-      emit(ActionEventTag.Borrow, {
+      this.#store.emit(ActionEventTag.Borrow, {
         mintAddress: new PublicKey(reserve.stats.mintAddress),
-        context: store
+        store
       });
     });
 
@@ -75,14 +77,14 @@ export class ReserveRow extends ControlBase<HTMLTableRowElement> {
     this.rootElem.appendChild(this.#borrowApyCell);
     this.rootElem.appendChild(this.#controlsCell);
 
-    this.refresh(reserve, store);
+    this.refresh(reserve);
   }
 
   protected override createRootElem(): HTMLTableRowElement {
     return document.createElement("tr");
   }
 
-  refresh(reserve: KaminoReserve, context: Context) {
+  refresh(reserve: KaminoReserve) {
     const {
       address,
       stats: {
@@ -110,7 +112,7 @@ export class ReserveRow extends ControlBase<HTMLTableRowElement> {
     this.#borrowCell.textContent = UIUtils.toUINumber(totalBorrows, decimals);
     this.#borrowApyCell.textContent = UIUtils.toPercent(borrowInterestAPY);
 
-    if (context.wallet.isConnected) {
+    if (this.#store.wallet.isConnected) {
       this.#supplyButton.removeAttribute("disabled");
       this.#borrowButton.removeAttribute("disabled");
     } else {

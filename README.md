@@ -7,7 +7,7 @@ lending market (https://app.kamino.finance).
 
 ### Goals:
 - Lightweight and fast
-- A second UI in case the Kamino site in unavailable
+- A second UI in case the Kamino site is unavailable
 - Open-source and free
 - Minimum dependencies
 

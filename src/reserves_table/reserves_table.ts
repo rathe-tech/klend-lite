@@ -76,7 +76,7 @@ export class ReservesTable extends TableBase {
 
     if (index != null) {
       const row = this.#reserveRows[index];
-      row.refresh(reserve, this.#store);
+      row.refresh(reserve);
       return row;
     } else {
       const row = new ReserveRow(reserve, this.#store);

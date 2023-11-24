@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css";
-import { primaryDarkColor, secondaryGreenColor, tertiaryGreenColor, white } from "../theme/constants";
+import { secondaryGreenColor, tertiaryGreenColor, white } from "../theme/constants";
 
 export const overlay = style({
   position: "fixed",

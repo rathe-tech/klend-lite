@@ -1,14 +1,14 @@
-import Solflare from "@solflare-wallet/sdk";
 import { ControlBase } from "../control_base";
+import { Store, WalletEventTag } from "../store";
 import * as css from "./wallet_connect.css";
-import { WalletEventTag, listen } from "../events";
 
 export class WalletConnect extends ControlBase<HTMLDivElement> {
-  #wallet: Solflare;
+  #store: Store;
+  get #wallet() { return this.#store.wallet; }
 
-  public constructor(wallet: Solflare) {
+  public constructor(store: Store) {
     super();
-    this.#wallet = wallet;
+    this.#store = store;
 
     const walletLabel = document.createElement("div");
     walletLabel.textContent = this.#wallet.isConnected ? this.#wallet.publicKey!.toBase58() : "";
@@ -26,11 +26,11 @@ export class WalletConnect extends ControlBase<HTMLDivElement> {
     });
     this.rootElem.appendChild(connectButton);
 
-    listen(WalletEventTag.Connect, e => {
+    this.#store.listen(WalletEventTag.Connect, e => {
       walletLabel.textContent = e.detail.address.toBase58();
       connectButton.textContent = "Disconnect";
     });
-    listen(WalletEventTag.Disconnect, () => {
+    this.#store.listen(WalletEventTag.Disconnect, () => {
       walletLabel.textContent = "";
       connectButton.textContent = "Connect (Solflare only)";
     });

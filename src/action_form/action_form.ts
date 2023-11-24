@@ -1,8 +1,7 @@
 import { PublicKey } from "@solana/web3.js";
-import { ControlBase } from "../control_base";
-import { ActionEventTag, TransactionEventTag, listen } from "../events";
-import { Store } from "../store";
 import { UIUtils } from "../utils";
+import { ControlBase } from "../control_base";
+import { ActionEventTag, Store, TransactionEventTag } from "../store";
 import * as css from "./action_form.css";
 
 export class ActionForm extends ControlBase<HTMLDivElement> {
@@ -28,6 +27,7 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
 
   public constructor(store: Store) {
     super();
+
     this.#store = store;
     this.visible = false;
 
@@ -71,13 +71,13 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
       await this.#submit();
     });
 
-    listen(TransactionEventTag.Processing, () => {
+    this.#store.listen(TransactionEventTag.Processing, () => {
       this.#submitElem.setAttribute("disabled", "true");
     });
-    listen(TransactionEventTag.Complete, () => {
+    this.#store.listen(TransactionEventTag.Complete, () => {
       this.#submitElem.removeAttribute("disabled");
     });
-    listen(TransactionEventTag.Error, () => {
+    this.#store.listen(TransactionEventTag.Error, () => {
       this.#submitElem.removeAttribute("disabled");
     });
 

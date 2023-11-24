@@ -1,8 +1,9 @@
-import { KaminoMarket, KaminoObligation, Position } from "@hubbleprotocol/kamino-lending-sdk";
-import { TableBase } from "../control_base";
-import { UIUtils } from "../utils";
-import { ActionEventTag, emit } from "../events";
 import { PublicKey } from "@solana/web3.js";
+import { KaminoMarket, KaminoObligation, Position } from "@hubbleprotocol/kamino-lending-sdk";
+
+import { UIUtils } from "../utils";
+import { TableBase } from "../control_base";
+import { ActionEventTag, Store } from "../store";
 
 export enum ObligationTableKind {
   Borrows,
@@ -11,14 +12,17 @@ export enum ObligationTableKind {
 
 export abstract class ObligationTable extends TableBase {
   #kind: ObligationTableKind;
+  #store: Store;
 
   #mainHeadElem: HTMLTableSectionElement;
   #secondaryHeadElem: HTMLTableSectionElement;
   #bodyElem: HTMLTableSectionElement;
 
-  public constructor(kind: ObligationTableKind) {
+  public constructor(kind: ObligationTableKind, store: Store) {
     super();
+
     this.#kind = kind;
+    this.#store = store;
 
     this.#mainHeadElem = document.createElement("thead");
     this.#secondaryHeadElem = document.createElement("thead");
@@ -84,7 +88,10 @@ export abstract class ObligationTable extends TableBase {
       const withdraw = document.createElement("button");
       withdraw.textContent = "Withdraw";
       withdraw.addEventListener("click", () => {
-        emit(ActionEventTag.Withdraw, { mintAddress: new PublicKey(position.mintAddress), context: null as any });
+        this.#store.emit(ActionEventTag.Withdraw, {
+          mintAddress: new PublicKey(position.mintAddress),
+          store: this.#store
+        });
       });
       controls.appendChild(withdraw);
 
@@ -117,7 +124,10 @@ export abstract class ObligationTable extends TableBase {
       const repay = document.createElement("button");
       repay.textContent = "Repay";
       repay.addEventListener("click", () => {
-        emit(ActionEventTag.Repay, { mintAddress: new PublicKey(position.mintAddress), context: null as any });
+        this.#store.emit(ActionEventTag.Repay, {
+          mintAddress: new PublicKey(position.mintAddress),
+          store: this.#store
+        });
       });
       controls.appendChild(repay);
 
