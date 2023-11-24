@@ -1,18 +1,22 @@
 import { KaminoMarket, KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 import { MapUtils } from "../utils";
 import { Context } from "../events";
+import { Store } from "../store";
 import { TableBase } from "../control_base";
 import { ReserveRow } from "./reserve_row";
 
 export class ReservesTable extends TableBase {
+  #store: Store;
+
   #headElem: HTMLTableSectionElement;
   #bodyElem: HTMLTableSectionElement;
 
   #reserveKeys: Map<string, number>;
   #reserveRows: ReserveRow[];
 
-  public constructor() {
+  public constructor(store: Store) {
     super();
+    this.#store = store;
 
     this.#headElem = document.createElement("thead");
     this.#bodyElem = document.createElement("tbody");
@@ -50,8 +54,8 @@ export class ReservesTable extends TableBase {
     this.#reserveRows = [];
   }
 
-  public refresh({ reservesActive: reserves }: KaminoMarket, context: Context) {
-    const newRows = reserves.map(r => this.#renderRow(r, context));
+  public refresh({ reservesActive: reserves }: KaminoMarket) {
+    const newRows = reserves.map(r => this.#renderRow(r));
     const newKeys = new Map(newRows.map((r, i) => [r.key, i]));
     const unusedKeys = MapUtils.findUnusedKeys(newKeys, this.#reserveKeys);
 
@@ -67,16 +71,16 @@ export class ReservesTable extends TableBase {
     this.#reserveRows = [];
   }
 
-  #renderRow(reserve: KaminoReserve, context: Context) {
+  #renderRow(reserve: KaminoReserve) {
     const key = reserve.address.toBase58();
     const index = this.#reserveKeys.get(key);
 
     if (index != null) {
       const row = this.#reserveRows[index];
-      row.refresh(reserve, context);
+      row.refresh(reserve, this.#store);
       return row;
     } else {
-      const row = new ReserveRow(reserve, context);
+      const row = new ReserveRow(reserve, this.#store);
       row.mount(this.#bodyElem);
       return row;
     }

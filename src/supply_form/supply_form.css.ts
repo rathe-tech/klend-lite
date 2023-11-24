@@ -1,7 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-export const form = style({
-  display: "flex",
+export const overlay = style({
   position: "fixed",
   zIndex: 100,
   left: 0,
@@ -9,7 +8,7 @@ export const form = style({
   width: "100%",
   height: "100%",
   backgroundColor: "rgba(0, 0, 0, 0.2)",
-  backdropFilter: "blur(3px)"
+  backdropFilter: "blur(3px)",
 });
 
 export const hidden = style({
@@ -18,4 +17,12 @@ export const hidden = style({
 
 export const nonScroll = style({
   overflow: "hidden",
-})
+});
+
+export const form = style({
+  margin: "0 auto",
+  width: "720px",
+  height: "560px",
+  border: "1px solid green",
+  backgroundColor: "black",
+});

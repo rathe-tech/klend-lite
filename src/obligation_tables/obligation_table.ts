@@ -76,7 +76,7 @@ export abstract class ObligationTable extends TableBase {
       const mint = mints.get(position.mintAddress)!;
 
       symbol.textContent = mint.symbol;
-      amount.textContent = UIUtils.toUIDecimal(position.amount, mint.decimals);
+      amount.textContent = UIUtils.toUINumber(position.amount, mint.decimals);
 
       const withdraw = document.createElement("button");
       withdraw.textContent = "Withdraw";
@@ -115,7 +115,7 @@ export abstract class ObligationTable extends TableBase {
       const mint = mints.get(position.mintAddress)!;
 
       symbol.textContent = mint.symbol;
-      amount.textContent = UIUtils.toUIDecimal(position.amount, mint.decimals);
+      amount.textContent = UIUtils.toUINumber(position.amount, mint.decimals);
 
       const repay = document.createElement("button");
       repay.textContent = "Repay";

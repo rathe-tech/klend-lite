@@ -1,3 +1,4 @@
+import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 import { UIUtils } from "../utils";
 import { ActionEventTag, Context, emit } from "../events";
@@ -32,21 +33,26 @@ export class ReserveRow {
     this.#maxSupplyCell = document.createElement("td");
     this.#supplyApyCell = document.createElement("td");
     this.#borrowCell = document.createElement("td");
-    // this.#maxBorrowCell = document.createElement("td");
     this.#borrowApyCell = document.createElement("td");
     this.#controlsCell = document.createElement("td");
 
     this.#supplyButton = document.createElement("button");
     this.#borrowButton = document.createElement("button");
-    
+
     this.#supplyButton.textContent = "Supply";
     this.#borrowButton.textContent = "Borrow";
 
     this.#supplyButton.addEventListener("click", () => {
-      emit(ActionEventTag.Supply, { reserveAddress: reserve.address, context });
+      emit(ActionEventTag.Supply, {
+        mintAddress: new PublicKey(reserve.stats.mintAddress),
+        context
+      });
     });
     this.#borrowButton.addEventListener("click", () => {
-      emit(ActionEventTag.Borrow, { reserveAddress: reserve.address, context });
+      emit(ActionEventTag.Borrow, {
+        mintAddress: new PublicKey(reserve.stats.mintAddress),
+        context
+      });
     });
 
     this.#controlsCell.appendChild(this.#supplyButton);
@@ -94,10 +100,10 @@ export class ReserveRow {
 
     this.#symbolCell.textContent = symbol;
     this.#ltvCell.textContent = UIUtils.toPercent(loanToValuePct);
-    this.#supplyCell.textContent = UIUtils.toUIDecimal(totalSupply, decimals);
-    this.#maxSupplyCell.textContent = UIUtils.toUIDecimal(reserveDepositLimit, decimals);
+    this.#supplyCell.textContent = UIUtils.toUINumber(totalSupply, decimals);
+    this.#maxSupplyCell.textContent = UIUtils.toUINumber(reserveDepositLimit, decimals);
     this.#supplyApyCell.textContent = UIUtils.toPercent(supplyInterestAPY);
-    this.#borrowCell.textContent = UIUtils.toUIDecimal(totalBorrows, decimals);
+    this.#borrowCell.textContent = UIUtils.toUINumber(totalBorrows, decimals);
     this.#borrowApyCell.textContent = UIUtils.toPercent(borrowInterestAPY);
 
     if (context.wallet.isConnected) {

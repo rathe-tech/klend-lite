@@ -1,11 +1,15 @@
-import { KaminoMarket, KaminoObligation } from "@hubbleprotocol/kamino-lending-sdk";
-import { PublicKey } from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/web3.js";
 import Solflare from "@solflare-wallet/sdk";
+import Decimal from "decimal.js";
+import { KaminoMarket, KaminoObligation } from "@hubbleprotocol/kamino-lending-sdk";
 
 export interface Context {
+  connection: Connection;
   wallet: Solflare;
   market: KaminoMarket | null;
   obligation: KaminoObligation | null;
+  
+  process(tag: ActionEventTag, mintAddress: PublicKey, amount: Decimal): Promise<void>;
 }
 
 export interface EventDetail {
@@ -58,16 +62,30 @@ export enum ActionEventTag {
 }
 
 export interface ActionSupplyEventDetail extends EventDetail {
-  reserveAddress: PublicKey;
+  mintAddress: PublicKey;
 }
 export interface ActionBorrowEventDetail extends EventDetail {
-  reserveAddress: PublicKey;
+  mintAddress: PublicKey;
 }
 export interface ActionRepayEventDetail extends EventDetail {
   mintAddress: PublicKey;
 }
 export interface ActionWithdrawEventDetail extends EventDetail {
   mintAddress: PublicKey;
+}
+
+export enum TransactionEventTag {
+  Processing = "transaction:processing",
+  Complete = "transaction:complete",
+  Error = "transaction:error",
+}
+
+export interface TransactionProcessingEventDetail extends EventDetail { }
+export interface TransactionCompleteEventDetail extends EventDetail {
+  signature: string;
+}
+export interface TransactionErrorEventDetail extends EventDetail {
+  error: unknown;
 }
 
 export function emit(tag: WalletEventTag.Connect, detail: WalletConnectEventDetail): void;
@@ -85,6 +103,10 @@ export function emit(tag: ActionEventTag.Supply, detail: ActionSupplyEventDetail
 export function emit(tag: ActionEventTag.Borrow, detail: ActionBorrowEventDetail): void;
 export function emit(tag: ActionEventTag.Repay, detail: ActionRepayEventDetail): void;
 export function emit(tag: ActionEventTag.Withdraw, detail: ActionWithdrawEventDetail): void;
+
+export function emit(tag: TransactionEventTag.Processing, detail: TransactionProcessingEventDetail): void;
+export function emit(tag: TransactionEventTag.Complete, detail: TransactionCompleteEventDetail): void;
+export function emit(tag: TransactionEventTag.Error, detail: TransactionErrorEventDetail): void;
 
 export function emit(tag: string, detail: any): void {
   const event = new CustomEvent(tag, {
@@ -109,6 +131,10 @@ export function listen(tag: ActionEventTag.Supply, listener: (e: CustomEvent<Act
 export function listen(tag: ActionEventTag.Borrow, listener: (e: CustomEvent<ActionBorrowEventDetail>) => void): void;
 export function listen(tag: ActionEventTag.Repay, listener: (e: CustomEvent<ActionRepayEventDetail>) => void): void;
 export function listen(tag: ActionEventTag.Withdraw, listener: (e: CustomEvent<ActionWithdrawEventDetail>) => void): void;
+
+export function listen(tag: TransactionEventTag.Processing, listener: (e: CustomEvent<TransactionProcessingEventDetail>) => void): void;
+export function listen(tag: TransactionEventTag.Complete, listener: (e: CustomEvent<TransactionCompleteEventDetail>) => void): void;
+export function listen(tag: TransactionEventTag.Error, listener: (e: CustomEvent<TransactionErrorEventDetail>) => void): void;
 
 export function listen(tag: string, listener: (e: any) => void): void {
   document.addEventListener(tag, listener);

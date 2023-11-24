@@ -48,7 +48,7 @@ window.onload = async () => {
   });
   controlsContainer.appendChild(refreshMarketButton);
 
-  const supplyForm = new SupplyForm();
+  const supplyForm = new SupplyForm(store);
   supplyForm.mount(appContainer);
 
   const depositsTable = new DepositsTable();
@@ -56,7 +56,7 @@ window.onload = async () => {
   depositsTable.mount(obligationContainer);
   borrowsTable.mount(obligationContainer);
 
-  const reservesTable = new ReservesTable();
+  const reservesTable = new ReservesTable(store);
   reservesTable.mount(reservesContainer);
 
   listen(MarketEventTag.Loading, () => {
@@ -66,8 +66,7 @@ window.onload = async () => {
     refreshMarketButton.setAttribute("disabled", "true");
   });
   listen(MarketEventTag.Loaded, e => {
-    const { detail: { market, context } } = e;
-    reservesTable.refresh(market, context);
+    reservesTable.refresh(e.detail.market);
     refreshMarketButton.removeAttribute("disabled");
   });
   listen(MarketEventTag.Error, e => {
@@ -94,10 +93,10 @@ window.onload = async () => {
   });
 
   listen(ActionEventTag.Supply, e => {
-    supplyForm.show(e.detail.reserveAddress);
+    supplyForm.show(e.detail.mintAddress);
   });
   listen(ActionEventTag.Borrow, e => {
-    alert(`Borrow from: ${e.detail.reserveAddress}`);
+    alert(`Borrow from: ${e.detail.mintAddress}`);
   });
   listen(ActionEventTag.Withdraw, e => {
     alert(`Withdraw for mint: ${e.detail.mintAddress}`);
