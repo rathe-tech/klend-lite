@@ -48,6 +48,7 @@ const config: webpack.Configuration & { devServer: server.Configuration } = {
     })
   ],
   optimization: {
+    minimize: true,
     splitChunks: {
       cacheGroups: {
         vendor: {
@@ -71,7 +72,7 @@ const config: webpack.Configuration & { devServer: server.Configuration } = {
     warnings: false,
     errors: true,
     timings: true
-  }
+  },
 };
 
 export default config;
