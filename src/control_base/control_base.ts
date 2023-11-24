@@ -23,7 +23,7 @@ export abstract class ControlBase<THtmlRoot extends HTMLElement> {
     return !this.#rootElem.classList.contains(css.disabled);
   }
 
-  public set enable(value:boolean) {
+  public set enable(value: boolean) {
     if (value) {
       this.rootElem.classList.remove(css.disabled);
     } else {
