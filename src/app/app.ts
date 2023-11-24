@@ -35,7 +35,7 @@ export class App extends ControlBase<HTMLDivElement> {
   
     const title = document.createElement("div");
     title.classList.add(css.appTitle);
-    title.textContent = "K-LEND LITE";
+    title.textContent = "KLEND LITE";
     headerContainer.appendChild(title);
 
     const walletConnect = new WalletConnect(store.wallet);

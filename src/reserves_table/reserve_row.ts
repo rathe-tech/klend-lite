@@ -1,12 +1,15 @@
 import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
+
+import { Store } from "../store";
 import { UIUtils } from "../utils";
+import { ControlBase } from "../control_base";
 import { ActionEventTag, Context, emit } from "../events";
+
 import * as css from "./reserve_table.css";
 
-export class ReserveRow {
+export class ReserveRow extends ControlBase<HTMLTableRowElement> {
   #key: string;
-  #rowElem: HTMLTableRowElement;
 
   #symbolCell: HTMLTableCellElement;
   #ltvCell: HTMLTableCellElement;
@@ -25,9 +28,9 @@ export class ReserveRow {
     return this.#key;
   }
 
-  public constructor(reserve: KaminoReserve, context: Context) {
+  public constructor(reserve: KaminoReserve, store: Store) {
+    super();
     this.#key = reserve.address.toBase58();
-    this.#rowElem = document.createElement("tr") as HTMLTableRowElement;
 
     this.#symbolCell = document.createElement("td");
     this.#ltvCell = document.createElement("td");
@@ -47,13 +50,13 @@ export class ReserveRow {
     this.#supplyButton.addEventListener("click", () => {
       emit(ActionEventTag.Supply, {
         mintAddress: new PublicKey(reserve.stats.mintAddress),
-        context
+        context: store
       });
     });
     this.#borrowButton.addEventListener("click", () => {
       emit(ActionEventTag.Borrow, {
         mintAddress: new PublicKey(reserve.stats.mintAddress),
-        context
+        context: store
       });
     });
 
@@ -63,24 +66,20 @@ export class ReserveRow {
     this.#controlsWrapper.appendChild(this.#borrowButton);
     this.#controlsCell.appendChild(this.#controlsWrapper);
 
-    this.#rowElem.appendChild(this.#symbolCell);
-    this.#rowElem.appendChild(this.#ltvCell);
-    this.#rowElem.appendChild(this.#supplyCell);
-    this.#rowElem.appendChild(this.#maxSupplyCell);
-    this.#rowElem.appendChild(this.#supplyApyCell);
-    this.#rowElem.appendChild(this.#borrowCell);
-    this.#rowElem.appendChild(this.#borrowApyCell);
-    this.#rowElem.appendChild(this.#controlsCell);
+    this.rootElem.appendChild(this.#symbolCell);
+    this.rootElem.appendChild(this.#ltvCell);
+    this.rootElem.appendChild(this.#supplyCell);
+    this.rootElem.appendChild(this.#maxSupplyCell);
+    this.rootElem.appendChild(this.#supplyApyCell);
+    this.rootElem.appendChild(this.#borrowCell);
+    this.rootElem.appendChild(this.#borrowApyCell);
+    this.rootElem.appendChild(this.#controlsCell);
 
-    this.refresh(reserve, context);
+    this.refresh(reserve, store);
   }
 
-  public mount(parent: HTMLElement) {
-    parent.appendChild(this.#rowElem);
-  }
-
-  public unmount() {
-    this.#rowElem.remove();
+  protected override createRootElem(): HTMLTableRowElement {
+    return document.createElement("tr");
   }
 
   refresh(reserve: KaminoReserve, context: Context) {

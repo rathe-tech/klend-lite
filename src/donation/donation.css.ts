@@ -8,11 +8,11 @@ export const root = style({
 });
 
 export const title = style({
-  fontSize: "14px",
+  fontSize: "16px",
 });
 
 export const wallet = style({
-  fontSize: "18px",
+  fontSize: "16px",
   marginTop: "0.5em",
   textDecoration: "underline dashed",
   textDecorationThickness: "2px",

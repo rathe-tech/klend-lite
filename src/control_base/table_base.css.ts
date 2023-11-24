@@ -16,6 +16,7 @@ globalStyle(`${table} th, td`, {
 globalStyle(`${table} th`, {
   paddingTop: "8px",
   paddingBottom: "8px",
+  fontSize: "16px",
 });
 
 globalStyle(`${table} th:first-child, td:first-child`, {
