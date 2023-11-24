@@ -2,13 +2,12 @@
   "name": "klend-lite",
   "version": "0.0.1",
   "description": "Lightweight K-Lend Web UI",
-  "main": "index.js",
   "scripts": {
     "build": "npx webpack",
-    "dev": "npx webpack serve"
+    "dev": "npx webpack serve --mode development"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Max Koverdyaev",
+  "license": "MIT",
   "devDependencies": {
     "@ledgerhq/hw-app-solana": "^7.0.14",
     "@ledgerhq/hw-transport-node-hid": "^6.27.22",
