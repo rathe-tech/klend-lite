@@ -4,8 +4,8 @@ import { Connection, PublicKey } from "@solana/web3.js";
 import { KaminoMarket, KaminoObligation } from "@hubbleprotocol/kamino-lending-sdk";
 
 import { Client } from "./client";
-import { RPC_ENDPOINT, MARKET_ADDRESS } from "./config";
 import { Assert } from "./utils";
+import { RPC_ENDPOINT, MARKET_ADDRESS } from "./config";
 
 export class Store {
   #connection: Connection = new Connection(RPC_ENDPOINT, { commitment: "confirmed" });

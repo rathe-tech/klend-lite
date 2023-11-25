@@ -12,7 +12,6 @@ import { Option } from "./utils";
 import { DONATION_ADDRESS, LENDING_LUT, MARKET_ADDRESS } from "./config";
 import { type Store } from "./store";
 
-
 export class Client {
   #store: Store;
   #obligationType = new VanillaObligation(PROGRAM_ID);
