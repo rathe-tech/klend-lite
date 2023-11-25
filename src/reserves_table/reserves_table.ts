@@ -1,5 +1,5 @@
 import { KaminoMarket, KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
-import { MapUtils, UIUtils } from "../utils";
+import { Assert, MapUtils, UIUtils } from "../utils";
 import { Store } from "../store";
 import { TableBase } from "../control_base";
 import { ReserveRow } from "./reserve_row";
@@ -88,9 +88,7 @@ export class ReservesTable extends TableBase {
   #removeUnusedRows(keys: string[]) {
     keys.forEach(key => {
       const index = this.#reserveKeys.get(key);
-      if (index == null) {
-        throw new Error(`Could not remove elem with key ${key}`);
-      }
+      Assert.some(index, `Could not remove elem with key ${key}`);
       this.#reserveRows[index].unmount();
     });
   }

@@ -1,25 +1,17 @@
-import { Connection, PublicKey } from "@solana/web3.js";
 import Decimal from "decimal.js";
 import Solflare from "@solflare-wallet/sdk";
-import {
-  KaminoMarket,
-  KaminoObligation,
-  VanillaObligation,
-  KaminoAction,
-  buildVersionedTransaction,
-  PROGRAM_ID,
-} from "@hubbleprotocol/kamino-lending-sdk";
+import { Connection, PublicKey } from "@solana/web3.js";
+import { KaminoMarket, KaminoObligation } from "@hubbleprotocol/kamino-lending-sdk";
 
-import {
-  RPC_ENDPOINT,
-  MARKET_ADDRESS,
-  LENDING_LUT,
-  DONATION_ADDRESS,
-} from "./config";
+import { Client } from "./client";
+import { RPC_ENDPOINT, MARKET_ADDRESS } from "./config";
+import { Assert } from "./utils";
 
 export class Store {
   #connection: Connection = new Connection(RPC_ENDPOINT, { commitment: "confirmed" });
   #wallet: Solflare = new Solflare({ network: "mainnet-beta" });
+  #client: Client = new Client(this);
+
   #market: KaminoMarket | null = null;
   #obligation: KaminoObligation | null = null;
 
@@ -104,156 +96,16 @@ export class Store {
   async #processAction(tag: ActionEventTag, mintAddress: PublicKey, amount: Decimal): Promise<string> {
     switch (tag) {
       case ActionEventTag.Supply:
-        return await this.#supply(mintAddress, amount);
+        return await this.#client.supply(mintAddress, amount);
       case ActionEventTag.Borrow:
-        return await this.#borrow(mintAddress, amount);
+        return await this.#client.borrow(mintAddress, amount);
       case ActionEventTag.Repay:
-        return await this.#repay(mintAddress, amount);
+        return await this.#client.repay(mintAddress, amount);
       case ActionEventTag.Withdraw:
-        return await this.#withdraw(mintAddress, amount);
+        return await this.#client.withdraw(mintAddress, amount);
       default:
         throw new Error(`Not support action: ${tag}`);
     }
-  }
-
-  async #supply(mintAddress: PublicKey, amount: Decimal): Promise<string> {
-    if (this.#wallet.publicKey == null) {
-      throw new Error("Wallet isn't connected");
-    }
-    if (this.#market == null) {
-      throw new Error("Market isn't loaded");
-    }
-
-    const type = new VanillaObligation(PROGRAM_ID);
-    const action = await KaminoAction.buildDepositTxns(
-      this.#market,
-      amount.toString(),
-      mintAddress,
-      this.#wallet.publicKey,
-      type,
-      0,
-      undefined,
-      undefined,
-      undefined,
-      DONATION_ADDRESS
-    );
-    const instructions = [
-      ...action.setupIxs,
-      ...action.lendingIxs,
-      ...action.cleanupIxs,
-    ];
-    const transaction = await buildVersionedTransaction(
-      this.#connection,
-      this.#wallet.publicKey,
-      instructions,
-      [LENDING_LUT]
-    );
-    return await this.#wallet.signAndSendTransaction(transaction);
-  }
-
-  async #borrow(mintAddress: PublicKey, amount: Decimal): Promise<string> {
-    if (this.#wallet.publicKey == null) {
-      throw new Error("Wallet isn't connected");
-    }
-    if (this.#market == null) {
-      throw new Error("Market isn't loaded");
-    }
-
-    const type = new VanillaObligation(PROGRAM_ID);
-    const action = await KaminoAction.buildBorrowTxns(
-      this.#market,
-      amount.toString(),
-      mintAddress,
-      this.#wallet.publicKey,
-      type,
-      0,
-      true,
-      false,
-      true,
-      DONATION_ADDRESS,
-    );
-    const instructions = [
-      ...action.setupIxs,
-      ...action.lendingIxs,
-      ...action.cleanupIxs,
-    ];
-    const transaction = await buildVersionedTransaction(
-      this.#connection,
-      this.#wallet.publicKey,
-      instructions,
-      [LENDING_LUT]
-    );
-    return await this.#wallet.signAndSendTransaction(transaction);
-  }
-
-  async #repay(mintAddress: PublicKey, amount: Decimal): Promise<string> {
-    if (this.#wallet.publicKey == null) {
-      throw new Error("Wallet isn't connected");
-    }
-    if (this.#market == null) {
-      throw new Error("Market isn't loaded");
-    }
-
-    const type = new VanillaObligation(PROGRAM_ID);
-    const action = await KaminoAction.buildRepayTxns(
-      this.#market,
-      amount.toString(),
-      mintAddress,
-      this.#wallet.publicKey,
-      type,
-      0,
-      true,
-      undefined,
-      undefined,
-      DONATION_ADDRESS
-    );
-    const instructions = [
-      ...action.setupIxs,
-      ...action.lendingIxs,
-      ...action.cleanupIxs,
-    ];
-    const transaction = await buildVersionedTransaction(
-      this.#connection,
-      this.#wallet.publicKey,
-      instructions,
-      [LENDING_LUT]
-    );
-    return await this.#wallet.signAndSendTransaction(transaction);
-  }
-
-  async #withdraw(mintAddress: PublicKey, amount: Decimal): Promise<string> {
-    if (this.#wallet.publicKey == null) {
-      throw new Error("Wallet isn't connected");
-    }
-    if (this.#market == null) {
-      throw new Error("Market isn't loaded");
-    }
-
-    const type = new VanillaObligation(PROGRAM_ID);
-    const action = await KaminoAction.buildWithdrawTxns(
-      this.#market,
-      amount.toString(),
-      mintAddress,
-      this.#wallet.publicKey,
-      type,
-      0,
-      true,
-      undefined,
-      undefined,
-      DONATION_ADDRESS
-    );
-    const instructions = [
-      ...action.setupIxs,
-      ...action.lendingIxs,
-      ...action.cleanupIxs,
-    ];
-    const transaction = await buildVersionedTransaction(
-      this.#connection,
-      this.#wallet.publicKey,
-      instructions,
-      [LENDING_LUT]
-    );
-    return await this.#wallet.signAndSendTransaction(transaction);
   }
 
   public async refresh() {
@@ -269,10 +121,8 @@ export class Store {
 
     try {
       this.emit(MarketEventTag.Loading, { store: this });
-
-      this.#market = await KaminoMarket.load(this.#connection, MARKET_ADDRESS);
-      if (this.#market == null) throw new Error(`Could not load market: ${MARKET_ADDRESS}`);
-
+      this.#market = await this.#client.loadMarket();
+      Assert.some(this.#market, `Could not load market: ${MARKET_ADDRESS}`)
       this.emit(MarketEventTag.Loaded, { market: this.#market, store: this });
     } catch (error) {
       this.emit(MarketEventTag.Error, { error, store: this });
@@ -290,12 +140,7 @@ export class Store {
 
     try {
       this.emit(ObligationEventTag.Loading, { store: this });
-
-      if (this.#market == null) throw new Error("Market is unavailable");
-      if (this.#wallet.publicKey == null) throw new Error("Wallet isn't connected");
-
-      this.#obligation = await this.#market.getObligationByWallet(this.#wallet.publicKey, new VanillaObligation(PROGRAM_ID));
-
+      this.#obligation = await this.#client.loadObligation();
       this.emit(ObligationEventTag.Loaded, { obligation: this.#obligation, store: this });
     } catch (error) {
       this.emit(ObligationEventTag.Error, { error, store: this });
@@ -305,15 +150,11 @@ export class Store {
   }
 
   public getMint(mintAddress: PublicKey) {
-    if (this.market == null) {
-      throw new Error("Market isn't loaded");
-    }
+    Assert.some(this.market, "Market isn't loaded");
 
     const base58MintAddress = mintAddress.toBase58();
     const reserve = this.market.reserves.find(x => x.stats.mintAddress === base58MintAddress);
-    if (reserve == null) {
-      throw new Error(`Reserve form mint ${mintAddress} doesn't exist`);
-    }
+    Assert.some(reserve, `Reserve form mint ${mintAddress} doesn't exist`);
 
     const { stats: { decimals, symbol } } = reserve;
     return { mintAddress, decimals, symbol };

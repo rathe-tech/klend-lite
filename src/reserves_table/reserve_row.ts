@@ -1,8 +1,8 @@
 import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { UIUtils } from "../utils";
 import { ControlBase } from "../control_base";
+import { Assert, UIUtils } from "../utils";
 import { ActionEventTag, Store } from "../store";
 
 import * as css from "./reserve_table.css";
@@ -95,9 +95,7 @@ export class ReserveRow extends ControlBase<HTMLTableRowElement> {
     } = reserve;
 
     const newKey = address.toBase58();
-    if (newKey !== this.#key) {
-      throw new Error(`Key mismatch: ${newKey} and ${this.#key}`);
-    }
+    Assert.ok(newKey == this.#key, `Key mismatch: ${newKey} and ${this.#key}`);
 
     this.#symbolCell.textContent = symbol;
     this.#ltvCell.textContent = UIUtils.toPercent(loanToValuePct, 0);
