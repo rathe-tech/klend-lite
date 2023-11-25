@@ -1,7 +1,13 @@
 import { PublicKey } from "@solana/web3.js";
 import { UIUtils } from "../utils";
 import { ControlBase } from "../control_base";
-import { ActionEventTag, Store, TransactionEventTag } from "../store";
+import { WalletBalance } from "./wallet_balance";
+import {
+  Store,
+  ActionEventTag,
+  TransactionEventTag,
+  type MintInfo
+} from "../store";
 import * as css from "./action_form.css";
 
 export class ActionForm extends ControlBase<HTMLDivElement> {
@@ -17,6 +23,8 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
   #symbolElem: HTMLElement;
   #valueInput: HTMLInputElement;
   #submitElem: HTMLButtonElement;
+
+  #walletBalance: WalletBalance;
 
   #onEscPress = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -50,6 +58,7 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
     this.#formElem.appendChild(this.#footerElem);
 
     this.#titleElem = document.createElement("div");
+    this.#walletBalance = new WalletBalance();
     this.#symbolElem = document.createElement("div");
     this.#valueInput = document.createElement("input");
     this.#submitElem = document.createElement("button");
@@ -59,6 +68,7 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
     this.#submitElem.classList.add(css.submit);
 
     this.#headerElem.appendChild(this.#titleElem);
+    this.#walletBalance.mount(this.#bodyElem);
     this.#bodyElem.appendChild(this.#symbolElem);
     this.#bodyElem.appendChild(this.#valueInput);
     this.#bodyElem.appendChild(this.#submitElem);
@@ -102,13 +112,15 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
       document.activeElement.blur();
     }
 
-    const { symbol, decimals } = this.#store.getMint(mintAddress);
-    const title = chooseTitle(tag, symbol);
+    const mint = this.#store.getMint(mintAddress);
+    const balance = this.#store.getBalance(mintAddress);
 
-    this.#titleElem.textContent = title;
-    this.#symbolElem.textContent = `${symbol} Amount`;
+    this.#titleElem.textContent = chooseTitle(tag, mint);
+    this.#walletBalance.updateBalance(balance, mint);
+    this.#symbolElem.textContent = `${mint.symbol} Amount`;
+
     this.#submit = async () => {
-      const amount = UIUtils.toNativeNumber(this.#valueInput.value, decimals);
+      const amount = UIUtils.toNativeNumber(this.#valueInput.value, mint.decimals);
       await this.#store.process(tag, mintAddress, amount);
     };
   }
@@ -120,7 +132,7 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
   }
 }
 
-export function chooseTitle(tag: ActionEventTag, symbol: string) {
+export function chooseTitle(tag: ActionEventTag, { symbol }: MintInfo) {
   switch (tag) {
     case ActionEventTag.Borrow:
       return `Borrow ${symbol}`;

@@ -7,6 +7,8 @@ import { Client } from "./client";
 import { Assert } from "./utils";
 import { RPC_ENDPOINT, MARKET_ADDRESS } from "./config";
 
+
+
 export class Store {
   #connection: Connection = new Connection(RPC_ENDPOINT, { commitment: "confirmed" });
   #wallet: Solflare = new Solflare({ network: "mainnet-beta" });
@@ -14,6 +16,8 @@ export class Store {
 
   #market: KaminoMarket | null = null;
   #obligation: KaminoObligation | null = null;
+  #mints: Map<string, MintInfo> | null = null;
+  #balances: Map<string, Decimal> | null = null;
 
   #isMarketLoading = false;
   #isObligationLoading = false;
@@ -23,6 +27,7 @@ export class Store {
   public get wallet() { return this.#wallet; }
   public get market() { return this.#market; }
   public get obligation() { return this.#obligation; }
+  public get mints() { return this.#mints; }
 
   public constructor() {
     this.#wallet.on("connect", () => {
@@ -42,6 +47,7 @@ export class Store {
       // Invalidate obligation if there's no active loading.
       // Otherwise it will be invalidated after the active loading is complete.
       if (!this.#isObligationLoading) {
+        this.#balances = null;
         this.#obligation = null;
         this.emit(ObligationEventTag.Loaded, { obligation: this.#obligation, store: this });
       }
@@ -54,7 +60,7 @@ export class Store {
     });
 
     this.listen(MarketEventTag.Loaded, async () => {
-      // 1. After the market is loaded we can try to load an obligation in case the wallet is connected.
+      // 1. After the market is loaded and the wallet is connected we can try to load an obligation.
       // 2. If there's no connected wallet and no active loading presented set the current obligation
       //    to null and invalidate it.
       if (this.#wallet.isConnected) {
@@ -122,7 +128,7 @@ export class Store {
     try {
       this.emit(MarketEventTag.Loading, { store: this });
       this.#market = await this.#client.loadMarket();
-      Assert.some(this.#market, `Could not load market: ${MARKET_ADDRESS}`)
+      Assert.some(this.#market, `Could not load market: ${MARKET_ADDRESS}`);
       this.emit(MarketEventTag.Loaded, { market: this.#market, store: this });
     } catch (error) {
       this.emit(MarketEventTag.Error, { error, store: this });
@@ -140,7 +146,11 @@ export class Store {
 
     try {
       this.emit(ObligationEventTag.Loading, { store: this });
+
+      this.#updateMints();
+      this.#balances = await this.#client.loadBalances();
       this.#obligation = await this.#client.loadObligation();
+
       this.emit(ObligationEventTag.Loaded, { obligation: this.#obligation, store: this });
     } catch (error) {
       this.emit(ObligationEventTag.Error, { error, store: this });
@@ -149,15 +159,25 @@ export class Store {
     }
   }
 
-  public getMint(mintAddress: PublicKey) {
+  #updateMints() {
     Assert.some(this.market, "Market isn't loaded");
+    this.#mints = new Map(this.market.reservesActive.map(x => [x.stats.mintAddress, {
+      mintAddress: new PublicKey(x.stats.mintAddress),
+      symbol: x.stats.symbol,
+      decimals: x.stats.decimals
+    }]));
+  }
 
-    const base58MintAddress = mintAddress.toBase58();
-    const reserve = this.market.reserves.find(x => x.stats.mintAddress === base58MintAddress);
-    Assert.some(reserve, `Reserve form mint ${mintAddress} doesn't exist`);
+  public getMint(mintAddress: PublicKey) {
+    Assert.some(this.#mints, "Market isn't loaded");
+    const mint = this.#mints.get(mintAddress.toBase58());
+    Assert.some(mint, `Reserve form mint ${mintAddress} doesn't exist`);
+    return mint;
+  }
 
-    const { stats: { decimals, symbol } } = reserve;
-    return { mintAddress, decimals, symbol };
+  public getBalance(mintAddress: PublicKey) {
+    Assert.some(this.#balances, "Balances aren't available");
+    return this.#balances.get(mintAddress.toBase58());
   }
 
   public emit(tag: WalletEventTag.Connect, detail: WalletConnectEventDetail): void;
@@ -213,6 +233,13 @@ export class Store {
   }
 }
 
+export interface MintInfo {
+  mintAddress: PublicKey;
+  symbol: string;
+  decimals: number;
+}
+
+// Events declarations
 export interface EventDetail {
   store: Store;
 }
