@@ -100,12 +100,12 @@ export class ReserveRow extends ControlBase<HTMLTableRowElement> {
     }
 
     this.#symbolCell.textContent = symbol;
-    this.#ltvCell.textContent = UIUtils.toPercent(loanToValuePct);
+    this.#ltvCell.textContent = UIUtils.toPercent(loanToValuePct, 0);
     this.#supplyCell.textContent = UIUtils.toUINumber(totalSupply, decimals);
     this.#maxSupplyCell.textContent = UIUtils.toUINumber(reserveDepositLimit, decimals);
-    this.#supplyApyCell.textContent = UIUtils.toPercent(supplyInterestAPY);
+    this.#supplyApyCell.textContent = UIUtils.toPercent(supplyInterestAPY, 4);
     this.#borrowCell.textContent = UIUtils.toUINumber(totalBorrows, decimals);
-    this.#borrowApyCell.textContent = UIUtils.toPercent(borrowInterestAPY);
+    this.#borrowApyCell.textContent = UIUtils.toPercent(borrowInterestAPY, 4);
 
     if (this.#store.wallet.isConnected) {
       this.#supplyButton.removeAttribute("disabled");

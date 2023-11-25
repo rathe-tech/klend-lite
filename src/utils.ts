@@ -13,8 +13,8 @@ export module UIUtils {
     return value.div(10 ** decimals).toDecimalPlaces(decimals).toString();
   }
 
-  export function toPercent(value: number) {
-    return `${(value * 100).toFixed(4)} %`;
+  export function toPercent(value: number, decimalPlaces: number) {
+    return `${(value * 100).toFixed(decimalPlaces)} %`;
   }
 
   export function toNativeNumber(value: number | string, decimals: number) {
