@@ -49,17 +49,12 @@ export class ReserveRow extends ControlBase<HTMLTableRowElement> {
     this.#supplyButton.textContent = "Supply";
     this.#borrowButton.textContent = "Borrow";
 
+    const mintAddress = new PublicKey(reserve.stats.mintAddress)
     this.#supplyButton.addEventListener("click", () => {
-      this.#store.emit(ActionEventTag.Supply, {
-        mintAddress: new PublicKey(reserve.stats.mintAddress),
-        store
-      });
+      this.#store.emit(ActionEventTag.Supply, { mintAddress, store });
     });
     this.#borrowButton.addEventListener("click", () => {
-      this.#store.emit(ActionEventTag.Borrow, {
-        mintAddress: new PublicKey(reserve.stats.mintAddress),
-        store
-      });
+      this.#store.emit(ActionEventTag.Borrow, { mintAddress, store });
     });
 
     this.#controlsWrapper = document.createElement("div");

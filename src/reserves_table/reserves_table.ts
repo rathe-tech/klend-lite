@@ -1,5 +1,5 @@
 import { KaminoMarket, KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
-import { MapUtils } from "../utils";
+import { MapUtils, UIUtils } from "../utils";
 import { Store } from "../store";
 import { TableBase } from "../control_base";
 import { ReserveRow } from "./reserve_row";
@@ -54,7 +54,7 @@ export class ReservesTable extends TableBase {
   }
 
   public refresh({ reservesActive: reserves }: KaminoMarket) {
-    const newRows = reserves.map(r => this.#renderRow(r));
+    const newRows = UIUtils.sortReserves(reserves).map(r => this.#renderRow(r));
     const newKeys = new Map(newRows.map((r, i) => [r.key, i]));
     const unusedKeys = MapUtils.findUnusedKeys(newKeys, this.#reserveKeys);
 
