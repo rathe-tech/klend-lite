@@ -1,4 +1,4 @@
-import { Store, ActionEventTag, CustomerEventTag, MarketEventTag } from "../models";
+import { Store, CustomerEventTag, MarketEventTag } from "../models";
 import { ControlBase } from "../controls";
 import { WalletConnect } from "../wallet_connect";
 import { BorrowsTable, DepositsTable } from "../obligation_tables";
@@ -76,19 +76,6 @@ export class App extends ControlBase<HTMLDivElement> {
     });
     store.listen(CustomerEventTag.Error, () => {
       refreshMarketButton.removeAttribute("disabled");
-    });
-
-    store.listen(ActionEventTag.Supply, e => {
-      actionForm.show(ActionEventTag.Supply, e.detail.mintAddress);
-    });
-    store.listen(ActionEventTag.Borrow, e => {
-      actionForm.show(ActionEventTag.Borrow, e.detail.mintAddress);
-    });
-    store.listen(ActionEventTag.Withdraw, e => {
-      actionForm.show(ActionEventTag.Withdraw, e.detail.mintAddress);
-    });
-    store.listen(ActionEventTag.Repay, e => {
-      actionForm.show(ActionEventTag.Repay, e.detail.mintAddress);
     });
   }
 

@@ -30,7 +30,6 @@ export class ReservesTable extends Table {
     });
     this.#store.listen(MarketEventTag.Loaded, e => {
       this.refresh(e.detail.market);
-      this.enable = true;
     });
     this.#store.listen(MarketEventTag.Error, () => {
       this.enable = false;

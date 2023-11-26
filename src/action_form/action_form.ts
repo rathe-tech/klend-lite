@@ -81,6 +81,19 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
       await this.#submit();
     });
 
+    this.#store.listen(ActionEventTag.Supply, e => {
+      this.show(ActionEventTag.Supply, e.detail.mintAddress);
+    });
+    this.#store.listen(ActionEventTag.Borrow, e => {
+      this.show(ActionEventTag.Borrow, e.detail.mintAddress);
+    });
+    this.#store.listen(ActionEventTag.Withdraw, e => {
+      this.show(ActionEventTag.Withdraw, e.detail.mintAddress);
+    });
+    this.#store.listen(ActionEventTag.Repay, e => {
+      this.show(ActionEventTag.Repay, e.detail.mintAddress);
+    });
+
     this.#store.listen(TransactionEventTag.Processing, () => {
       this.#submitElem.setAttribute("disabled", "true");
     });

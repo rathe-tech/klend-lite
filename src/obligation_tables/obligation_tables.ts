@@ -43,9 +43,7 @@ abstract class ObligationTable extends Table {
       this.enable = false;
     });
     this.#store.listen(CustomerEventTag.Loaded, e => {
-      const { customer, store } = e.detail;
-      this.refresh(customer, store.marketChecked);
-      this.enable = true;
+      this.refresh(e.detail.customer);
     });
     this.#store.listen(CustomerEventTag.Error, () => {
       this.enable = false;
@@ -79,7 +77,7 @@ abstract class ObligationTable extends Table {
     this.#obligationRows = [];
   }
 
-  public refresh(customer: Customer | null, market: Market) {
+  public refresh(customer: Customer | null) {
     if (customer == null) {
       this.#purge();
       return;

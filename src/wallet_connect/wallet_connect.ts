@@ -17,7 +17,7 @@ export class WalletConnect extends ControlBase<HTMLDivElement> {
     }
   }
 
-  public override get enable() {
+  public override get isEnabled() {
     return this.#connectButton.classList.contains(WalletConnect.css.disabled);
   }
 
