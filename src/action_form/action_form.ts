@@ -119,6 +119,7 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
     this.#titleElem.textContent = chooseTitle(tag, mint);
     this.#walletBalance.updateBalance(balance, mint);
     this.#symbolElem.textContent = `${mint.symbol} Amount`;
+    this.#valueInput.value = "0";
 
     this.#submit = async () => {
       const amount = UIUtils.toNativeNumber(this.#valueInput.value, mint.decimals);
