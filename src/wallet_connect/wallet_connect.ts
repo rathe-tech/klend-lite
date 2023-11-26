@@ -1,4 +1,4 @@
-import { ControlBase } from "../control_base";
+import { ControlBase } from "../controls";
 import { Store, TransactionEventTag, WalletEventTag, CustomerEventTag } from "../models";
 import * as css from "./wallet_connect.css";
 

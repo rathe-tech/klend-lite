@@ -9,7 +9,9 @@ export class IndexedArray<TValue> {
 
   public getByKey(value: string | number) {
     const index = this.#indices.get(value);
-    return index == null ? undefined : this.#array[index];
+    if (index != null) {
+      return this.#array[index];
+    }
   }
 
   public getArray() {

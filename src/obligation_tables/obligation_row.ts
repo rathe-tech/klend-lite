@@ -2,7 +2,7 @@ import { PublicKey } from "@solana/web3.js";
 import { Position } from "@hubbleprotocol/kamino-lending-sdk";
 
 import { Assert, UIUtils } from "../utils";
-import { TableRowBase } from "../control_base";
+import { TableRow } from "../controls";
 import { ActionEventTag, Store } from "../models";
 
 export enum ObligationKind {
@@ -10,7 +10,7 @@ export enum ObligationKind {
   Supplied,
 }
 
-export class ObligationRow extends TableRowBase {
+export class ObligationRow extends TableRow {
   #kind: ObligationKind;
   #store: Store;
 

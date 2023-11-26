@@ -1,9 +1,7 @@
 import { ControlBase } from "./control_base";
-import * as css from "./table_base.css";
+import * as css from "./table.css";
 
-export class TableBase extends ControlBase<HTMLTableElement> {
-  public static rootElemStyle = css.table;
-
+export class Table extends ControlBase<HTMLTableElement> {
   protected createRootElem(): HTMLTableElement {
     const rootElem = document.createElement("table");
     rootElem.classList.add(css.table);
@@ -11,7 +9,7 @@ export class TableBase extends ControlBase<HTMLTableElement> {
   }
 }
 
-export class TableRowBase extends ControlBase<HTMLTableRowElement> {
+export class TableRow extends ControlBase<HTMLTableRowElement> {
   #key: string;
 
   public get key() { return this.#key; }

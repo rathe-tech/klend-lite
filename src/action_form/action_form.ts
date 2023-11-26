@@ -1,6 +1,6 @@
 import { PublicKey } from "@solana/web3.js";
 import { UIUtils } from "../utils";
-import { ControlBase } from "../control_base";
+import { ControlBase } from "../controls";
 import { WalletBalance } from "./wallet_balance";
 import {
   Store,

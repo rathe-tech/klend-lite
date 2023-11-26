@@ -1,5 +1,5 @@
 import { Store, ActionEventTag, CustomerEventTag, MarketEventTag } from "../models";
-import { ControlBase } from "../control_base";
+import { ControlBase } from "../controls";
 import { WalletConnect } from "../wallet_connect";
 import { BorrowsTable, DepositsTable } from "../obligation_tables";
 import { ReservesTable } from "../reserves_table";

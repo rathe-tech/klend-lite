@@ -1,6 +1,6 @@
 import Decimal from "decimal.js";
 import { UIUtils } from "../utils";
-import { ControlBase } from "../control_base";
+import { ControlBase } from "../controls";
 import { type MintInfo } from "../models";
 import * as css from "./wallet_balance.css";
 

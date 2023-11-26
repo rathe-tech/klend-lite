@@ -1,7 +1,7 @@
 import { Position } from "@hubbleprotocol/kamino-lending-sdk";
 
 import { Assert, MapUtils } from "../utils";
-import { TableBase } from "../control_base";
+import { Table } from "../controls";
 import {
   Store,
   Market,
@@ -13,7 +13,7 @@ import {
 
 import { ObligationKind, ObligationRow } from "./obligation_row";
 
-export abstract class ObligationTable extends TableBase {
+abstract class ObligationTable extends Table {
   #kind: ObligationKind;
   #store: Store;
 
@@ -123,6 +123,18 @@ export abstract class ObligationTable extends TableBase {
       Assert.some(index, `Could not remove elem with key ${key}`);
       this.#obligationRows[index].unmount();
     });
+  }
+}
+
+export class DepositsTable extends ObligationTable {
+  public constructor(store: Store) {
+    super(ObligationKind.Supplied, store);
+  }
+}
+
+export class BorrowsTable extends ObligationTable {
+  public constructor(store: Store) {
+    super(ObligationKind.Borrowed, store);
   }
 }
 

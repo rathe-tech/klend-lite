@@ -31,7 +31,7 @@ export class Api {
   }
 
   public async loadCustomer() {
-    return Customer.load(this.#store.marketChecked, this.#publicKey);
+    return Customer.load(this.#market, this.#publicKey);
   }
 
   public async supply(mintAddress: PublicKey, amount: Decimal): Promise<string> {

@@ -1,2 +1,1 @@
-export * from "./borrows_table";
-export * from "./deposits_table";
+export * from "./obligation_tables";

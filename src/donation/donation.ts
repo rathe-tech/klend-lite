@@ -1,5 +1,5 @@
 import { DONATION_ADDRESS } from "../config";
-import { ControlBase } from "../control_base";
+import { ControlBase } from "../controls";
 import * as css from "./donation.css";
 
 export class Donation extends ControlBase<HTMLDivElement> {

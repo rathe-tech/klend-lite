@@ -1,13 +1,13 @@
 import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { TableRowBase } from "../control_base";
+import { TableRow } from "../controls";
 import { Assert, UIUtils } from "../utils";
 import { ActionEventTag, Store } from "../models";
 
 import * as css from "./reserve_table.css";
 
-export class ReserveRow extends TableRowBase {
+export class ReserveRow extends TableRow {
   #store: Store;
 
   #symbolCell: HTMLTableCellElement;
