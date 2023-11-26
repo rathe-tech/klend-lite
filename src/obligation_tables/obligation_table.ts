@@ -1,36 +1,37 @@
-import { PublicKey } from "@solana/web3.js";
-import { KaminoMarket, KaminoObligation, Position } from "@hubbleprotocol/kamino-lending-sdk";
+import { Position } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { UIUtils } from "../utils";
+import { Assert, MapUtils } from "../utils";
 import { TableBase } from "../control_base";
 import {
   Store,
-  ActionEventTag,
+  Market,
+  Customer,
   CustomerEventTag,
   MarketEventTag,
   WalletEventTag
 } from "../models";
 
-export enum ObligationTableKind {
-  Borrows,
-  Deposits,
-}
+import { ObligationKind, ObligationRow } from "./obligation_row";
 
 export abstract class ObligationTable extends TableBase {
-  #kind: ObligationTableKind;
+  #kind: ObligationKind;
   #store: Store;
 
   #mainHeadElem: HTMLTableSectionElement;
   #secondaryHeadElem: HTMLTableSectionElement;
   #bodyElem: HTMLTableSectionElement;
 
-  public constructor(kind: ObligationTableKind, store: Store) {
+  #obligationKeys: Map<string, number>;
+  #obligationRows: ObligationRow[];
+
+  public constructor(kind: ObligationKind, store: Store) {
     super();
 
     this.#kind = kind;
     this.#store = store;
 
     this.#store.listen(WalletEventTag.Disconnect, () => {
+      this.#purge();
       this.enable = false;
     });
 
@@ -42,7 +43,8 @@ export abstract class ObligationTable extends TableBase {
       this.enable = false;
     });
     this.#store.listen(CustomerEventTag.Loaded, e => {
-      this.refresh(e.detail.store.marketChecked.getKaminoMarket(), e.detail.customer.getKaminoObligation())
+      const { customer, store } = e.detail;
+      this.refresh(customer, store.marketChecked);
       this.enable = true;
     });
     this.#store.listen(CustomerEventTag.Error, () => {
@@ -72,109 +74,76 @@ export abstract class ObligationTable extends TableBase {
     this.rootElem.appendChild(this.#mainHeadElem);
     this.rootElem.appendChild(this.#secondaryHeadElem);
     this.rootElem.appendChild(this.#bodyElem);
+
+    this.#obligationKeys = new Map();
+    this.#obligationRows = [];
   }
 
-  public refresh(market: KaminoMarket | null, obligation: KaminoObligation | null) {
-    if (market == null || obligation == null) {
-      this.#bodyElem.textContent = "";
-      this.enable = false;
+  public refresh(customer: Customer | null, market: Market) {
+    if (customer == null) {
+      this.#purge();
       return;
+    }
+
+    const positions = pickPositions(customer, this.#kind);
+    const newRows = positions.map(p => this.#renderRow(p));
+    const newKeys = new Map(newRows.map((r, i) => [r.key, i]));
+    const unusedKeys = MapUtils.findUnusedKeys(newKeys, this.#obligationKeys);
+
+    this.#removeUnusedRows(unusedKeys);
+    this.#obligationKeys = newKeys;
+    this.#obligationRows = newRows;
+    this.enable = true;
+  }
+
+  #purge() {
+    this.#obligationRows.forEach(r => r.unmount());
+    this.#obligationKeys = new Map();
+    this.#obligationRows = [];
+  }
+
+  #renderRow(position: Position) {
+    const key = position.mintAddress
+    const index = this.#obligationKeys.get(key);
+
+    if (index != null) {
+      const row = this.#obligationRows[index];
+      row.refresh(position);
+      return row;
     } else {
-      this.enable = true;
-    }
-
-    switch (this.#kind) {
-      case ObligationTableKind.Deposits:
-        this.#renderDeposits(obligation, market);
-        break;
-      case ObligationTableKind.Borrows:
-        this.#renderBorrows(obligation, market);
-        break;
-      default:
-        throw new Error(`Unsupported table kind: ${this.#kind}`);
+      const row = new ObligationRow(position, this.#kind, this.#store);
+      row.mount(this.#bodyElem);
+      return row;
     }
   }
 
-  #renderDeposits({ deposits }: KaminoObligation, market: KaminoMarket) {
-    const mints = new Map(market.reserves.map(x => [x.stats.mintAddress, x.stats]));
-
-    const renderRow = (position: Position) => {
-      const row = document.createElement("tr");
-
-      const symbol = document.createElement("td");
-      const amount = document.createElement("td");
-      const controls = document.createElement("td");
-
-      const mint = mints.get(position.mintAddress)!;
-
-      symbol.textContent = mint.symbol;
-      amount.textContent = UIUtils.toUINumber(position.amount, mint.decimals);
-
-      const withdraw = document.createElement("button");
-      withdraw.textContent = "Withdraw";
-      withdraw.addEventListener("click", () => {
-        this.#store.emit(ActionEventTag.Withdraw, {
-          mintAddress: new PublicKey(position.mintAddress),
-          store: this.#store
-        });
-      });
-      controls.appendChild(withdraw);
-
-      row.appendChild(symbol);
-      row.appendChild(amount);
-      row.appendChild(controls);
-
-      return row;
-    };
-
-    this.#bodyElem.textContent = "";
-    deposits.map(x => renderRow(x)).forEach(x => this.#bodyElem.appendChild(x));
-  }
-
-  #renderBorrows({ borrows }: KaminoObligation, market: KaminoMarket) {
-    const mints = new Map(market.reserves.map(x => [x.stats.mintAddress, x.stats]));
-
-    const renderRow = (position: Position) => {
-      const row = document.createElement("tr");
-
-      const symbol = document.createElement("td");
-      const amount = document.createElement("td");
-      const controls = document.createElement("td");
-
-      const mint = mints.get(position.mintAddress)!;
-
-      symbol.textContent = mint.symbol;
-      amount.textContent = UIUtils.toUINumber(position.amount, mint.decimals);
-
-      const repay = document.createElement("button");
-      repay.textContent = "Repay";
-      repay.addEventListener("click", () => {
-        this.#store.emit(ActionEventTag.Repay, {
-          mintAddress: new PublicKey(position.mintAddress),
-          store: this.#store
-        });
-      });
-      controls.appendChild(repay);
-
-      row.appendChild(symbol);
-      row.appendChild(amount);
-      row.appendChild(controls);
-
-      return row;
-    };
-
-    this.#bodyElem.textContent = "";
-    borrows.map(x => renderRow(x)).forEach(x => this.#bodyElem.appendChild(x));
+  #removeUnusedRows(keys: string[]) {
+    keys.forEach(key => {
+      const index = this.#obligationKeys.get(key);
+      Assert.some(index, `Could not remove elem with key ${key}`);
+      this.#obligationRows[index].unmount();
+    });
   }
 }
 
-function pickTitle(kind: ObligationTableKind) {
+function pickTitle(kind: ObligationKind) {
   switch (kind) {
-    case ObligationTableKind.Borrows:
-      return "Borrows";
-    case ObligationTableKind.Deposits:
-      return "Deposits";
+    case ObligationKind.Borrowed:
+      return "Borrowed";
+    case ObligationKind.Supplied:
+      return "Supplied";
     default:
-      throw new Error(`Unsupported table kind: ${kind}`);
+      throw new Error(`Unsupported kind: ${kind}`);
+  }
+}
+
+function pickPositions(customer: Customer, kind: ObligationKind) {
+  switch (kind) {
+    case ObligationKind.Borrowed:
+      return customer.getBorrows();
+    case ObligationKind.Supplied:
+      return customer.getDeposits();
+    default:
+      throw new Error(`Unsupported kind: ${kind}`);
   }
 }

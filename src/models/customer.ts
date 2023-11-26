@@ -20,6 +20,14 @@ export class Customer {
     return this.#nativeObligation;
   }
 
+  public getDeposits() {
+    return this.#nativeObligation?.deposits ?? [];
+  }
+
+  public getBorrows() {
+    return this.#nativeObligation?.borrows ?? [];
+  }
+
   public getTokenBalance(mintAddress: PublicKey) {
     return this.#tokenBalances.get(mintAddress.toBase58());
   }

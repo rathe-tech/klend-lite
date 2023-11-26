@@ -93,12 +93,6 @@ export class ReservesTable extends TableBase {
     this.enable = true;
   }
 
-  public purge() {
-    this.#reserveRows.forEach(r => r.unmount());
-    this.#reserveKeys = new Map();
-    this.#reserveRows = [];
-  }
-
   #renderRow(reserve: KaminoReserve) {
     const key = reserve.address.toBase58();
     const index = this.#reserveKeys.get(key);

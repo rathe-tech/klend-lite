@@ -10,3 +10,18 @@ export class TableBase extends ControlBase<HTMLTableElement> {
     return rootElem;
   }
 }
+
+export class TableRowBase extends ControlBase<HTMLTableRowElement> {
+  #key: string;
+
+  public get key() { return this.#key; }
+
+  public constructor(key: string) {
+    super();
+    this.#key = key;
+  }
+
+  protected createRootElem(): HTMLTableRowElement {
+    return document.createElement("tr");
+  }
+}

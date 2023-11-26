@@ -1,15 +1,14 @@
 import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { ControlBase } from "../control_base";
+import { TableRowBase } from "../control_base";
 import { Assert, UIUtils } from "../utils";
 import { ActionEventTag, Store } from "../models";
 
 import * as css from "./reserve_table.css";
 
-export class ReserveRow extends ControlBase<HTMLTableRowElement> {
+export class ReserveRow extends TableRowBase {
   #store: Store;
-  #key: string;
 
   #symbolCell: HTMLTableCellElement;
   #ltvCell: HTMLTableCellElement;
@@ -24,10 +23,6 @@ export class ReserveRow extends ControlBase<HTMLTableRowElement> {
   #supplyButton: HTMLButtonElement;
   #borrowButton: HTMLButtonElement;
 
-  public get key() {
-    return this.#key;
-  }
-
   public set actionsEnable(value: boolean) {
     if (value) {
       this.#supplyButton.removeAttribute("disabled");
@@ -39,10 +34,8 @@ export class ReserveRow extends ControlBase<HTMLTableRowElement> {
   }
 
   public constructor(reserve: KaminoReserve, store: Store) {
-    super();
-
+    super(reserve.address.toBase58());
     this.#store = store;
-    this.#key = reserve.address.toBase58();
 
     this.#symbolCell = document.createElement("td");
     this.#ltvCell = document.createElement("td");
@@ -85,10 +78,6 @@ export class ReserveRow extends ControlBase<HTMLTableRowElement> {
     this.refresh(reserve);
   }
 
-  protected override createRootElem(): HTMLTableRowElement {
-    return document.createElement("tr");
-  }
-
   refresh(reserve: KaminoReserve) {
     const {
       address,
@@ -105,7 +94,7 @@ export class ReserveRow extends ControlBase<HTMLTableRowElement> {
     } = reserve;
 
     const newKey = address.toBase58();
-    Assert.ok(newKey == this.#key, `Key mismatch: ${newKey} and ${this.#key}`);
+    Assert.ok(newKey == this.key, `Key mismatch: ${newKey} and ${this.key}`);
 
     this.#symbolCell.textContent = symbol;
     this.#ltvCell.textContent = UIUtils.toPercent(loanToValuePct, 0);
