@@ -1,4 +1,4 @@
-import { Store } from "./store";
+import { Store } from "./models";
 import { App } from "./app";
 import "./theme/global.css";
 

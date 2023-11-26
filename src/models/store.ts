@@ -1,33 +1,36 @@
 import Decimal from "decimal.js";
 import Solflare from "@solflare-wallet/sdk";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { KaminoMarket, KaminoObligation } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { Client } from "./client";
-import { Assert } from "./utils";
-import { RPC_ENDPOINT, MARKET_ADDRESS } from "./config";
+import { Option } from "../utils";
+import { RPC_ENDPOINT } from "../config";
 
-
+import { Api } from "./api";
+import { Market } from "./market";
+import { Customer } from "./customer";
 
 export class Store {
-  #connection: Connection = new Connection(RPC_ENDPOINT, { commitment: "confirmed" });
-  #wallet: Solflare = new Solflare({ network: "mainnet-beta" });
-  #client: Client = new Client(this);
+  #connection = new Connection(RPC_ENDPOINT, { commitment: "confirmed" });
+  #wallet = new Solflare({ network: "mainnet-beta" });
+  #api = new Api(this);
 
-  #market: KaminoMarket | null = null;
-  #obligation: KaminoObligation | null = null;
-  #mints: Map<string, MintInfo> | null = null;
-  #balances: Map<string, Decimal> | null = null;
+  #market: Market | null = null;
+  #customer: Customer | null = null;
 
   #isMarketLoading = false;
-  #isObligationLoading = false;
+  #isCustomerLoading = false;
   #isTransactionLoading = false;
 
-  public get connection() { return this.#connection; }
-  public get wallet() { return this.#wallet; }
-  public get market() { return this.#market; }
-  public get obligation() { return this.#obligation; }
-  public get mints() { return this.#mints; }
+  get connection() { return this.#connection; }
+  get wallet() { return this.#wallet; }
+  get market() { return this.#market; }
+  get customer() { return this.#customer; }
+
+  get marketChecked() { return Option.unwrap(this.#market, "Market isn't loaded"); }
+  get customerChecked() { return Option.unwrap(this.#customer, "Customer isn't loaded"); }
+
+  get hasMarket() { return this.#market != null; }
+  get hasCustomer() { return this.#customer != null; }
 
   public constructor() {
     this.#wallet.on("connect", () => {
@@ -44,31 +47,20 @@ export class Store {
       await this.#loadMarket();
     });
     this.listen(WalletEventTag.Disconnect, () => {
-      // Invalidate obligation if there's no active loading.
-      // Otherwise it will be invalidated after the active loading is complete.
-      if (!this.#isObligationLoading) {
-        this.#balances = null;
-        this.#obligation = null;
-        this.emit(ObligationEventTag.Loaded, { obligation: this.#obligation, store: this });
-      }
-      // Invalidate market if there's no active loading.
-      // Otherwise it will be invalidated after the active loading is complete.
-      // No need to invalidate if it's not loaded.
-      if (!this.#isMarketLoading && this.#market != null) {
-        this.emit(MarketEventTag.Loaded, { market: this.#market, store: this });
-      }
+      this.#customer = null;
     });
 
     this.listen(MarketEventTag.Loaded, async () => {
-      // 1. After the market is loaded and the wallet is connected we can try to load an obligation.
-      // 2. If there's no connected wallet and no active loading presented set the current obligation
-      //    to null and invalidate it.
-      if (this.#wallet.isConnected) {
-        await this.#loadObligation();
-      } else if (!this.#isObligationLoading) {
-        this.#obligation = null;
-        this.emit(ObligationEventTag.Loaded, { obligation: this.#obligation, store: this });
-      }
+      await this.#loadCustomer();
+    });
+
+    this.listen(MarketEventTag.Error, e => {
+      console.error(e.detail.error);
+      alert(`Can not load market: ${JSON.stringify(e.detail.error)}`);
+    });
+    this.listen(CustomerEventTag.Error, e => {
+      console.error(e);
+      alert(`Can not load customer: ${JSON.stringify(e.detail.error)}`);
     });
 
     this.listen(TransactionEventTag.Error, e => {
@@ -102,13 +94,13 @@ export class Store {
   async #processAction(tag: ActionEventTag, mintAddress: PublicKey, amount: Decimal): Promise<string> {
     switch (tag) {
       case ActionEventTag.Supply:
-        return await this.#client.supply(mintAddress, amount);
+        return await this.#api.supply(mintAddress, amount);
       case ActionEventTag.Borrow:
-        return await this.#client.borrow(mintAddress, amount);
+        return await this.#api.borrow(mintAddress, amount);
       case ActionEventTag.Repay:
-        return await this.#client.repay(mintAddress, amount);
+        return await this.#api.repay(mintAddress, amount);
       case ActionEventTag.Withdraw:
-        return await this.#client.withdraw(mintAddress, amount);
+        return await this.#api.withdraw(mintAddress, amount);
       default:
         throw new Error(`Not support action: ${tag}`);
     }
@@ -127,9 +119,8 @@ export class Store {
 
     try {
       this.emit(MarketEventTag.Loading, { store: this });
-      this.#market = await this.#client.loadMarket();
-      Assert.some(this.#market, `Could not load market: ${MARKET_ADDRESS}`);
-      this.emit(MarketEventTag.Loaded, { market: this.#market, store: this });
+      this.#market = await this.#api.loadMarket();
+      this.emit(MarketEventTag.Loaded, { market: this.marketChecked, store: this });
     } catch (error) {
       this.emit(MarketEventTag.Error, { error, store: this });
     } finally {
@@ -137,47 +128,22 @@ export class Store {
     }
   }
 
-  async #loadObligation() {
-    if (this.#isObligationLoading) {
+  async #loadCustomer() {
+    if (this.#isCustomerLoading || !this.wallet.isConnected) {
       return;
     } else {
-      this.#isObligationLoading = true;
+      this.#isCustomerLoading = true;
     }
 
     try {
-      this.emit(ObligationEventTag.Loading, { store: this });
-
-      this.#updateMints();
-      this.#balances = await this.#client.loadBalances();
-      this.#obligation = await this.#client.loadObligation();
-
-      this.emit(ObligationEventTag.Loaded, { obligation: this.#obligation, store: this });
+      this.emit(CustomerEventTag.Loading, { store: this });
+      this.#customer = await this.#api.loadCustomer();
+      this.emit(CustomerEventTag.Loaded, { customer: this.customerChecked, store: this });
     } catch (error) {
-      this.emit(ObligationEventTag.Error, { error, store: this });
+      this.emit(CustomerEventTag.Error, { error, store: this });
     } finally {
-      this.#isObligationLoading = false;
+      this.#isCustomerLoading = false;
     }
-  }
-
-  #updateMints() {
-    Assert.some(this.market, "Market isn't loaded");
-    this.#mints = new Map(this.market.reservesActive.map(x => [x.stats.mintAddress, {
-      mintAddress: new PublicKey(x.stats.mintAddress),
-      symbol: x.stats.symbol,
-      decimals: x.stats.decimals
-    }]));
-  }
-
-  public getMint(mintAddress: PublicKey) {
-    Assert.some(this.#mints, "Market isn't loaded");
-    const mint = this.#mints.get(mintAddress.toBase58());
-    Assert.some(mint, `Reserve form mint ${mintAddress} doesn't exist`);
-    return mint;
-  }
-
-  public getBalance(mintAddress: PublicKey) {
-    Assert.some(this.#balances, "Balances aren't available");
-    return this.#balances.get(mintAddress.toBase58());
   }
 
   public emit(tag: WalletEventTag.Connect, detail: WalletConnectEventDetail): void;
@@ -187,9 +153,9 @@ export class Store {
   public emit(tag: MarketEventTag.Loaded, detail: MarketLoadedEventDetail): void;
   public emit(tag: MarketEventTag.Error, detail: MarketErrorEventDetail): void;
 
-  public emit(tag: ObligationEventTag.Loading, detail: ObligationLoadingEventDetail): void;
-  public emit(tag: ObligationEventTag.Loaded, detail: ObligationLoadedEventDetail): void;
-  public emit(tag: ObligationEventTag.Error, detail: ObligationErrorEventDetail): void;
+  public emit(tag: CustomerEventTag.Loading, detail: CustomerLoadingEventDetail): void;
+  public emit(tag: CustomerEventTag.Loaded, detail: CustomerLoadedEventDetail): void;
+  public emit(tag: CustomerEventTag.Error, detail: CustomerErrorEventDetail): void;
 
   public emit(tag: ActionEventTag.Supply, detail: ActionSupplyEventDetail): void;
   public emit(tag: ActionEventTag.Borrow, detail: ActionBorrowEventDetail): void;
@@ -215,9 +181,9 @@ export class Store {
   public listen(tag: MarketEventTag.Loaded, listener: (e: CustomEvent<MarketLoadedEventDetail>) => void): void;
   public listen(tag: MarketEventTag.Error, listener: (e: CustomEvent<MarketErrorEventDetail>) => void): void;
 
-  public listen(tag: ObligationEventTag.Loading, listener: (e: CustomEvent<ObligationLoadingEventDetail>) => void): void;
-  public listen(tag: ObligationEventTag.Loaded, listener: (e: CustomEvent<ObligationLoadedEventDetail>) => void): void;
-  public listen(tag: ObligationEventTag.Error, listener: (e: CustomEvent<ObligationErrorEventDetail>) => void): void;
+  public listen(tag: CustomerEventTag.Loading, listener: (e: CustomEvent<CustomerLoadingEventDetail>) => void): void;
+  public listen(tag: CustomerEventTag.Loaded, listener: (e: CustomEvent<CustomerLoadedEventDetail>) => void): void;
+  public listen(tag: CustomerEventTag.Error, listener: (e: CustomEvent<CustomerErrorEventDetail>) => void): void;
 
   public listen(tag: ActionEventTag.Supply, listener: (e: CustomEvent<ActionSupplyEventDetail>) => void): void;
   public listen(tag: ActionEventTag.Borrow, listener: (e: CustomEvent<ActionBorrowEventDetail>) => void): void;
@@ -231,12 +197,6 @@ export class Store {
   public listen(tag: string, listener: (e: any) => void): void {
     document.addEventListener(tag, listener);
   }
-}
-
-export interface MintInfo {
-  mintAddress: PublicKey;
-  symbol: string;
-  decimals: number;
 }
 
 // Events declarations
@@ -262,23 +222,23 @@ export enum MarketEventTag {
 
 export interface MarketLoadingEventDetail extends EventDetail { }
 export interface MarketLoadedEventDetail extends EventDetail {
-  market: KaminoMarket;
+  market: Market;
 }
 export interface MarketErrorEventDetail extends EventDetail {
   error: unknown;
 }
 
-export enum ObligationEventTag {
-  Loading = "obligation:loading",
-  Loaded = "obligation:loaded",
-  Error = "obligation:error",
+export enum CustomerEventTag {
+  Loading = "customer:loading",
+  Loaded = "customer:loaded",
+  Error = "customer:error",
 }
 
-export interface ObligationLoadingEventDetail extends EventDetail { }
-export interface ObligationLoadedEventDetail extends EventDetail {
-  obligation: KaminoObligation | null;
+export interface CustomerLoadingEventDetail extends EventDetail { }
+export interface CustomerLoadedEventDetail extends EventDetail {
+  customer: Customer;
 }
-export interface ObligationErrorEventDetail extends EventDetail {
+export interface CustomerErrorEventDetail extends EventDetail {
   error: unknown;
 }
 

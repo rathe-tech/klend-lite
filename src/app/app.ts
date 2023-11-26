@@ -1,10 +1,10 @@
-import { ActionEventTag, MarketEventTag, ObligationEventTag, Store } from "../store";
+import { Store, ActionEventTag, CustomerEventTag, MarketEventTag } from "../models";
+import { ControlBase } from "../control_base";
 import { WalletConnect } from "../wallet_connect";
 import { BorrowsTable, DepositsTable } from "../obligation_tables";
 import { ReservesTable } from "../reserves_table";
 import { ActionForm } from "../action_form";
 import { Donation } from "../donation";
-import { ControlBase } from "../control_base";
 
 import * as css from "./app.css";
 
@@ -58,36 +58,24 @@ export class App extends ControlBase<HTMLDivElement> {
     reservesTable.mount(reservesContainer);
 
     store.listen(MarketEventTag.Loading, () => {
-      depositsTable.enable = false;
-      borrowsTable.enable = false;
-      reservesTable.enable = false;
       refreshMarketButton.setAttribute("disabled", "true");
     });
-    store.listen(MarketEventTag.Loaded, e => {
-      reservesTable.refresh(e.detail.market);
+    store.listen(MarketEventTag.Loaded, () => {
       refreshMarketButton.removeAttribute("disabled");
     });
-    store.listen(MarketEventTag.Error, e => {
-      console.error(e.detail.error);
-      alert(`Can not fetch market: ${JSON.stringify(e.detail.error)}`);
+    store.listen(MarketEventTag.Error, () => {
       refreshMarketButton.removeAttribute("disabled");
     });
 
-    store.listen(ObligationEventTag.Loading, () => {
-      depositsTable.enable = false;
-      borrowsTable.enable = false;
+    store.listen(CustomerEventTag.Loading, () => {
+      // Should be triggered after MarketEventTag.Loaded
+      setTimeout(() => refreshMarketButton.setAttribute("disabled", "true"));
     });
-    store.listen(ObligationEventTag.Loaded, e => {
-      const { detail: { obligation, store: { market } } } = e;
-      depositsTable.refresh(market, obligation);
-      borrowsTable.refresh(market, obligation);
+    store.listen(CustomerEventTag.Loaded, () => {
+      refreshMarketButton.removeAttribute("disabled");
     });
-    store.listen(ObligationEventTag.Error, e => {
-      console.error(e);
-      alert(`Can not fetch obligation: ${JSON.stringify(e.detail.error)}`);
-
-      depositsTable.enable = false;
-      borrowsTable.enable = false;
+    store.listen(CustomerEventTag.Error, () => {
+      refreshMarketButton.removeAttribute("disabled");
     });
 
     store.listen(ActionEventTag.Supply, e => {

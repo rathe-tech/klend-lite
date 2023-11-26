@@ -1,7 +1,7 @@
 import Decimal from "decimal.js";
 import { UIUtils } from "../utils";
 import { ControlBase } from "../control_base";
-import { type MintInfo } from "../store";
+import { type MintInfo } from "../models";
 import * as css from "./wallet_balance.css";
 
 export class WalletBalance extends ControlBase<HTMLDivElement> {

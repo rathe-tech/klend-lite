@@ -7,7 +7,7 @@ import {
   ActionEventTag,
   TransactionEventTag,
   type MintInfo
-} from "../store";
+} from "../models";
 import * as css from "./action_form.css";
 
 export class ActionForm extends ControlBase<HTMLDivElement> {
@@ -112,8 +112,9 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
       document.activeElement.blur();
     }
 
-    const mint = this.#store.getMint(mintAddress);
-    const balance = this.#store.getBalance(mintAddress);
+    const { marketChecked: market, customerChecked: customer } = this.#store;
+    const mint = market.getMintChecked(mintAddress);
+    const balance = customer.getTokenBalance(mintAddress);
 
     this.#titleElem.textContent = chooseTitle(tag, mint);
     this.#walletBalance.updateBalance(balance, mint);

@@ -1,6 +1,8 @@
 import * as css from "./control_base.css";
 
 export abstract class ControlBase<THtmlRoot extends HTMLElement> {
+  static css = css;
+
   #rootElem: THtmlRoot;
 
   protected get rootElem() {

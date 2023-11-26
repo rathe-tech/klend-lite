@@ -1,4 +1,4 @@
-import { Store } from "../store";
+import { Store } from "../models";
 import { ObligationTable, ObligationTableKind } from "./obligation_table";
 
 export class BorrowsTable extends ObligationTable {

@@ -3,7 +3,13 @@ import { KaminoMarket, KaminoObligation, Position } from "@hubbleprotocol/kamino
 
 import { UIUtils } from "../utils";
 import { TableBase } from "../control_base";
-import { ActionEventTag, Store } from "../store";
+import {
+  Store,
+  ActionEventTag,
+  CustomerEventTag,
+  MarketEventTag,
+  WalletEventTag
+} from "../models";
 
 export enum ObligationTableKind {
   Borrows,
@@ -23,6 +29,25 @@ export abstract class ObligationTable extends TableBase {
 
     this.#kind = kind;
     this.#store = store;
+
+    this.#store.listen(WalletEventTag.Disconnect, () => {
+      this.enable = false;
+    });
+
+    this.#store.listen(MarketEventTag.Loading, () => {
+      this.enable = false;
+    });
+
+    this.#store.listen(CustomerEventTag.Loading, () => {
+      this.enable = false;
+    });
+    this.#store.listen(CustomerEventTag.Loaded, e => {
+      this.refresh(e.detail.store.marketChecked.getKaminoMarket(), e.detail.customer.getKaminoObligation())
+      this.enable = true;
+    });
+    this.#store.listen(CustomerEventTag.Error, () => {
+      this.enable = false;
+    });
 
     this.#mainHeadElem = document.createElement("thead");
     this.#secondaryHeadElem = document.createElement("thead");

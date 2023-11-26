@@ -3,7 +3,7 @@ import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 
 import { ControlBase } from "../control_base";
 import { Assert, UIUtils } from "../utils";
-import { ActionEventTag, Store } from "../store";
+import { ActionEventTag, Store } from "../models";
 
 import * as css from "./reserve_table.css";
 
@@ -26,6 +26,16 @@ export class ReserveRow extends ControlBase<HTMLTableRowElement> {
 
   public get key() {
     return this.#key;
+  }
+
+  public set actionsEnable(value: boolean) {
+    if (value) {
+      this.#supplyButton.removeAttribute("disabled");
+      this.#borrowButton.removeAttribute("disabled");
+    } else {
+      this.#supplyButton.setAttribute("disabled", "true");
+      this.#borrowButton.setAttribute("disabled", "true");
+    }
   }
 
   public constructor(reserve: KaminoReserve, store: Store) {
@@ -105,12 +115,6 @@ export class ReserveRow extends ControlBase<HTMLTableRowElement> {
     this.#borrowCell.textContent = UIUtils.toUINumber(totalBorrows, decimals);
     this.#borrowApyCell.textContent = UIUtils.toPercent(borrowInterestAPY, 4);
 
-    if (this.#store.wallet.isConnected) {
-      this.#supplyButton.removeAttribute("disabled");
-      this.#borrowButton.removeAttribute("disabled");
-    } else {
-      this.#supplyButton.setAttribute("disabled", "true");
-      this.#borrowButton.setAttribute("disabled", "true");
-    }
+    this.actionsEnable = this.#store.hasCustomer;
   }
 }

@@ -1,6 +1,6 @@
-import { KaminoMarket, KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
-import { Assert, MapUtils, UIUtils } from "../utils";
-import { Store } from "../store";
+import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
+import { Assert, MapUtils } from "../utils";
+import { Store, Market, CustomerEventTag, MarketEventTag, WalletEventTag } from "../models";
 import { TableBase } from "../control_base";
 import { ReserveRow } from "./reserve_row";
 
@@ -13,9 +13,38 @@ export class ReservesTable extends TableBase {
   #reserveKeys: Map<string, number>;
   #reserveRows: ReserveRow[];
 
+  set #actionsEnable(value: boolean) {
+    this.#reserveRows.forEach(x => x.actionsEnable = value);
+  }
+
   public constructor(store: Store) {
     super();
     this.#store = store;
+
+    this.#store.listen(WalletEventTag.Disconnect, () => {
+      this.#actionsEnable = false;
+    });
+
+    this.#store.listen(MarketEventTag.Loading, () => {
+      this.enable = false;
+    });
+    this.#store.listen(MarketEventTag.Loaded, e => {
+      this.refresh(e.detail.market);
+      this.enable = true;
+    });
+    this.#store.listen(MarketEventTag.Error, () => {
+      this.enable = false;
+    });
+
+    this.#store.listen(CustomerEventTag.Loading, () => {
+      this.#actionsEnable = false;
+    });
+    this.#store.listen(CustomerEventTag.Loaded, () => {
+      this.#actionsEnable = true;
+    });
+    this.#store.listen(CustomerEventTag.Error, () => {
+      this.#actionsEnable = false;
+    });
 
     this.#headElem = document.createElement("thead");
     this.#bodyElem = document.createElement("tbody");
@@ -53,8 +82,8 @@ export class ReservesTable extends TableBase {
     this.#reserveRows = [];
   }
 
-  public refresh({ reservesActive: reserves }: KaminoMarket) {
-    const newRows = UIUtils.sortReserves(reserves).map(r => this.#renderRow(r));
+  public refresh(market: Market) {
+    const newRows = market.getReserves().map(r => this.#renderRow(r));
     const newKeys = new Map(newRows.map((r, i) => [r.key, i]));
     const unusedKeys = MapUtils.findUnusedKeys(newKeys, this.#reserveKeys);
 
