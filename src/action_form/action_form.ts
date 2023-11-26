@@ -86,6 +86,7 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
     });
     this.#store.listen(TransactionEventTag.Complete, () => {
       this.#submitElem.removeAttribute("disabled");
+      this.close();
     });
     this.#store.listen(TransactionEventTag.Error, () => {
       this.#submitElem.removeAttribute("disabled");
