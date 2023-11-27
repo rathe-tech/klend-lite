@@ -58,7 +58,8 @@ export class Api {
       instructions,
       [LENDING_LUT]
     );
-    return await this.#wallet.signAndSendTransaction(transaction);
+    const signed = await this.#wallet.signTransaction(transaction);
+    return await this.#connection.sendRawTransaction(signed.serialize());
   }
 
   public async borrow(mintAddress: PublicKey, amount: Decimal): Promise<string> {
@@ -85,7 +86,8 @@ export class Api {
       instructions,
       [LENDING_LUT]
     );
-    return await this.#wallet.signAndSendTransaction(transaction);
+    const signed = await this.#wallet.signTransaction(transaction);
+    return await this.#connection.sendRawTransaction(signed.serialize());
   }
 
   public async repay(mintAddress: PublicKey, amount: Decimal): Promise<string> {
@@ -112,7 +114,8 @@ export class Api {
       instructions,
       [LENDING_LUT]
     );
-    return await this.#wallet.signAndSendTransaction(transaction);
+    const signed = await this.#wallet.signTransaction(transaction);
+    return await this.#connection.sendRawTransaction(signed.serialize());
   }
 
   public async withdraw(mintAddress: PublicKey, amount: Decimal): Promise<string> {
@@ -139,6 +142,7 @@ export class Api {
       instructions,
       [LENDING_LUT]
     );
-    return await this.#wallet.signAndSendTransaction(transaction);
+    const signed = await this.#wallet.signTransaction(transaction);
+    return await this.#connection.sendRawTransaction(signed.serialize());
   }
 }
