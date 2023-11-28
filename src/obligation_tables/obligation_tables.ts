@@ -4,7 +4,6 @@ import { Assert, MapUtils } from "../utils";
 import { Table } from "../controls";
 import {
   Store,
-  Market,
   Customer,
   CustomerEventTag,
   MarketEventTag,
@@ -12,6 +11,7 @@ import {
 } from "../models";
 
 import { ObligationKind, ObligationRow } from "./obligation_row";
+import * as css from "./obligation_tables.css";
 
 abstract class ObligationTable extends Table {
   #kind: ObligationKind;
@@ -20,6 +20,8 @@ abstract class ObligationTable extends Table {
   #mainHeadElem: HTMLTableSectionElement;
   #secondaryHeadElem: HTMLTableSectionElement;
   #bodyElem: HTMLTableSectionElement;
+
+  #totalAmountCell: HTMLTableCellElement;
 
   #obligationKeys: Map<string, number>;
   #obligationRows: ObligationRow[];
@@ -54,9 +56,13 @@ abstract class ObligationTable extends Table {
     this.#bodyElem = document.createElement("tbody");
 
     const titleHeader = document.createElement("th");
-    titleHeader.colSpan = 4;
+    titleHeader.colSpan = 2;
     titleHeader.textContent = pickTitle(this.#kind);
     this.#mainHeadElem.appendChild(titleHeader);
+
+    this.#totalAmountCell = document.createElement("th");
+    this.#totalAmountCell.classList.add(css.totalAmountCell);
+    this.#mainHeadElem.appendChild(this.#totalAmountCell);
 
     const symbolHeader = document.createElement("th");
     const amountHeader = document.createElement("th");
@@ -83,6 +89,8 @@ abstract class ObligationTable extends Table {
       return;
     }
 
+    this.#totalAmountCell.textContent = pickTotalAmount(customer, this.#kind);
+
     const positions = pickPositions(customer, this.#kind);
     const newRows = positions.map(p => this.#renderRow(p));
     const newKeys = new Map(newRows.map((r, i) => [r.key, i]));
@@ -95,6 +103,7 @@ abstract class ObligationTable extends Table {
   }
 
   #purge() {
+    this.#totalAmountCell.textContent = "";
     this.#obligationRows.forEach(r => r.unmount());
     this.#obligationKeys = new Map();
     this.#obligationRows = [];
@@ -154,6 +163,17 @@ function pickPositions(customer: Customer, kind: ObligationKind) {
     case ObligationKind.Supplied:
       return customer.getDeposits();
     default:
+      throw new Error(`Unsupported kind: ${kind}`);
+  }
+}
+
+function pickTotalAmount(customer: Customer, kind: ObligationKind) {
+  switch (kind) {
+    case ObligationKind.Borrowed:
+      return `$${customer.getTotalBorrowed().toString()}`;
+    case ObligationKind.Supplied:
+      return `$${customer.getTotalSupplied().toString()}`;
+    default: 
       throw new Error(`Unsupported kind: ${kind}`);
   }
 }

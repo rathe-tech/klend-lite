@@ -28,6 +28,20 @@ export class Customer {
     return this.#nativeObligation?.borrows ?? [];
   }
 
+  public getTotalBorrowed() {
+    return this.#nativeObligation
+      ?.refreshedStats
+      .userTotalBorrow
+      .toDecimalPlaces(2) ?? new Decimal(0);
+  }
+
+  public getTotalSupplied() {
+    return this.#nativeObligation
+      ?.refreshedStats
+      .userTotalDeposit
+      .toDecimalPlaces(2) ?? new Decimal(0);
+  }
+
   public getTokenBalance(mintAddress: PublicKey) {
     return this.#tokenBalances.get(mintAddress.toBase58());
   }
