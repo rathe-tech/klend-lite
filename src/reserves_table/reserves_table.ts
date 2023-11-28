@@ -1,7 +1,7 @@
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
+import { Table } from "../controls";
 import { Assert, MapUtils } from "../utils";
 import { Store, Market, CustomerEventTag, MarketEventTag, WalletEventTag } from "../models";
-import { Table } from "../controls";
 import { ReserveRow } from "./reserve_row";
 
 export class ReservesTable extends Table {

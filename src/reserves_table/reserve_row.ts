@@ -25,11 +25,9 @@ export class ReserveRow extends TableRow {
 
   public set actionsEnable(value: boolean) {
     if (value) {
-      this.#supplyButton.removeAttribute("disabled");
-      this.#borrowButton.removeAttribute("disabled");
+      this.#controlsWrapper.classList.remove(TableRow.css.disabled);
     } else {
-      this.#supplyButton.setAttribute("disabled", "true");
-      this.#borrowButton.setAttribute("disabled", "true");
+      this.#controlsWrapper.classList.add(TableRow.css.disabled);
     }
   }
 
@@ -75,6 +73,7 @@ export class ReserveRow extends TableRow {
     this.rootElem.appendChild(this.#borrowApyCell);
     this.rootElem.appendChild(this.#controlsCell);
 
+    this.actionsEnable = false;
     this.refresh(reserve);
   }
 
@@ -104,8 +103,6 @@ export class ReserveRow extends TableRow {
     this.#supplyApyCell.textContent = UIUtils.toPercent(supplyInterestAPY, 4);
     this.#borrowCell.textContent = UIUtils.toUINumber(totalBorrows, decimals);
     this.#borrowApyCell.textContent = UIUtils.toPercent(borrowInterestAPY, 4);
-
-    this.actionsEnable = this.#store.hasCustomer;
     this.#borrowButton.style.visibility = reserveBorrowLimit.isZero() ? "hidden" : "";
   }
 }
