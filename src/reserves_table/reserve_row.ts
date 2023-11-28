@@ -25,9 +25,11 @@ export class ReserveRow extends TableRow {
 
   public set actionsEnable(value: boolean) {
     if (value) {
-      this.#controlsWrapper.classList.remove(TableRow.css.disabled);
+      this.#supplyButton.removeAttribute("disabled");
+      this.#borrowButton.removeAttribute("disabled");
     } else {
-      this.#controlsWrapper.classList.add(TableRow.css.disabled);
+      this.#supplyButton.setAttribute("disabled", "true");
+      this.#borrowButton.setAttribute("disabled", "true");
     }
   }
 
