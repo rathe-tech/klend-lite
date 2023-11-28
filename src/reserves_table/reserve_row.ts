@@ -1,7 +1,7 @@
 import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { TableRow } from "../controls";
+import { ControlBase, TableRow } from "../controls";
 import { Assert, UIUtils } from "../utils";
 import { ActionEventTag, Store } from "../models";
 
@@ -90,6 +90,7 @@ export class ReserveRow extends TableRow {
         reserveDepositLimit,
         supplyInterestAPY,
         borrowInterestAPY,
+        reserveBorrowLimit
       }
     } = reserve;
 
@@ -105,5 +106,6 @@ export class ReserveRow extends TableRow {
     this.#borrowApyCell.textContent = UIUtils.toPercent(borrowInterestAPY, 4);
 
     this.actionsEnable = this.#store.hasCustomer;
+    this.#borrowButton.style.visibility = reserveBorrowLimit.isZero() ? "hidden" : "";
   }
 }
