@@ -1,7 +1,7 @@
 import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { ControlBase, TableRow } from "../controls";
+import { TableRow } from "../controls";
 import { Assert, UIUtils } from "../utils";
 import { ActionEventTag, Store } from "../models";
 

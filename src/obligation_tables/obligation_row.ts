@@ -5,6 +5,8 @@ import { Assert, UIUtils } from "../utils";
 import { TableRow } from "../controls";
 import { ActionEventTag, Store } from "../models";
 
+import * as css from "./obligation_tables.css";
+
 export enum ObligationKind {
   Borrowed,
   Supplied,
@@ -18,13 +20,14 @@ export class ObligationRow extends TableRow {
   #amountCell: HTMLTableCellElement;
   #controlsCell: HTMLTableCellElement;
 
-  #actionButton: HTMLButtonElement;
+  #controlsWrapper: HTMLDivElement;
+  #actionButtons: [HTMLButtonElement, HTMLButtonElement];
 
   public set actionsEnable(value: boolean) {
     if (value) {
-      this.#actionButton.removeAttribute("disabled");
+      this.#actionButtons.forEach(b => b.removeAttribute("disabled"));
     } else {
-      this.#actionButton.setAttribute("disabled", "true");
+      this.#actionButtons.forEach(b => b.setAttribute("disabled", "true"));
     }
   }
 
@@ -37,10 +40,12 @@ export class ObligationRow extends TableRow {
     this.#amountCell = document.createElement("td");
     this.#controlsCell = document.createElement("td");
 
-    this.#actionButton = document.createElement("button");
-    this.#actionButton.textContent = pickActionTitle(this.#kind);
-    this.#actionButton.addEventListener("click", this.#createActionCallback());
-    this.#controlsCell.appendChild(this.#actionButton);
+    this.#controlsWrapper = document.createElement("div");
+    this.#controlsWrapper.classList.add(css.controlsWrapper);
+    this.#actionButtons = this.#createActionButtons();
+    this.#controlsWrapper.appendChild(this.#actionButtons[0]);
+    this.#controlsWrapper.appendChild(this.#actionButtons[1]);
+    this.#controlsCell.appendChild(this.#controlsWrapper);
 
     this.rootElem.appendChild(this.#symbolCell);
     this.rootElem.appendChild(this.#amountCell);
@@ -49,7 +54,9 @@ export class ObligationRow extends TableRow {
     this.refresh(position);
   }
 
-  #createActionCallback() {
+  #createActionButtons() {
+    const mainButton = document.createElement("button");
+    const secondaryButton = document.createElement("button");
     const details = {
       mintAddress: new PublicKey(this.key),
       store: this.#store
@@ -57,12 +64,21 @@ export class ObligationRow extends TableRow {
 
     switch (this.#kind) {
       case ObligationKind.Borrowed:
-        return () => this.#store.emit(ActionEventTag.Repay, details);
+        mainButton.textContent = "Borrow";
+        secondaryButton.textContent = "Repay";
+        mainButton.addEventListener("click", () => this.#store.emit(ActionEventTag.Borrow, details));
+        secondaryButton.addEventListener("click", () => this.#store.emit(ActionEventTag.Repay, details));
+        break;
       case ObligationKind.Supplied:
-        return () => this.#store.emit(ActionEventTag.Withdraw, details);
+        mainButton.textContent = "Supply";
+        secondaryButton.textContent = "Withdraw";
+        mainButton.addEventListener("click", () => this.#store.emit(ActionEventTag.Supply, details));
+        secondaryButton.addEventListener("click", () => this.#store.emit(ActionEventTag.Withdraw, details));
+        break;
       default:
         throw new Error(`Unsupported kind: ${this.#kind}`);
     }
+    return [mainButton, secondaryButton] as [HTMLButtonElement, HTMLButtonElement];
   }
 
   public refresh(position: Position) {
@@ -73,16 +89,5 @@ export class ObligationRow extends TableRow {
     this.#symbolCell.textContent = symbol;
     this.#amountCell.textContent = UIUtils.toUINumber(amount, decimals);
     this.actionsEnable = this.#store.hasCustomer;
-  }
-}
-
-function pickActionTitle(kind: ObligationKind) {
-  switch (kind) {
-    case ObligationKind.Borrowed:
-      return "Repay";
-    case ObligationKind.Supplied:
-      return "Withdraw";
-    default:
-      throw new Error(`Unsupported kind: ${kind}`);
   }
 }
