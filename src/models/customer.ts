@@ -42,6 +42,25 @@ export class Customer {
       .toDecimalPlaces(2) ?? new Decimal(0);
   }
 
+  public getLtv() {
+    return this.#nativeObligation
+      ?.refreshedStats
+      .loanToValue;
+  }
+
+  public getMaxLtv() {
+    if (this.#nativeObligation != null) {
+      const { borrowLimit, userTotalDeposit } = this.#nativeObligation.refreshedStats;
+      return borrowLimit.div(userTotalDeposit);
+    }
+  }
+
+  public getLiquidationLtv() {
+    return this.#nativeObligation
+      ?.refreshedStats
+      .liquidationLtv;
+  }
+
   public getTokenBalance(mintAddress: PublicKey) {
     return this.#tokenBalances.get(mintAddress.toBase58());
   }

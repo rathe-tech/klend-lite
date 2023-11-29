@@ -51,7 +51,7 @@ export module UIUtils {
   }
 
   export function toPercent(value: number, decimalPlaces: number) {
-    return `${(value * 100).toFixed(decimalPlaces)} %`;
+    return `${(value * 100).toFixed(decimalPlaces)}%`;
   }
 
   export function toNativeNumber(value: number | string, decimals: number) {

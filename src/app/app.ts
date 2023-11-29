@@ -7,6 +7,7 @@ import { ActionForm } from "../action_form";
 import { Donation } from "../donation";
 
 import * as css from "./app.css";
+import { Stats } from "../stats";
 
 export class App extends ControlBase<HTMLDivElement> {
   public constructor(store: Store) {
@@ -34,6 +35,9 @@ export class App extends ControlBase<HTMLDivElement> {
 
     const walletConnect = new WalletConnect(store);
     walletConnect.mount(headerContainer);
+
+    const stats = new Stats(store);
+    stats.mount(controlsContainer);
 
     const refreshMarketButton = document.createElement("button");
     refreshMarketButton.textContent = "Refresh market";

@@ -3,8 +3,7 @@ import {
   primaryDarkColor,
   primaryGreenColor,
   secondaryGreenColor,
-  white,
-  lightGray,
+  white
 } from "./constants";
 
 globalStyle(":root", {
