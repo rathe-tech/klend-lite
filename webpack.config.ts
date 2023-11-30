@@ -4,6 +4,7 @@ import * as server from "webpack-dev-server";
 import * as html from "html-webpack-plugin";
 import * as vanilla from "@vanilla-extract/webpack-plugin";
 import * as terser from "terser-webpack-plugin";
+import * as copy from "copy-webpack-plugin";
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 type ExtendedConfig = webpack.Configuration & { devServer: server.Configuration };
@@ -52,6 +53,8 @@ const config: ConfigSelector = (env, argv) => {
     },
     plugins: [
       new html({ template: "public/index.html", inject: "head" }),
+      new copy({ patterns: [{ from: "public/icon_32.png" }] }),
+      new copy({ patterns: [{ from: "public/icon_128.png" }] }),
       new vanilla.VanillaExtractPlugin(),
       new MiniCssExtractPlugin({ filename: "theme.css" }),
       new webpack.ProvidePlugin({
