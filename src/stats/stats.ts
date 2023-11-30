@@ -6,6 +6,7 @@ import * as css from "./stats.css";
 export class Stats extends ControlBase<HTMLDivElement> {
   #store: Store;
 
+  #borrowPowerStat: StatItem;
   #ltvStat: StatItem;
   #maxLtvStat: StatItem;
   #liquidationLtvStat: StatItem;
@@ -14,10 +15,12 @@ export class Stats extends ControlBase<HTMLDivElement> {
     super()
     this.#store = store;
 
+    this.#borrowPowerStat = new StatItem({ title: "Borrow Power:" });
     this.#ltvStat = new StatItem({ title: "LTV:" });
     this.#maxLtvStat = new StatItem({ title: "Max LTV: " });
     this.#liquidationLtvStat = new StatItem({ title: "Liquidation LTV:" });
 
+    this.#borrowPowerStat.mount(this.rootElem);
     this.#ltvStat.mount(this.rootElem);
     this.#maxLtvStat.mount(this.rootElem);
     this.#liquidationLtvStat.mount(this.rootElem);
@@ -36,13 +39,10 @@ export class Stats extends ControlBase<HTMLDivElement> {
       this.enable = false;
     });
     this.#store.listen(CustomerEventTag.Loaded, ({ detail: { customer } }) => {
-      const ltv = customer.getLtv();
-      const maxLtv = customer.getMaxLtv();
-      const liquidationLtv = customer.getLiquidationLtv();
-
-      this.#ltvStat.value = ltv ? UIUtils.toPercent(ltv.toNumber(), 4) : "-";
-      this.#maxLtvStat.value = maxLtv ? UIUtils.toPercent(maxLtv.toNumber(), 4) : "-";
-      this.#liquidationLtvStat.value = liquidationLtv ? UIUtils.toPercent(liquidationLtv.toNumber(), 4) : "-";
+      this.#borrowPowerStat.value = customer.getBorrowPowerFormatted();
+      this.#ltvStat.value = customer.getLtvFormatted();
+      this.#maxLtvStat.value = customer.getMaxLtvFormatted();
+      this.#liquidationLtvStat.value = customer.getLiquidationLtvFormatted();
 
       this.enable = true;
     });

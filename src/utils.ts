@@ -54,6 +54,14 @@ export module UIUtils {
     return `${(value * 100).toFixed(decimalPlaces)}%`;
   }
 
+  export function toFormattedPercent(value: Decimal | undefined) {
+    return value ? UIUtils.toPercent(value.toNumber(), 4) : "-";
+  }
+
+  export function toFormattedUsd(value: Decimal | undefined) {
+    return value ? `$${value.toDecimalPlaces(2).toString()}` : "-";
+  }
+
   export function toNativeNumber(value: number | string, decimals: number) {
     return new Decimal(value)
       .toDecimalPlaces(decimals)

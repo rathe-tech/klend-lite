@@ -3,7 +3,7 @@ import { PublicKey } from "@solana/web3.js";
 import { AccountLayout, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { KaminoObligation, VanillaObligation, PROGRAM_ID } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { Assert } from "../utils";
+import { Assert, UIUtils } from "../utils";
 import { WSOL_MINT_ADDRESS } from "../config";
 import { Market } from "./market";
 
@@ -31,21 +31,42 @@ export class Customer {
   public getTotalBorrowed() {
     return this.#nativeObligation
       ?.refreshedStats
-      .userTotalBorrow
-      .toDecimalPlaces(2) ?? new Decimal(0);
+      .userTotalBorrow;
+  }
+
+  public getTotalBorrowedFormatted() {
+    return UIUtils.toFormattedUsd(this.getTotalBorrowed());
   }
 
   public getTotalSupplied() {
     return this.#nativeObligation
       ?.refreshedStats
-      .userTotalDeposit
-      .toDecimalPlaces(2) ?? new Decimal(0);
+      .userTotalDeposit;
+  }
+
+  public getTotalSuppliedFormatted() {
+    return UIUtils.toFormattedUsd(this.getTotalSupplied());
+  }
+
+  public getBorrowPower() {
+    if (this.#nativeObligation != null) {
+      const { borrowLimit, userTotalBorrowBorrowFactorAdjusted } = this.#nativeObligation.refreshedStats;
+      return borrowLimit.minus(userTotalBorrowBorrowFactorAdjusted);
+    }
+  }
+
+  public getBorrowPowerFormatted() {
+    return UIUtils.toFormattedUsd(this.getBorrowPower());
   }
 
   public getLtv() {
     return this.#nativeObligation
       ?.refreshedStats
       .loanToValue;
+  }
+
+  public getLtvFormatted() {
+    return UIUtils.toFormattedPercent(this.getLtv());
   }
 
   public getMaxLtv() {
@@ -55,10 +76,18 @@ export class Customer {
     }
   }
 
+  public getMaxLtvFormatted() {
+    return UIUtils.toFormattedPercent(this.getMaxLtv());
+  }
+
   public getLiquidationLtv() {
     return this.#nativeObligation
       ?.refreshedStats
       .liquidationLtv;
+  }
+
+  public getLiquidationLtvFormatted() {
+    return UIUtils.toFormattedPercent(this.getLiquidationLtv());
   }
 
   public getTokenBalance(mintAddress: PublicKey) {

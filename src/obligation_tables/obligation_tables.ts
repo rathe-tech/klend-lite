@@ -170,9 +170,9 @@ function pickPositions(customer: Customer, kind: ObligationKind) {
 function pickTotalAmount(customer: Customer, kind: ObligationKind) {
   switch (kind) {
     case ObligationKind.Borrowed:
-      return `$${customer.getTotalBorrowed().toString()}`;
+      return customer.getTotalBorrowedFormatted();
     case ObligationKind.Supplied:
-      return `$${customer.getTotalSupplied().toString()}`;
+      return customer.getTotalSuppliedFormatted();
     default: 
       throw new Error(`Unsupported kind: ${kind}`);
   }
