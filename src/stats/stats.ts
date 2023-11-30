@@ -1,6 +1,5 @@
 import { ControlBase } from "../controls";
 import { CustomerEventTag, Store, WalletEventTag } from "../models";
-import { UIUtils } from "../utils";
 import * as css from "./stats.css";
 
 export class Stats extends ControlBase<HTMLDivElement> {

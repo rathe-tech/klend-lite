@@ -1,5 +1,5 @@
 import Decimal from "decimal.js";
-import { PublicKey } from "@solana/web3.js";
+import { PublicKey, VersionedTransaction } from "@solana/web3.js";
 import {
   PROGRAM_ID,
   KaminoAction,
@@ -58,8 +58,7 @@ export class Api {
       instructions,
       [LENDING_LUT]
     );
-    const signed = await this.#wallet.signTransaction(transaction);
-    return await this.#connection.sendRawTransaction(signed.serialize());
+    return this.#sendAndConfirmTransaction(transaction);
   }
 
   public async borrow(mintAddress: PublicKey, amount: Decimal): Promise<string> {
@@ -86,8 +85,7 @@ export class Api {
       instructions,
       [LENDING_LUT]
     );
-    const signed = await this.#wallet.signTransaction(transaction);
-    return await this.#connection.sendRawTransaction(signed.serialize());
+    return this.#sendAndConfirmTransaction(transaction);
   }
 
   public async repay(mintAddress: PublicKey, amount: Decimal): Promise<string> {
@@ -114,8 +112,7 @@ export class Api {
       instructions,
       [LENDING_LUT]
     );
-    const signed = await this.#wallet.signTransaction(transaction);
-    return await this.#connection.sendRawTransaction(signed.serialize());
+    return this.#sendAndConfirmTransaction(transaction);
   }
 
   public async withdraw(mintAddress: PublicKey, amount: Decimal): Promise<string> {
@@ -142,7 +139,20 @@ export class Api {
       instructions,
       [LENDING_LUT]
     );
-    const signed = await this.#wallet.signTransaction(transaction);
-    return await this.#connection.sendRawTransaction(signed.serialize());
+    return this.#sendAndConfirmTransaction(transaction);
+  }
+
+  async #sendAndConfirmTransaction(transaction: VersionedTransaction): Promise<string> {
+    const transactionId = await this.#wallet.signAndSendTransaction(transaction);
+    const { blockhash, lastValidBlockHeight } = await this.#connection.getLatestBlockhash({ commitment: "finalized" });
+    const status = await this.#connection.confirmTransaction({
+      signature: transactionId,
+      blockhash,
+      lastValidBlockHeight
+    }, "confirmed");
+    if (status.value.err) {
+      throw new Error(status.value.err.toString());
+    }
+    return transactionId;
   }
 }
