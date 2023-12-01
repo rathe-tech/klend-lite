@@ -13,14 +13,14 @@ export class WalletBalance extends ControlBase<HTMLDivElement> {
     this.#titleElem = document.createElement("div");
     this.#valueElem = document.createElement("div");
 
-    this.#titleElem.textContent = "Wallet Balance:";
-    this.#valueElem.textContent = "0";
+    this.#valueElem.classList.add(css.value);
 
     this.rootElem.appendChild(this.#titleElem);
     this.rootElem.appendChild(this.#valueElem);
   }
 
-  public updateBalance(value: Decimal | null | undefined, { decimals }: MintInfo) {
+  public updateBalance(value: Decimal | null | undefined, { symbol, decimals }: MintInfo) {
+    this.#titleElem.textContent = `${symbol} in wallet:`
     this.#valueElem.textContent = value == null ? "0" : UIUtils.toUINumber(value, decimals);
   }
 

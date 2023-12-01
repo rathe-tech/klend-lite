@@ -1,41 +1,31 @@
 import { PublicKey } from "@solana/web3.js";
-import { UIUtils } from "../utils";
+
+import { Assert } from "../utils";
 import { ControlBase } from "../controls";
-import { WalletBalance } from "./wallet_balance";
-import {
-  Store,
-  ActionEventTag,
-  TransactionEventTag,
-  type MintInfo
-} from "../models";
+import { ActionEventTag, Store, TransactionEventTag } from "../models";
+
+import { Tabs } from "./tabs";
+import { BorrowPanel, Panel, RepayPanel, SupplyPanel, WithdrawPanel } from "./panels";
 import * as css from "./action_form.css";
 
 export class ActionForm extends ControlBase<HTMLDivElement> {
   #store: Store;
-
   #formElem: HTMLElement;
 
-  #headerElem: HTMLDivElement;
-  #bodyElem: HTMLDivElement;
-  #footerElem: HTMLDivElement;
+  #tabs: Tabs;
+  #panels: Panel[];
 
-  #titleElem: HTMLElement;
-  #symbolElem: HTMLElement;
-  #valueInput: HTMLInputElement;
-  #submitElem: HTMLButtonElement;
-
-  #walletBalance: WalletBalance;
+  #actionIndices: Map<ActionEventTag, number>;
+  #cachedMint: PublicKey | null = null;
 
   #onEscPress = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       this.close();
     }
   };
-  #submit = async () => { };
 
   public constructor(store: Store) {
     super();
-
     this.#store = store;
     this.visible = false;
 
@@ -44,42 +34,27 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
     this.#formElem.addEventListener("click", e => {
       e.stopPropagation();
     });
+    this.rootElem.appendChild(this.#formElem);
 
-    this.#headerElem = document.createElement("div");
-    this.#bodyElem = document.createElement("div");
-    this.#footerElem = document.createElement("div");
-
-    this.#headerElem.classList.add(css.formHeader);
-    this.#bodyElem.classList.add(css.formBody);
-    this.#footerElem.classList.add(css.formFooter);
-
-    this.#formElem.appendChild(this.#headerElem);
-    this.#formElem.appendChild(this.#bodyElem);
-    this.#formElem.appendChild(this.#footerElem);
-
-    this.#titleElem = document.createElement("div");
-    this.#walletBalance = new WalletBalance();
-    this.#symbolElem = document.createElement("div");
-    this.#valueInput = document.createElement("input");
-    this.#submitElem = document.createElement("button");
-
-    this.#titleElem.classList.add(css.title);
-    this.#valueInput.classList.add(css.input);
-    this.#submitElem.classList.add(css.submit);
-
-    this.#headerElem.appendChild(this.#titleElem);
-    this.#walletBalance.mount(this.#bodyElem);
-    this.#bodyElem.appendChild(this.#symbolElem);
-    this.#bodyElem.appendChild(this.#valueInput);
-    this.#bodyElem.appendChild(this.#submitElem);
-
-    this.#valueInput.type = "text";
-    this.#valueInput.value = "0";
-
-    this.#submitElem.textContent = "Submit";
-    this.#submitElem.addEventListener("click", async () => {
-      await this.#submit();
+    this.#tabs = new Tabs(["Supply", "Borrow", "Repay", "Withdraw"]);
+    this.#tabs.mount(this.#formElem);
+    this.#tabs.onSelect(index => {
+      Assert.some(this.#cachedMint, "No active mint");
+      this.#showPanel(index, this.#cachedMint);
     });
+    this.#panels = [
+      new SupplyPanel(this.#store),
+      new BorrowPanel(this.#store),
+      new RepayPanel(this.#store),
+      new WithdrawPanel(this.#store)
+    ];
+    this.#panels.forEach(p => p.mount(this.#formElem));
+    this.#actionIndices = new Map([
+      [ActionEventTag.Supply, 0],
+      [ActionEventTag.Borrow, 1],
+      [ActionEventTag.Repay, 2],
+      [ActionEventTag.Withdraw, 3]
+    ]);
 
     this.#store.listen(ActionEventTag.Supply, e => {
       this.show(ActionEventTag.Supply, e.detail.mintAddress);
@@ -95,20 +70,18 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
     });
 
     this.#store.listen(TransactionEventTag.Processing, () => {
-      this.#submitElem.setAttribute("disabled", "true");
+      this.#panels.forEach(p => p.enable = false);
     });
     this.#store.listen(TransactionEventTag.Complete, () => {
-      this.#submitElem.removeAttribute("disabled");
+      this.#panels.forEach(p => p.enable = true);
       this.close();
     });
     this.#store.listen(TransactionEventTag.Error, () => {
-      this.#submitElem.removeAttribute("disabled");
+      this.#panels.forEach(p => p.enable = true);
     });
-
-    this.rootElem.appendChild(this.#formElem);
   }
 
-  protected override createRootElem(): HTMLDivElement {
+  protected createRootElem(): HTMLDivElement {
     const rootElem = document.createElement("div");
     rootElem.classList.add(css.overlay);
     rootElem.addEventListener("click", () => {
@@ -118,6 +91,7 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
   }
 
   public show(tag: ActionEventTag, mintAddress: PublicKey) {
+    const index = this.#getIndexByActionEventTag(tag);
     this.visible = true;
 
     document.body.classList.add(css.nonScroll);
@@ -126,19 +100,9 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
       document.activeElement.blur();
     }
 
-    const { marketChecked: market, customerChecked: customer } = this.#store;
-    const mint = market.getMintChecked(mintAddress);
-    const balance = customer.getTokenBalance(mintAddress);
-
-    this.#titleElem.textContent = chooseTitle(tag, mint);
-    this.#walletBalance.updateBalance(balance, mint);
-    this.#symbolElem.textContent = `${mint.symbol} Amount`;
-    this.#valueInput.value = "0";
-
-    this.#submit = async () => {
-      const amount = UIUtils.toNativeNumber(this.#valueInput.value, mint.decimals);
-      await this.#store.process(tag, mintAddress, amount);
-    };
+    this.#cachedMint = mintAddress;
+    this.#tabs.select(index, true);
+    this.#showPanel(index, mintAddress);
   }
 
   public close() {
@@ -146,19 +110,20 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
     document.body.classList.remove(css.nonScroll);
     document.body.removeEventListener("keyup", this.#onEscPress);
   }
-}
 
-export function chooseTitle(tag: ActionEventTag, { symbol }: MintInfo) {
-  switch (tag) {
-    case ActionEventTag.Borrow:
-      return `Borrow ${symbol}`;
-    case ActionEventTag.Supply:
-      return `Supply ${symbol}`;
-    case ActionEventTag.Repay:
-      return `Repay ${symbol}`;
-    case ActionEventTag.Withdraw:
-      return `Withdraw ${symbol}`;
-    default:
-      throw new Error(`Not supported action: ${tag}`);
+  #getIndexByActionEventTag(tag: ActionEventTag) {
+    const index = this.#actionIndices.get(tag);
+    Assert.some(index, "No index for tag");
+    return index;
+  }
+
+  #showPanel(index: number, mintAddress: PublicKey) {
+    this.#panels.forEach((panel, i) => {
+      if (i === index) {
+        panel.show(mintAddress);
+      } else {
+        panel.hide();
+      }
+    });
   }
 }
