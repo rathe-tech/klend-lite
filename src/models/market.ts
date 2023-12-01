@@ -44,6 +44,14 @@ export class Market {
     return this.#reserves.getArray();
   }
 
+  public getReserveByMint(mintAddress: PublicKey) {
+    return this.#reserves.getByKey(mintAddress.toBase58());
+  }
+
+  public getReserveByMintChecked(mintAddress: PublicKey) {
+    return Option.unwrap(this.getReserveByMint(mintAddress), `Could not get reserve for mint: ${mintAddress}`);
+  }
+
   public async getObligationByWallet(wallet: PublicKey, type: ObligationType) {
     return await this.#nativeMarket.getObligationByWallet(wallet, type);
   }
@@ -53,7 +61,6 @@ export class Market {
     return nativeMarket == null ? null : new Market(nativeMarket);
   }
 }
-
 
 function extractMints({ reservesActive: reserves }: KaminoMarket) {
   return new Map(reserves.map(x => [x.stats.mintAddress, {
@@ -101,5 +108,5 @@ function extractReserves({ reservesActive: reserves }: KaminoMarket) {
     return l[1] - r[1];
   }).map(([r, _]) => r);
 
-  return new IndexedArray(sorted, r => r.address.toBase58());
+  return new IndexedArray(sorted, r => r.stats.mintAddress);
 }

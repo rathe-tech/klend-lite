@@ -101,7 +101,7 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
     }
 
     this.#cachedMint = mintAddress;
-    this.#tabs.select(index, true);
+    this.#showTabs(index, mintAddress);
     this.#showPanel(index, mintAddress);
   }
 
@@ -115,6 +115,21 @@ export class ActionForm extends ControlBase<HTMLDivElement> {
     const index = this.#actionIndices.get(tag);
     Assert.some(index, "No index for tag");
     return index;
+  }
+
+  #showTabs(index: number, mintAddress: PublicKey) {
+    const market = this.#store.marketChecked;
+    const reserve = market.getReserveByMintChecked(mintAddress);
+
+    // Hide borrow actions for supply only assets.
+    if (reserve.stats.reserveBorrowLimit.isZero()) {
+      this.#tabs.hideTab(this.#getIndexByActionEventTag(ActionEventTag.Borrow));
+      this.#tabs.hideTab(this.#getIndexByActionEventTag(ActionEventTag.Repay));
+    } else {
+      this.#tabs.unhideAllTabs();
+    }
+
+    this.#tabs.selectTab(index, true);
   }
 
   #showPanel(index: number, mintAddress: PublicKey) {

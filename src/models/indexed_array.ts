@@ -7,8 +7,8 @@ export class IndexedArray<TValue> {
     this.#indices = new Map(this.#array.map((x, i) => [keySelector(x), i]));
   }
 
-  public getByKey(value: string | number) {
-    const index = this.#indices.get(value);
+  public getByKey(key: string | number) {
+    const index = this.#indices.get(key);
     if (index != null) {
       return this.#array[index];
     }

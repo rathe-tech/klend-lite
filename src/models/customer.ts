@@ -28,6 +28,20 @@ export class Customer {
     return this.#nativeObligation?.borrows ?? [];
   }
 
+  public getBorrow(mintAddress: PublicKey) {
+    const base58MintAddress = mintAddress.toBase58();
+    return this.#nativeObligation
+      ?.borrows
+      .find(x => x.mintAddress === base58MintAddress);
+  }
+
+  public getDeposit(mintAddress: PublicKey) {
+    const base58MintAddress = mintAddress.toBase58();
+    return this.#nativeObligation
+      ?.borrows
+      .find(x => x.mintAddress === base58MintAddress);
+  }
+
   public getTotalBorrowed() {
     return this.#nativeObligation
       ?.refreshedStats

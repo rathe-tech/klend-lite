@@ -8,7 +8,7 @@ export class Tabs extends ControlBase<HTMLDivElement> {
   public constructor(tabNames: string[]) {
     super();
     this.#items = tabNames.map(name => new TabItem(name));
-    this.#items.forEach((item, index) => item.on("click", () => this.select(index)));
+    this.#items.forEach((item, index) => item.on("click", () => this.selectTab(index)));
     this.#items.forEach(item => item.mount(this.rootElem));
   }
 
@@ -16,11 +16,23 @@ export class Tabs extends ControlBase<HTMLDivElement> {
     this.#onSelect = action;
   }
 
-  public select(tabIndex: number, silent: boolean = false) {
+  public selectTab(tabIndex: number, silent: boolean = false) {
     this.#items.forEach((item, index) => item.active = tabIndex === index);
     if (!silent) {
       this.#onSelect?.(tabIndex);
     }
+  }
+
+  public hideTab(tabIndex: number) {
+    this.#items[tabIndex].visible = false;
+  }
+
+  public unhideTab(tabIndex: number) {
+    this.#items[tabIndex].visible = true;
+  }
+
+  public unhideAllTabs() {
+    this.#items.forEach(item => item.visible = true);
   }
 
   protected createRootElem(): HTMLDivElement {
@@ -42,7 +54,7 @@ class TabItem extends ControlBase<HTMLDivElement> {
     }
   }
 
-  public get active() {
+  public get isActive() {
     return this.#active;
   }
 
