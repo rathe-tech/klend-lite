@@ -5,6 +5,7 @@ import { KaminoObligation, VanillaObligation, PROGRAM_ID } from "@hubbleprotocol
 
 import { Assert, UIUtils } from "../utils";
 import { WSOL_MINT_ADDRESS } from "../config";
+import { ActionEventTag } from "./store";
 import { Market } from "./market";
 
 export class Customer {
@@ -28,6 +29,19 @@ export class Customer {
     return this.#nativeObligation?.borrows ?? [];
   }
 
+  public getPosition(tag: ActionEventTag, mintAddress: PublicKey) {
+    switch (tag) {
+      case ActionEventTag.Supply:
+      case ActionEventTag.Withdraw:
+        return this.getDeposit(mintAddress);
+      case ActionEventTag.Borrow:
+      case ActionEventTag.Repay:
+        return this.getBorrow(mintAddress);
+      default:
+        throw new Error(`Not supported action: ${tag}`);
+    }
+  }
+
   public getBorrow(mintAddress: PublicKey) {
     const base58MintAddress = mintAddress.toBase58();
     return this.#nativeObligation
@@ -38,7 +52,7 @@ export class Customer {
   public getDeposit(mintAddress: PublicKey) {
     const base58MintAddress = mintAddress.toBase58();
     return this.#nativeObligation
-      ?.borrows
+      ?.deposits
       .find(x => x.mintAddress === base58MintAddress);
   }
 
