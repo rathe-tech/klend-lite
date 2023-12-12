@@ -63,7 +63,7 @@ export class Market {
 }
 
 function extractMints({ reservesActive: reserves }: KaminoMarket) {
-  return new Map(reserves.map(x => [x.stats.mintAddress, {
+  return new Map(reserves.map(x => [x.stats.mintAddress.toBase58(), {
     mintAddress: new PublicKey(x.stats.mintAddress),
     symbol: x.stats.symbol,
     decimals: x.stats.decimals
@@ -108,5 +108,5 @@ function extractReserves({ reservesActive: reserves }: KaminoMarket) {
     return l[1] - r[1];
   }).map(([r, _]) => r);
 
-  return new IndexedArray(sorted, r => r.stats.mintAddress);
+  return new IndexedArray(sorted, r => r.stats.mintAddress.toBase58());
 }

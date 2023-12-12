@@ -110,7 +110,7 @@ abstract class ObligationTable extends Table {
   }
 
   #renderRow(position: Position) {
-    const key = position.mintAddress
+    const key = position.mintAddress.toBase58();
     const index = this.#obligationKeys.get(key);
 
     if (index != null) {

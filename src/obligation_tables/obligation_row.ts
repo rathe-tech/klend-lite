@@ -32,7 +32,7 @@ export class ObligationRow extends TableRow {
   }
 
   public constructor(position: Position, kind: ObligationKind, store: Store) {
-    super(position.mintAddress);
+    super(position.mintAddress.toBase58());
     this.#kind = kind;
     this.#store = store;
 
@@ -84,7 +84,7 @@ export class ObligationRow extends TableRow {
   public refresh(position: Position) {
     const { amount, mintAddress } = position;
     const { symbol, decimals} = this.#store.marketChecked.getMintChecked(new PublicKey(mintAddress));
-    Assert.ok(mintAddress == this.key, `Key mismatch: ${mintAddress} and ${this.key}`);
+    Assert.ok(mintAddress.toBase58() == this.key, `Key mismatch: ${mintAddress} and ${this.key}`);
 
     this.#symbolCell.textContent = symbol;
     this.#amountCell.textContent = UIUtils.toUINumber(amount, decimals);

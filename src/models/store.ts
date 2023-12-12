@@ -249,6 +249,12 @@ export enum ActionEventTag {
   Withdraw = "klend:withdraw",
 }
 
+export module ActionEventTag {
+  export function isClosePositionTag(tag: ActionEventTag) {
+    return tag === ActionEventTag.Repay || tag === ActionEventTag.Supply;
+  }
+}
+
 export interface ActionSupplyEventDetail extends EventDetail {
   mintAddress: PublicKey;
 }

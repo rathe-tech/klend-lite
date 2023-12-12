@@ -1,7 +1,12 @@
 import Decimal from "decimal.js";
 import { PublicKey } from "@solana/web3.js";
 import { AccountLayout, TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { KaminoObligation, VanillaObligation, PROGRAM_ID } from "@hubbleprotocol/kamino-lending-sdk";
+import {
+  Position,
+  KaminoObligation,
+  VanillaObligation,
+  PROGRAM_ID
+} from "@hubbleprotocol/kamino-lending-sdk";
 
 import { Assert, UIUtils } from "../utils";
 import { WSOL_MINT_ADDRESS } from "../config";
@@ -43,17 +48,15 @@ export class Customer {
   }
 
   public getBorrow(mintAddress: PublicKey) {
-    const base58MintAddress = mintAddress.toBase58();
     return this.#nativeObligation
       ?.borrows
-      .find(x => x.mintAddress === base58MintAddress);
+      .find(x => x.mintAddress.equals(mintAddress));
   }
 
   public getDeposit(mintAddress: PublicKey) {
-    const base58MintAddress = mintAddress.toBase58();
     return this.#nativeObligation
       ?.deposits
-      .find(x => x.mintAddress === base58MintAddress);
+      .find(x => x.mintAddress.equals(mintAddress));
   }
 
   public getTotalBorrowed() {
@@ -122,6 +125,19 @@ export class Customer {
     return this.#tokenBalances.get(mintAddress.toBase58());
   }
 
+  public computeClosePositionAmount(probeAmount: Decimal, position?: Position) {
+    if (position == null) {
+      return probeAmount;
+    }
+
+    const diff = position.amount.minus(probeAmount).abs();
+    if (diff.lte(ONE)) {
+      return U64_MAX;
+    } else {
+      return probeAmount;
+    }
+  }
+
   public static async load(market: Market, wallet: PublicKey) {
     const obligationType = new VanillaObligation(PROGRAM_ID);
     const nativeObligation = await market.getObligationByWallet(wallet, obligationType);
@@ -129,6 +145,9 @@ export class Customer {
     return new Customer(nativeObligation, tokenBalances);
   }
 }
+
+const U64_MAX = new Decimal("18446744073709551615");
+const ONE = new Decimal("1");
 
 async function loadTokenBalances(market: Market, wallet: PublicKey) {
   const connection = market.getKaminoMarket().getConnection();
