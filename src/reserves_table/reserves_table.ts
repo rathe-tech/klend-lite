@@ -57,7 +57,7 @@ export class ReservesTable extends Table {
     const borrowApyHeader = document.createElement("th");
     const controlsHeader = document.createElement("th");
 
-    symbolHeader.textContent = "Symbol";
+    symbolHeader.textContent = "Asset";
     ltvHeader.textContent = "LTV";
     supplyHeader.textContent = "Current Supply";
     maxSupplyHeader.textContent = "Max Supply";

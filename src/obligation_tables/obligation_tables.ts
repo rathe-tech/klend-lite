@@ -68,7 +68,7 @@ abstract class ObligationTable extends Table {
     const amountHeader = document.createElement("th");
     const controlsHeader = document.createElement("th");
 
-    symbolHeader.textContent = "Symbol";
+    symbolHeader.textContent = "Asset";
     amountHeader.textContent = "Amount";
 
     this.#secondaryHeadElem.appendChild(symbolHeader);
