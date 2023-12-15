@@ -9,8 +9,8 @@
   "author": "Max Koverdyaev",
   "license": "MIT",
   "devDependencies": {
-    "@ledgerhq/hw-app-solana": "^7.1.0",
-    "@ledgerhq/hw-transport-node-hid": "^6.28.0",
+    "@ledgerhq/hw-app-solana": "^7.1.1",
+    "@ledgerhq/hw-transport-node-hid": "^6.28.1",
     "@vanilla-extract/css": "^1.14.0",
     "@vanilla-extract/webpack-plugin": "^2.3.1",
     "buffer": "^6.0.3",
@@ -26,7 +26,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "@hubbleprotocol/kamino-lending-sdk": "^2.8.45",
+    "@hubbleprotocol/kamino-lending-sdk": "^2.8.48",
     "@solana/spl-token": "^0.3.9",
     "@solana/web3.js": "^1.87.6",
     "@solflare-wallet/sdk": "^1.4.1"
