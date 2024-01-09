@@ -16,7 +16,7 @@
     "buffer": "^6.0.3",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
-    "html-webpack-plugin": "^5.5.4",
+    "html-webpack-plugin": "^5.6.0",
     "mini-css-extract-plugin": "^2.7.6",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
@@ -26,9 +26,11 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "@hubbleprotocol/kamino-lending-sdk": "^2.8.49",
-    "@solana/spl-token": "^0.3.9",
-    "@solana/web3.js": "^1.87.6",
-    "@solflare-wallet/sdk": "^1.4.1"
+    "@hubbleprotocol/kamino-lending-sdk": "^2.8.53",
+    "@solana/spl-token": "^0.3.10",
+    "@solana/web3.js": "^1.88.0",
+    "@solflare-wallet/sdk": "^1.4.1",
+    "crypto-browserify": "^3.12.0",
+    "stream-browserify": "^3.0.0"
   }
 }

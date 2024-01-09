@@ -31,6 +31,8 @@ const config: ConfigSelector = (env, argv) => {
       extensions: [".ts", ".tsx", ".js"],
       fallback: {
         "buffer": require.resolve("buffer/"),
+        "crypto": require.resolve("crypto-browserify"),
+        "stream": require.resolve("stream-browserify"),
         "process": false,
         "assert": false,
         "path": false,
