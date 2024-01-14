@@ -47,7 +47,7 @@ export module MapUtils {
 
 export module UIUtils {
   export function toUINumber(value: Decimal, decimals: number) {
-    return value.div(10 ** decimals).toDecimalPlaces(decimals).toString();
+    return toCommaFormattedNumber(value.div(10 ** decimals).toDecimalPlaces(decimals).toString());
   }
 
   export function toPercent(value: number, decimalPlaces: number) {
@@ -67,5 +67,22 @@ export module UIUtils {
       .toDecimalPlaces(decimals)
       .mul(10 ** decimals)
       .floor();
+  }
+
+  function toCommaFormattedNumber(value: string) {
+    const [whole, fraction] = value.split(".");
+    const formattedWhole = [...whole].reduce((acc, letter, index) => {
+      if (index !== 0 && (whole.length - index) % 3 === 0) {
+        acc.push(",");
+      }
+      acc.push(letter);
+      return acc;
+    }, [] as string[]).join("");
+
+    if (fraction != null) {
+      return `${formattedWhole}.${fraction}`;
+    } else {
+      return formattedWhole;
+    }
   }
 }

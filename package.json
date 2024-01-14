@@ -14,10 +14,10 @@
     "@vanilla-extract/css": "^1.14.0",
     "@vanilla-extract/webpack-plugin": "^2.3.1",
     "buffer": "^6.0.3",
-    "copy-webpack-plugin": "^11.0.0",
-    "css-loader": "^6.8.1",
+    "copy-webpack-plugin": "^12.0.1",
+    "css-loader": "^6.9.0",
     "html-webpack-plugin": "^5.6.0",
-    "mini-css-extract-plugin": "^2.7.6",
+    "mini-css-extract-plugin": "^2.7.7",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
@@ -26,9 +26,9 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "@hubbleprotocol/kamino-lending-sdk": "^2.8.53",
-    "@solana/spl-token": "^0.3.10",
-    "@solana/web3.js": "^1.88.0",
+    "@hubbleprotocol/kamino-lending-sdk": "^2.8.54",
+    "@solana/spl-token": "^0.3.11",
+    "@solana/web3.js": "^1.89.0",
     "@solflare-wallet/sdk": "^1.4.1",
     "crypto-browserify": "^3.12.0",
     "stream-browserify": "^3.0.0"
