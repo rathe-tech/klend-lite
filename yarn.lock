@@ -663,10 +663,10 @@
   resolved "https://registry.yarnpkg.com/@hubbleprotocol/hubble-idl/-/hubble-idl-3.0.17.tgz#88fa76bbc096a7c6441c10814ac0d2e11a1a64c2"
   integrity sha512-TYpEL/vqgN2IOK3FKN9y8jT1LEhSj607/h4f3/LSf1hA1oPt6xRQSf15H/+RJRnBEO/doX++teWdVZ5riXtxvw==
 
-"@hubbleprotocol/kamino-lending-sdk@^2.8.54":
-  version "2.8.54"
-  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.8.54.tgz#0bf8affab8a9595ecdc35b6b2f7d1793b3110ac7"
-  integrity sha512-3NxZTvsaz4QBZQX6kg4ts1FIEMya4iH3UamjxClWAyV8zdd82exH8fz6Aig2Te45GOVQ62V0tSrzQTW2ycetvQ==
+"@hubbleprotocol/kamino-lending-sdk@^2.8.55":
+  version "2.8.55"
+  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.8.55.tgz#8b002d2156d38848a0020391ee06956c5a0d8ccb"
+  integrity sha512-jiD3BbDU/cLEgrql/GjHt3HMWUNA0cso0hcF/BmFo7XsCcjlHV9vENed9Po8B4ERJV8c7yLOswaXeV3GQeH85g==
   dependencies:
     "@coral-xyz/anchor" "^0.28.0"
     "@coral-xyz/borsh" "^0.28.0"
@@ -1806,10 +1806,10 @@
     rpc-websockets "^7.5.1"
     superstruct "^0.14.2"
 
-"@solana/web3.js@^1.89.0":
-  version "1.89.0"
-  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.89.0.tgz#702af6bc5579cdc58706f78048298eac31fe102e"
-  integrity sha512-b6PJxNL/DX+J2zccj3kzxZ6HyUF92tc8L9CjMlnTYKCdotAk163ygQ/jbHDT0yYs7pGeXAszyLuaqUXJ8bxwpA==
+"@solana/web3.js@^1.89.1":
+  version "1.89.1"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.89.1.tgz#52df6820f2d088c4558aa359af40580a03d10ec9"
+  integrity sha512-t9TTLtPQxtQB3SAf/5E8xPXfVDsC6WGOsgKY02l2cbe0HLymT7ynE8Hu48Lk5qynHCquj6nhISfEHcjMkYpu/A==
   dependencies:
     "@babel/runtime" "^7.23.4"
     "@noble/curves" "^1.2.0"

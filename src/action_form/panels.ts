@@ -73,7 +73,7 @@ export abstract class Panel extends ControlBase<HTMLDivElement> {
     this.#positionBalance.updateBalance(position?.amount, mint)
     this.#walletBalance.updateBalance(balance, mint);
     this.#submit = async () => {
-      const inputAmount = UIUtils.toNativeNumber(this.#valueInput.value, mint.decimals);
+      const inputAmount = UIUtils.toNativeNumber(this.#valueInput.value.replaceAll(",", ""), mint.decimals);
       const canBeClosed = ActionEventTag.isClosePositionTag(this.#tag);
       const amount = canBeClosed ? customer.computeClosePositionAmount(inputAmount, position) : inputAmount;
       await this.#store.process(this.#tag, mintAddress, amount);
