@@ -663,10 +663,10 @@
   resolved "https://registry.yarnpkg.com/@hubbleprotocol/hubble-idl/-/hubble-idl-3.0.17.tgz#88fa76bbc096a7c6441c10814ac0d2e11a1a64c2"
   integrity sha512-TYpEL/vqgN2IOK3FKN9y8jT1LEhSj607/h4f3/LSf1hA1oPt6xRQSf15H/+RJRnBEO/doX++teWdVZ5riXtxvw==
 
-"@hubbleprotocol/kamino-lending-sdk@^2.8.55":
-  version "2.8.55"
-  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.8.55.tgz#8b002d2156d38848a0020391ee06956c5a0d8ccb"
-  integrity sha512-jiD3BbDU/cLEgrql/GjHt3HMWUNA0cso0hcF/BmFo7XsCcjlHV9vENed9Po8B4ERJV8c7yLOswaXeV3GQeH85g==
+"@hubbleprotocol/kamino-lending-sdk@^2.8.56":
+  version "2.8.56"
+  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.8.56.tgz#d0008f77cc991b92363432b047fa1ecf091ce631"
+  integrity sha512-DJ2wj3aNH2kR1jsLsKmNnN/axKzmmPTXL723d9SgsOJgF7dCQ++QD84Od/9rdykhm98eNb+NU0xOnEo8By6XOw==
   dependencies:
     "@coral-xyz/anchor" "^0.28.0"
     "@coral-xyz/borsh" "^0.28.0"
