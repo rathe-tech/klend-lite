@@ -19,6 +19,7 @@ export class ReserveRow extends TableRow {
   #borrowApyCell: HTMLTableCellElement;
   #controlsCell: HTMLTableCellElement;
 
+  #reserveLink: HTMLAnchorElement;
   #controlsWrapper: HTMLDivElement;
   #supplyButton: HTMLButtonElement;
   #borrowButton: HTMLButtonElement;
@@ -45,6 +46,10 @@ export class ReserveRow extends TableRow {
     this.#borrowCell = document.createElement("td");
     this.#borrowApyCell = document.createElement("td");
     this.#controlsCell = document.createElement("td");
+
+    this.#reserveLink = document.createElement("a");
+    this.#reserveLink.target = "_blank";
+    this.#symbolCell.appendChild(this.#reserveLink);
 
     this.#supplyButton = document.createElement("button");
     this.#borrowButton = document.createElement("button");
@@ -98,7 +103,8 @@ export class ReserveRow extends TableRow {
     const newKey = address.toBase58();
     Assert.ok(newKey == this.key, `Key mismatch: ${newKey} and ${this.key}`);
 
-    this.#symbolCell.textContent = symbol;
+    this.#reserveLink.text = symbol;
+    this.#reserveLink.href = `https://explorer.solana.com/address/${newKey}`;
     this.#ltvCell.textContent = UIUtils.toPercent(loanToValuePct, 0);
     this.#supplyCell.textContent = UIUtils.toUINumber(totalSupply, decimals);
     this.#maxSupplyCell.textContent = UIUtils.toUINumber(reserveDepositLimit, decimals);

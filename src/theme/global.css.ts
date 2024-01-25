@@ -30,6 +30,10 @@ globalStyle("html, body", {
   padding: 0,
 });
 
+globalStyle("a", {
+  color: primaryGreenColor,
+})
+
 globalStyle("button", {
   border: `1px solid ${secondaryGreenColor}`,
   color: secondaryGreenColor,
