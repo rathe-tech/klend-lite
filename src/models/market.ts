@@ -63,7 +63,7 @@ export class Market {
 }
 
 function extractMints({ reservesActive: reserves }: KaminoMarket) {
-  return new Map(reserves.map(x => [x.stats.mintAddress.toBase58(), {
+  return new Map(Array.from(reserves.values()).map(x => [x.stats.mintAddress.toBase58(), {
     mintAddress: new PublicKey(x.stats.mintAddress),
     symbol: x.stats.symbol,
     decimals: x.stats.decimals
@@ -86,6 +86,7 @@ const RESERVES_ORDER = new Map([
   new PublicKey("DaGyAQJrdkLCzYZiUWg49NV8vabDnhR7ETwLu5eQgL56") /* USDH */,
   new PublicKey("GhGPbkWmPjSkbkgZbhNGBTxzwQKjqDpZwNfaf2gQKgdG") /* UXD */,
   new PublicKey("9Ukd2MSw5RvVFaN8jLhWxjHLEGiF1F6Hf7v3Zq5hZsKB") /* JTO */,
+  new PublicKey("4AFAGAm5G8fkcKy7QerL88E7BiSE22ZRbvJzvaKjayor") /* JUP */,
   // kTokens assets
   new PublicKey("57U9pEC8NsWvHgWywd2xHTRkGQzWWYsWivxYRhtxZrLB") /* kSOLBSOLOrca */,
   new PublicKey("75WrtSz7rLCdBvAQhtHi8M2jC8HnpT8iUxcYkdeawr37") /* kSOLJITOSOLRaydium */,
@@ -99,7 +100,7 @@ const RESERVES_ORDER = new Map([
 ].map((r, i) => [r.toBase58(), i]));
 
 function extractReserves({ reservesActive: reserves }: KaminoMarket) {
-  const sorted = reserves.map(r => {
+  const sorted = Array.from(reserves.values()).map(r => {
     const order = RESERVES_ORDER.get(r.address.toBase58());
     return [r, order] as [KaminoReserve, number | undefined];
   }).sort((l, r) => {

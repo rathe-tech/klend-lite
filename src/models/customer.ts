@@ -26,15 +26,15 @@ export class Customer {
     return this.#nativeObligation;
   }
 
-  public getDeposits() {
-    return this.#nativeObligation?.deposits ?? [];
+  public getDeposits(): Position[] {
+    return Array.from(this.#nativeObligation?.deposits.values() ?? []);
   }
 
-  public getBorrows() {
-    return this.#nativeObligation?.borrows ?? [];
+  public getBorrows(): Position[] {
+    return Array.from(this.#nativeObligation?.borrows.values() ?? []);
   }
 
-  public getPosition(tag: ActionEventTag, mintAddress: PublicKey) {
+  public getPosition(tag: ActionEventTag, mintAddress: PublicKey): Position | undefined {
     switch (tag) {
       case ActionEventTag.Supply:
       case ActionEventTag.Withdraw:
@@ -47,15 +47,17 @@ export class Customer {
     }
   }
 
-  public getBorrow(mintAddress: PublicKey) {
-    return this.#nativeObligation
+  public getBorrow(mintAddress: PublicKey): Position | undefined {
+    return Array.from(this.#nativeObligation
       ?.borrows
+      .values() ?? [])
       .find(x => x.mintAddress.equals(mintAddress));
   }
 
-  public getDeposit(mintAddress: PublicKey) {
-    return this.#nativeObligation
+  public getDeposit(mintAddress: PublicKey): Position | undefined {
+    return Array.from(this.#nativeObligation
       ?.deposits
+      .values() ?? [])
       .find(x => x.mintAddress.equals(mintAddress));
   }
 

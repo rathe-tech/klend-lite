@@ -24,15 +24,13 @@ import { MARKET_ADDRESS, RPC_ENDPOINT } from "../src/config";
         reserveDepositLimit,
         // Max token amount to borrow
         reserveBorrowLimit,
-        totalLiquidity,
-        totalSupply,
-        totalBorrows,
         // Collateral yield bearing token supply
         mintTotalSupply,
-        // TVL in USD
-        depositTvl,
       },
     } = reserve;
+    const totalSupply = reserve.getTotalSupply();
+    const totalBorrows = reserve.getBorrowedAmount();
+    const depositTvl = reserve.getDepositTvl();
 
     console.log("Symbol: %o", symbol);
     console.log("Decimals: %o", decimals);
@@ -43,9 +41,7 @@ import { MARKET_ADDRESS, RPC_ENDPOINT } from "../src/config";
     console.log("Reserve borrow limit: %o (%o)", reserveBorrowLimit.div(10 ** decimals).toDecimalPlaces(decimals).toString(), reserveBorrowLimit);
     console.log("Mint total supply: %o", mintTotalSupply.toString());
     console.log("Total supply: %o (%o)", totalSupply.div(10 ** decimals).toDecimalPlaces(decimals).toString(), totalSupply);
-    console.log("Computed total supply: %o (%o)", totalBorrows.plus(totalLiquidity).div(10 ** decimals).toDecimalPlaces(decimals).toString(), totalBorrows.plus(totalLiquidity));
     console.log("Total borrows: %o (%o)", totalBorrows.div(10 ** decimals).toDecimalPlaces(decimals).toString(), totalBorrows);
-    console.log("Total liquidity: %o (%o)", totalLiquidity.div(10 ** decimals).toDecimalPlaces(decimals).toString(), totalLiquidity);
     console.log("Deposit TVL (USD): %o", depositTvl);
     console.log();
   });

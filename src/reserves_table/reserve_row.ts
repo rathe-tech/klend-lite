@@ -91,14 +91,14 @@ export class ReserveRow extends TableRow {
         symbol,
         decimals,
         loanToValuePct,
-        totalSupply,
-        totalBorrows,
         reserveDepositLimit,
         supplyInterestAPY,
         borrowInterestAPY,
         reserveBorrowLimit
       }
     } = reserve;
+    const totalSupply = reserve.getTotalSupply();
+    const totalBorrows = reserve.getBorrowedAmount();
 
     const newKey = address.toBase58();
     Assert.ok(newKey == this.key, `Key mismatch: ${newKey} and ${this.key}`);
