@@ -663,10 +663,10 @@
   resolved "https://registry.yarnpkg.com/@hubbleprotocol/hubble-idl/-/hubble-idl-3.0.17.tgz#88fa76bbc096a7c6441c10814ac0d2e11a1a64c2"
   integrity sha512-TYpEL/vqgN2IOK3FKN9y8jT1LEhSj607/h4f3/LSf1hA1oPt6xRQSf15H/+RJRnBEO/doX++teWdVZ5riXtxvw==
 
-"@hubbleprotocol/kamino-lending-sdk@^2.8.57":
-  version "2.8.57"
-  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.8.57.tgz#c87a81014c34b3f20364f941710ca0315d3c123d"
-  integrity sha512-NvfvIOMkhxT1aZYkqhZH8SMzduSbUzh7rkM3nAZ9wiIzg0kXeb036s1NiU5B62rlBEoibGGbF2845xvz53nNgQ==
+"@hubbleprotocol/kamino-lending-sdk@^2.8.61":
+  version "2.8.61"
+  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.8.61.tgz#e31cbdc9748737508aff8e5df94f893facc50331"
+  integrity sha512-TwGaZhI+AcGMxg2tupBNRZ3E+HgXi7WZPcqTFzbR61psXR2fxkbfUgtdknHP51KipgvM9AVxHvtYpuW2/D1hKA==
   dependencies:
     "@coral-xyz/anchor" "^0.28.0"
     "@coral-xyz/borsh" "^0.28.0"
@@ -1721,16 +1721,6 @@
     "@solana/web3.js" "^1.32.0"
     start-server-and-test "^1.14.0"
 
-"@solana/spl-token@^0.3.11":
-  version "0.3.11"
-  resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.3.11.tgz#cdc10f9472b29b39c8983c92592cadd06627fb9a"
-  integrity sha512-bvohO3rIMSVL24Pb+I4EYTJ6cL82eFpInEXD/I8K8upOGjpqHsKUoAempR/RnUlI1qSFNyFlWJfu6MNUgfbCQQ==
-  dependencies:
-    "@solana/buffer-layout" "^4.0.0"
-    "@solana/buffer-layout-utils" "^0.2.0"
-    "@solana/spl-token-metadata" "^0.1.2"
-    buffer "^6.0.3"
-
 "@solana/spl-token@^0.3.4", "@solana/spl-token@^0.3.7":
   version "0.3.9"
   resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.3.9.tgz#477e703c3638ffb17dd29b82a203c21c3e465851"
@@ -1738,6 +1728,16 @@
   dependencies:
     "@solana/buffer-layout" "^4.0.0"
     "@solana/buffer-layout-utils" "^0.2.0"
+    buffer "^6.0.3"
+
+"@solana/spl-token@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.4.0.tgz#c057e82afd2b9ea59019525f3fbf6c9a20349a54"
+  integrity sha512-jjBIBG9IsclqQVl5Y82npGE6utdCh7Z9VFcF5qgJa5EUq2XgspW3Dt1wujWjH/vQDRnkp9zGO+BqQU/HhX/3wg==
+  dependencies:
+    "@solana/buffer-layout" "^4.0.0"
+    "@solana/buffer-layout-utils" "^0.2.0"
+    "@solana/spl-token-metadata" "^0.1.2"
     buffer "^6.0.3"
 
 "@solana/spl-type-length-value@0.1.0":
@@ -1827,10 +1827,10 @@
     rpc-websockets "^7.5.1"
     superstruct "^0.14.2"
 
-"@solflare-wallet/sdk@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@solflare-wallet/sdk/-/sdk-1.4.1.tgz#3473aa8fd58e2a5927e2fcdc2c19844c78dfd6c0"
-  integrity sha512-opkddo/NkYIIzK3W6RCTdELWOSRY/i72U9syRrUP3vN1C/OcXSjJ5wuwmNHR2dj+MCStdUnGUggYz3KPpu088g==
+"@solflare-wallet/sdk@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@solflare-wallet/sdk/-/sdk-1.4.2.tgz#630b9a26f7bca255ee4a7088f287ae8c8335e345"
+  integrity sha512-jrseNWipwl9xXZgrzwZF3hhL0eIVxuEtoZOSLmuPuef7FgHjstuTtNJAeT4icA7pzdDV4hZvu54pI2r2f7SmrQ==
   dependencies:
     bs58 "^5.0.0"
     eventemitter3 "^5.0.1"
