@@ -4,6 +4,7 @@
         "module": "CommonJS",
         "moduleResolution": "Node",
         "target": "ES2022",
+        "resolveJsonModule": true,
         "paths": {
             "@solana/spl-token": ["./node_modules/@solana/spl-token"]
         }

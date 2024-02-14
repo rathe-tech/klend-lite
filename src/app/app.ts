@@ -8,6 +8,7 @@ import { Donation } from "../donation";
 
 import * as css from "./app.css";
 import { Stats } from "../stats";
+import { version } from "../../package.json";
 
 export class App extends ControlBase<HTMLDivElement> {
   public constructor(store: Store) {
@@ -30,7 +31,7 @@ export class App extends ControlBase<HTMLDivElement> {
 
     const title = document.createElement("div");
     title.classList.add(css.appTitle);
-    title.textContent = "KLEND LITE";
+    title.textContent = `KLEND LITE ${version}`;
     headerContainer.appendChild(title);
 
     const walletConnect = new WalletConnect(store);
