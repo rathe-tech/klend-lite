@@ -584,10 +584,10 @@
     decimal.js "^10.4.3"
     exponential-backoff "^3.1.1"
 
-"@hubbleprotocol/kamino-lending-sdk@^2.9.1":
-  version "2.9.1"
-  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.9.1.tgz#b7bb5ec6502a26179de664757b418cc93b5ad912"
-  integrity sha512-sfLSl+KHp2hqWcwhujD1f7dgWYnUjGXnPRuUdn2xND9S5GjjLODL73J4OJOjeZSbbzK9TUnoxLGlhFZ+N3QO/A==
+"@hubbleprotocol/kamino-lending-sdk@^2.9.4":
+  version "2.9.4"
+  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.9.4.tgz#611e00f2f9d7193e2af8a89baf1fad17a3689090"
+  integrity sha512-GEcjxJDDx9bMiaY9QWubff8vPUq3e/1RYgr5iBH28hAwFZy4LzsIlxOcg7ZBlwr4Yq2Iy7xZeBeqauTFOLhKww==
   dependencies:
     "@coral-xyz/anchor" "^0.28.0"
     "@coral-xyz/borsh" "^0.28.0"
@@ -1776,10 +1776,10 @@
     "@solana/spl-token-metadata" "^0.1.2"
     buffer "^6.0.3"
 
-"@solana/spl-token@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.4.0.tgz#c057e82afd2b9ea59019525f3fbf6c9a20349a54"
-  integrity sha512-jjBIBG9IsclqQVl5Y82npGE6utdCh7Z9VFcF5qgJa5EUq2XgspW3Dt1wujWjH/vQDRnkp9zGO+BqQU/HhX/3wg==
+"@solana/spl-token@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.4.1.tgz#7302c8052803f63012bd8189d42ca7d74d7917a5"
+  integrity sha512-DEe15GI0l+XLHwtau/3GUwGQJ9YY/VWNE0k/QuXaaGKo4adMZLEAIQUktRc/S2sRqPjvUdR5anZGxQ9p5khWZw==
   dependencies:
     "@solana/buffer-layout" "^4.0.0"
     "@solana/buffer-layout-utils" "^0.2.0"

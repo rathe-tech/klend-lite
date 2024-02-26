@@ -1,6 +1,6 @@
 {
   "name": "klend-lite",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Lightweight K-Lend Web UI",
   "scripts": {
     "build": "npx webpack",
@@ -28,8 +28,8 @@
     "stream-browserify": "^3.0.0"
   },
   "dependencies": {
-    "@hubbleprotocol/kamino-lending-sdk": "^2.9.1",
-    "@solana/spl-token": "^0.4.0",
+    "@hubbleprotocol/kamino-lending-sdk": "^2.9.4",
+    "@solana/spl-token": "^0.4.1",
     "@solana/web3.js": "^1.90.0",
     "@solflare-wallet/sdk": "^1.4.2"
   }

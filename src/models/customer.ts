@@ -133,7 +133,7 @@ export class Customer {
     }
 
     const diff = position.amount.minus(probeAmount).abs();
-    if (diff.lte(ONE)) {
+    if (diff.lte(EPS)) {
       return U64_MAX;
     } else {
       return probeAmount;
@@ -149,7 +149,7 @@ export class Customer {
 }
 
 const U64_MAX = new Decimal("18446744073709551615");
-const ONE = new Decimal("1");
+const EPS = new Decimal("1");
 
 async function loadTokenBalances(market: Market, wallet: PublicKey) {
   const connection = market.getKaminoMarket().getConnection();
