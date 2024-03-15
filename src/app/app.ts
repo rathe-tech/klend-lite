@@ -7,6 +7,7 @@ import { ActionForm } from "../action_form";
 import { Donation } from "../donation";
 
 import * as css from "./app.css";
+import { MarketSelect } from "../market_select";
 import { Stats } from "../stats";
 import { version } from "../../package.json";
 
@@ -15,16 +16,19 @@ export class App extends ControlBase<HTMLDivElement> {
     super();
 
     const headerContainer = document.createElement("div");
+    const marketSelectContainer = document.createElement("div");
     const controlsContainer = document.createElement("div");
     const obligationContainer = document.createElement("div");
     const reservesContainer = document.createElement("div");
 
     headerContainer.classList.add(css.headerContainer);
+    marketSelectContainer.classList.add(css.marketSelectContainer);
     controlsContainer.classList.add(css.controlsContainer);
     obligationContainer.classList.add(css.obligationContainer);
     reservesContainer.classList.add(css.reservesContainer);
 
     this.rootElem.appendChild(headerContainer);
+    this.rootElem.appendChild(marketSelectContainer);
     this.rootElem.appendChild(controlsContainer);
     this.rootElem.appendChild(obligationContainer);
     this.rootElem.appendChild(reservesContainer);
@@ -33,6 +37,9 @@ export class App extends ControlBase<HTMLDivElement> {
     title.classList.add(css.appTitle);
     title.textContent = `KLEND LITE ${version}`;
     headerContainer.appendChild(title);
+
+    const marketSelect = new MarketSelect();
+    marketSelect.mount(marketSelectContainer);
 
     const walletConnect = new WalletConnect(store);
     walletConnect.mount(headerContainer);

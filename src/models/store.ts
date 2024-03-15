@@ -3,7 +3,7 @@ import Solflare from "@solflare-wallet/sdk";
 import { Connection, PublicKey } from "@solana/web3.js";
 
 import { Option } from "../utils";
-import { RPC_ENDPOINT } from "../config";
+import { RPC_ENDPOINT, MARKETS, MarketInfo } from "../config";
 
 import { Api } from "./api";
 import { Market } from "./market";
@@ -14,6 +14,7 @@ export class Store {
   #wallet = new Solflare({ network: "mainnet-beta" });
   #api = new Api(this);
 
+  #marketInfo: MarketInfo;
   #market: Market | null = null;
   #customer: Customer | null = null;
 
@@ -23,6 +24,7 @@ export class Store {
 
   get connection() { return this.#connection; }
   get wallet() { return this.#wallet; }
+  get marketInfo() { return this.#marketInfo; }
   get market() { return this.#market; }
   get customer() { return this.#customer; }
 
@@ -33,6 +35,12 @@ export class Store {
   get hasCustomer() { return this.#customer != null; }
 
   public constructor() {
+    const searchParams = new URLSearchParams(window.location.search);
+    const rawMarketAddress = searchParams.get("marketAddress");
+    const marketAddress = rawMarketAddress ? new PublicKey(rawMarketAddress) : MARKETS[0].address;
+    const foundMarket = MARKETS.find(x => x.address.equals(marketAddress));
+    this.#marketInfo = Option.unwrap(foundMarket, "Invalid market address");
+
     this.#wallet.on("connect", () => {
       this.emit(WalletEventTag.Connect, {
         address: this.#wallet.publicKey!,

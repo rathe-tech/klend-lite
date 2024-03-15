@@ -28,9 +28,9 @@
     "stream-browserify": "^3.0.0"
   },
   "dependencies": {
-    "@hubbleprotocol/kamino-lending-sdk": "^2.9.4",
+    "@hubbleprotocol/kamino-lending-sdk": "^2.9.7",
     "@solana/spl-token": "^0.4.1",
-    "@solana/web3.js": "^1.90.0",
+    "@solana/web3.js": "^1.90.1",
     "@solflare-wallet/sdk": "^1.4.2"
   }
 }

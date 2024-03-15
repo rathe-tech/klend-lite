@@ -15,17 +15,31 @@ export interface MintInfo {
 
 export class Market {
   #nativeMarket: KaminoMarket;
+  #marketAddress: PublicKey;
+  #lutAddress: PublicKey;
+
   #mints: Map<string, MintInfo>;
   #reserves: IndexedArray<KaminoReserve>;
 
-  private constructor(nativeMarket: KaminoMarket) {
+  private constructor(nativeMarket: KaminoMarket, marketAddress: PublicKey, lutAddress: PublicKey) {
     this.#nativeMarket = nativeMarket;
+    this.#marketAddress = marketAddress;
+    this.#lutAddress = lutAddress;
+
     this.#mints = extractMints(this.#nativeMarket);
     this.#reserves = extractReserves(this.#nativeMarket);
   }
 
   public getKaminoMarket() {
     return this.#nativeMarket;
+  }
+
+  public getMarketAddress() {
+    return this.#marketAddress;
+  }
+
+  public getLutAddress() {
+    return this.#lutAddress;
   }
 
   public getMintAddresses() {
@@ -56,9 +70,9 @@ export class Market {
     return await this.#nativeMarket.getObligationByWallet(wallet, type);
   }
 
-  public static async load(connection: Connection, marketAddress: PublicKey) {
+  public static async load(connection: Connection, marketAddress: PublicKey, lutAddress: PublicKey) {
     const nativeMarket = await KaminoMarket.load(connection, marketAddress);
-    return nativeMarket == null ? null : new Market(nativeMarket);
+    return nativeMarket == null ? null : new Market(nativeMarket, marketAddress, lutAddress);
   }
 }
 

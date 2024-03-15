@@ -1,11 +1,11 @@
 import { Connection, VersionedTransaction } from "@solana/web3.js";
 import Solflare from "@solflare-wallet/sdk";
 import { KaminoMarket } from "@hubbleprotocol/kamino-lending-sdk";
-import { MARKET_ADDRESS, RPC_ENDPOINT } from "../src/config";
+import { MARKETS, RPC_ENDPOINT } from "../src/config";
 
 (async () => {
   const connection = new Connection(RPC_ENDPOINT);
-  const market = await KaminoMarket.load(connection, MARKET_ADDRESS);
+  const market = await KaminoMarket.load(connection, MARKETS[0].address);
   if (market == null) {
     throw new Error("Couldn't load market");
   }

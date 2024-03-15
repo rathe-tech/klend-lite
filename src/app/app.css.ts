@@ -1,5 +1,4 @@
 import { style } from "@vanilla-extract/css";
-import { tertiaryGreenColor } from "../theme/constants";
 
 export const app = style({
   margin: "0 auto",
@@ -10,6 +9,10 @@ export const headerContainer = style({
   marginTop: "1em",
   display: "flex",
   alignItems: "center",
+});
+
+export const marketSelectContainer = style({
+  marginTop: "12px",
 });
 
 export const controlsContainer = style({

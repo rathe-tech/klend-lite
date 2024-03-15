@@ -8,9 +8,9 @@ import {
 } from "@hubbleprotocol/kamino-lending-sdk";
 
 import { Option } from "../utils";
+import { DONATION_ADDRESS } from "../config";
 import { Market } from "./market";
 import { Customer } from "./customer";
-import { LENDING_LUT, DONATION_ADDRESS, MARKET_ADDRESS } from "../config";
 import { type Store } from "./store";
 
 export class Api {
@@ -27,7 +27,7 @@ export class Api {
   }
 
   public async loadMarket() {
-    return Market.load(this.#connection, MARKET_ADDRESS);
+    return Market.load(this.#connection, this.#store.marketInfo.address, this.#store.marketInfo.lutAddress);
   }
 
   public async loadCustomer() {
@@ -56,7 +56,7 @@ export class Api {
       this.#connection,
       this.#publicKey,
       instructions,
-      [LENDING_LUT]
+      [this.#market.getLutAddress()]
     );
     return this.#sendAndConfirmTransaction(transaction);
   }
@@ -83,7 +83,7 @@ export class Api {
       this.#connection,
       this.#publicKey,
       instructions,
-      [LENDING_LUT]
+      [this.#market.getLutAddress()]
     );
     return this.#sendAndConfirmTransaction(transaction);
   }
@@ -111,7 +111,7 @@ export class Api {
       this.#connection,
       this.#publicKey,
       instructions,
-      [LENDING_LUT]
+      [this.#market.getLutAddress()]
     );
     return this.#sendAndConfirmTransaction(transaction);
   }
@@ -138,7 +138,7 @@ export class Api {
       this.#connection,
       this.#publicKey,
       instructions,
-      [LENDING_LUT]
+      [this.#market.getLutAddress()]
     );
     return this.#sendAndConfirmTransaction(transaction);
   }
