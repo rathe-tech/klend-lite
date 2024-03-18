@@ -1,6 +1,6 @@
 import { PublicKey } from "@solana/web3.js";
 
-export const RPC_ENDPOINT = "https://mainnet.helius-rpc.com/?api-key=66ef411d-8f9a-4ffd-97fe-7d5255ca0f0b";
+export const RPC_ENDPOINT = "https://mainnet.helius-rpc.com/?api-key=71374b07-9ac2-4c97-b967-e62750a8c172";
 export const DONATION_ADDRESS = new PublicKey("1DxMVkgaKW4sCNJcXGHGGEb2kv4Jh3Q4Wd9RjEvMP73");
 export const WSOL_MINT_ADDRESS = new PublicKey("So11111111111111111111111111111111111111112");
 
