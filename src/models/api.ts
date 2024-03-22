@@ -89,12 +89,14 @@ export class Api {
   }
 
   public async repay(mintAddress: PublicKey, amount: Decimal): Promise<string> {
+    const slot = await this.#connection.getSlot();
     const action = await KaminoAction.buildRepayTxns(
       this.#market.getKaminoMarket(),
       amount.toString(),
       mintAddress,
       this.#publicKey,
       this.#obligationType,
+      slot,
       undefined,
       0,
       true,
