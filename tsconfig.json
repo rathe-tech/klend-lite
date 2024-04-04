@@ -5,6 +5,7 @@
         "moduleResolution": "Node",
         "target": "ES2022",
         "resolveJsonModule": true,
+        "jsx": "react-jsx",
         "paths": {
             "@solana/spl-token": ["./node_modules/@solana/spl-token"]
         }

@@ -30,6 +30,11 @@ globalStyle("html, body", {
   padding: 0,
 });
 
+globalStyle("#root", {
+  width: "100%",
+  height: "100%",
+});
+
 globalStyle("a", {
   color: primaryGreenColor,
 })

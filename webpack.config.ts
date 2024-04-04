@@ -20,7 +20,7 @@ const config: ConfigSelector = (env, argv) => {
   return {
     mode,
     entry: {
-      "klend": "./src/index.ts"
+      "klend": "./src/index.tsx"
     },
     output: {
       path: path.resolve(__dirname, "dist"),
