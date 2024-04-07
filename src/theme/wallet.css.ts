@@ -1,12 +1,13 @@
 import { globalStyle } from "@vanilla-extract/css";
 import { mobileMediaQuery } from "./vars.css";
+import { tertiaryGreenColor } from "./constants";
 
 // All buttons in wallet lib uses this class.
 globalStyle(".wallet-adapter-button", {
   display: "flex",
   alignItems: "center",
   backgroundColor: "transparent",
-  border: "none",
+  // border: "none",
   cursor: "pointer",
 });
 
@@ -17,6 +18,7 @@ globalStyle(".wallet-adapter-button-trigger", {
   height: "42px",
   fontSize: "16px",
   padding: "0 1.25em",
+  // border: `1px solid ${tertiaryGreenColor}`,
   // color: vars.color.backgroundPrimary,
   // backgroundColor: vars.color.accentPrimary,
   // borderRadius: vars.desktop.buttonBorderRadius,
@@ -88,7 +90,7 @@ globalStyle(".wallet-adapter-modal-wrapper", {
   maxWidth: "520px",
   // borderRadius: vars.desktop.buttonBorderRadius,
   // backgroundColor: vars.color.backgroundPrimary,
-  // border: `1px solid ${vars.color.backgroundTertiary}`,
+  border: `1px solid ${tertiaryGreenColor}`,
   boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.6)",
   flex: 1,
   "@media": {
@@ -162,7 +164,7 @@ globalStyle(".wallet-adapter-modal-button-close:hover", {
 });
 
 globalStyle(".wallet-adapter-modal-button-close svg", {
-  // fill: vars.color.labelTertiary,
+  fill: tertiaryGreenColor,
   transition: "fill 200ms ease 0s",
 });
 
@@ -202,7 +204,7 @@ globalStyle(".wallet-adapter-dropdown-list", {
   right: 0,
   margin: 0,
   listStyle: "none",
-  // backgroundColor: vars.color.backgroundSecondary,
+  backgroundColor: "black",
   borderRadius: "10px",
   boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.6)",
   // border: `1px solid ${vars.color.backgroundTertiary}`,
@@ -281,7 +283,8 @@ globalStyle(".wallet-adapter-dropdown", {
 globalStyle(".wallet-adapter-dropdown-list-active", {
   opacity: 1,
   visibility: "visible",
-  transform: "translateY(10px)"
+  transform: "translateY(10px)",
+  border: `1px solid ${tertiaryGreenColor}`,
 });
 
 globalStyle(".wallet-adapter-modal-collapse-button svg", {

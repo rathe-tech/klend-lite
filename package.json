@@ -1,6 +1,6 @@
 {
   "name": "klend-lite",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Lightweight K-Lend Web UI",
   "scripts": {
     "build": "npx webpack",
