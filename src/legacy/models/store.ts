@@ -1,6 +1,5 @@
 import Decimal from "decimal.js";
-import Solflare from "@solflare-wallet/sdk";
-import { Connection, PublicKey } from "@solana/web3.js";
+import { Connection, PublicKey, VersionedTransaction } from "@solana/web3.js";
 
 import { Option } from "../../utils";
 import { RPC_ENDPOINT, MARKETS, MarketInfo } from "../../config";
@@ -11,7 +10,7 @@ import { Customer } from "./customer";
 
 export class Store {
   #connection = new Connection(RPC_ENDPOINT, { commitment: "confirmed" });
-  #wallet = new Solflare({ network: "mainnet-beta" });
+  #wallet: any
   #api = new Api(this);
 
   #marketInfo: MarketInfo;
@@ -41,13 +40,17 @@ export class Store {
     const foundMarket = MARKETS.find(x => x.address.equals(marketAddress));
     this.#marketInfo = Option.unwrap(foundMarket, "Invalid market address");
 
-    this.#wallet.on("connect", () => {
+    document.addEventListener("legacy:connect", (e: any) => {
+      const { publicKey, signTransaction, sendTransaction, connection } = e.detail;
+      this.#wallet = { publicKey, signTransaction, sendTransaction, isConnected: true, connection };
       this.emit(WalletEventTag.Connect, {
-        address: this.#wallet.publicKey!,
+        address: publicKey,
         store: this
       });
     });
-    this.#wallet.on("disconnect", () => {
+    document.addEventListener("legacy:disconnect", () => {
+      this.#wallet.publicKey = null;
+      this.#wallet.isConnected = false;
       this.emit(WalletEventTag.Disconnect, { store: this })
     });
 

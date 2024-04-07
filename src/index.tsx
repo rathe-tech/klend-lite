@@ -3,4 +3,6 @@ import { Application } from "./application";
 import "./theme/global.css";
 
 const root = createRoot(document.getElementById("root")!);
-root.render(<Application />);
+root.render(
+  <Application />
+);

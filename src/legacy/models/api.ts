@@ -146,7 +146,8 @@ export class Api {
   }
 
   async #sendAndConfirmTransaction(transaction: VersionedTransaction): Promise<string> {
-    const transactionId = await this.#wallet.signAndSendTransaction(transaction);
+    console.log(this.#wallet.connection);
+    const transactionId = await this.#wallet.sendTransaction(transaction, this.#wallet.connection);
     const { blockhash, lastValidBlockHeight } = await this.#connection.getLatestBlockhash({ commitment: "finalized" });
     const status = await this.#connection.confirmTransaction({
       signature: transactionId,

@@ -5,6 +5,7 @@ import {
   secondaryGreenColor,
   white
 } from "./constants";
+import "./wallet.css";
 
 globalStyle(":root", {
   "@media": {

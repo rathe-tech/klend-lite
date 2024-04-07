@@ -33,12 +33,19 @@ const config: ConfigSelector = (env, argv) => {
         "buffer": require.resolve("buffer/"),
         "crypto": require.resolve("crypto-browserify"),
         "stream": require.resolve("stream-browserify"),
-        "process": false,
         "assert": false,
         "path": false,
         "util": false,
         "os": false,
-        "fs": false
+        "fs": false,
+        "vm": false,
+        "http": false,  // for wallet provider
+        "https": false, // for wallet provider
+        "url": false,   // for wallet provider
+        "zlib": false,  // for wallet provider
+      },
+      alias: {
+        process: "process/browser"
       }
     },
     module: {
@@ -60,7 +67,8 @@ const config: ConfigSelector = (env, argv) => {
       new vanilla.VanillaExtractPlugin(),
       new MiniCssExtractPlugin({ filename: "theme.css" }),
       new webpack.ProvidePlugin({
-        Buffer: ["buffer", "Buffer"]
+        Buffer: ["buffer", "Buffer"],
+        process: 'process/browser',
       })
     ],
     optimization: {
