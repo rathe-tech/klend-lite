@@ -1,5 +1,5 @@
 import { globalStyle, style } from "@vanilla-extract/css";
-import { lightGray, secondaryDarkColor, tertiaryGreenColor } from "../../../../theme/constants";
+import { lightGray, primaryGreenColor, secondaryDarkColor, tertiaryGreenColor } from "../../../../theme/constants";
 
 export const table = style({
   border: `1px solid ${tertiaryGreenColor}`,
@@ -18,6 +18,7 @@ globalStyle(`${table} th`, {
   paddingTop: "8px",
   paddingBottom: "8px",
   fontSize: "16px",
+  color: primaryGreenColor,
 });
 
 globalStyle(`${table} th:first-child, td:first-child`, {

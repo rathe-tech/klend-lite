@@ -4,6 +4,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 import { Store } from "./__legacy/models";
 import { App } from "./__legacy/app";
+import { vars } from "../../theme/vars.css";
 
 type WalletState =
   | { tag: "Connected", publicKey: PublicKey }
@@ -87,6 +88,9 @@ export const Legacy = () => {
   }, []);
 
   return (
-    <div ref={containerRef} />
+    <div
+      style={{ marginTop: vars.desktop.navBarHeight }}
+      ref={containerRef}
+    />
   );
 };

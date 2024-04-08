@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css";
-import { lightGray } from "../../../../theme/constants";
+import { lightGray, primaryGreenColor } from "../../../../theme/constants";
 
 export const stats = style({
   display: "flex",
@@ -18,6 +18,7 @@ export const statItem = style({
 export const title = style({
   fontSize: "16px",
   fontWeight: "bold",
+  color: primaryGreenColor
 });
 
 export const value = style({

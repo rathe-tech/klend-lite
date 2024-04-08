@@ -6,6 +6,7 @@ import {
   white
 } from "./constants";
 import "./wallet.css";
+import { vars } from "./vars.css";
 
 globalStyle(":root", {
   "@media": {
@@ -26,7 +27,7 @@ globalStyle("*", {
 
 globalStyle("html, body", {
   backgroundColor: primaryDarkColor,
-  color: primaryGreenColor,
+  color: vars.color.labelPrimary,
   margin: 0,
   padding: 0,
 });

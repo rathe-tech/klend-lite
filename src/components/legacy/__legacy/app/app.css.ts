@@ -3,15 +3,14 @@ import { style } from "@vanilla-extract/css";
 export const app = style({
   margin: "0 auto",
   width: "1280px",
+  padding: "0 16px",
 });
 
 export const marketSelectContainer = style({
-  marginTop: "12px",
+  paddingTop: "25px",
 });
 
 export const controlsContainer = style({
-  // borderTop: `1px solid ${tertiaryGreenColor}`,
-  // borderBottom: `1px solid ${tertiaryGreenColor}`,
   display: "flex",
   padding: "0.5em 0",
   marginTop: "12px",

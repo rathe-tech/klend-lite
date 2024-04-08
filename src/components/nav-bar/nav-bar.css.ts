@@ -1,21 +1,34 @@
 import { style } from "@vanilla-extract/css";
-import { version } from "./../../../package.json";
-import { tertiaryGreenColor } from "./../../theme/constants";
-
+import { mobileMediaQuery, vars } from "../../theme/vars.css";
 
 export const navBar = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  borderBottom: `1px solid ${tertiaryGreenColor}`,
-  height: "60px",
+  position: "fixed",
+  top: 0,
+  width: "100%",
+  height: vars.desktop.navBarHeight,
+  backgroundColor: vars.color.backgroundPrimary,
+  "@media": {
+    [mobileMediaQuery]: {
+      height: vars.mobile.navBarHeight,
+    }
+  }
 });
 
 export const navBarBody = style({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  width: "1280px",
+  width: vars.desktop.containerWidth,
+  padding: `0 ${vars.desktop.containerOffset}`,
+  "@media": {
+    [mobileMediaQuery]: {
+      width: "100%",
+      padding: `0 ${vars.mobile.containerOffset}`,
+    }
+  }
 });
 
 export const appTitle = style({
