@@ -707,7 +707,7 @@
     decimal.js "^10.4.3"
     exponential-backoff "^3.1.1"
 
-"@hubbleprotocol/kamino-lending-sdk@^2.9.12":
+"@hubbleprotocol/kamino-lending-sdk@^2.9.11":
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.10.0.tgz#a1618ce5bbb7cd22726e596fc8ec1c030276249f"
   integrity sha512-OZTZeXD/uYmtC5/ZgQO5y0uC9LyLAu/r4JBNmVKeVEeFy3cK1wHNCOBlAyQBB41FE0ouXhjmm3htWPRliW/qTQ==

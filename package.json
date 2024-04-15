@@ -31,7 +31,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
-    "@hubbleprotocol/kamino-lending-sdk": "^2.9.12",
+    "@hubbleprotocol/kamino-lending-sdk": "^2.9.11",
     "@solana/spl-token": "^0.4.3",
     "@solana/wallet-adapter-phantom": "^0.9.24",
     "@solana/wallet-adapter-react": "^0.15.35",
