@@ -86,6 +86,7 @@ const config: ConfigSelector = (env, argv) => {
     },
     devServer: {
       compress: false,
+      historyApiFallback: true,
       static: {
         directory: path.resolve(__dirname, "dist"),
       },

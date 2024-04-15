@@ -1,0 +1,1 @@
+export { Obligation } from "./obligation.view";

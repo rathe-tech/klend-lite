@@ -1,4 +1,5 @@
 import { PublicKey } from "@solana/web3.js";
+import { Option } from "./utils";
 import { version } from "../package.json";
 
 export const VERSION = version;
@@ -10,6 +11,7 @@ export interface MarketInfo {
   name: string;
   address: PublicKey;
   lutAddress: PublicKey;
+  main?: boolean;
 }
 
 export const MARKETS: MarketInfo[] = [
@@ -17,6 +19,7 @@ export const MARKETS: MarketInfo[] = [
     name: "Main Market",
     address: new PublicKey("7u3HeHxYDLhnCoErrtycNokbQYbWGzLs6JSDqGAv5PfF"),
     lutAddress: new PublicKey("284iwGtA9X9aLy3KsyV8uT2pXLARhYbiSi5SiM2g47M2"),
+    main: true,
   }, {
     name: "JLP Market",
     address: new PublicKey("DxXdAyU3kCjnyggvHmY5nAwg5cRbbmdyX3npfDMjjMek"),
@@ -26,4 +29,15 @@ export const MARKETS: MarketInfo[] = [
     address: new PublicKey("ByYiZxp8QrdN9qbdtaAiePN8AAr3qvTPppNJDpf5DVJ5"),
     lutAddress: new PublicKey("x2uEQSaqrZs5UnyXjiNktRhrAy6iNFeSKai9VNYFFuy"),
   }
-]
+];
+
+export function chooseMarketInfo(marketAddress: string | undefined | null) {
+  if (marketAddress == null) {
+    const market = MARKETS.find(x => x.main);
+    return Option.unwrap(market);
+  } else {
+    const nativeMarketAddress = new PublicKey(marketAddress);
+    const market = MARKETS.find(x => x.address.equals(nativeMarketAddress));
+    return Option.unwrap(market);
+  }
+}

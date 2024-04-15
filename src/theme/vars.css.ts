@@ -6,20 +6,30 @@ export const mobileMediaQuery = `(max-width: ${mobileMax})`;
 
 export const vars = createGlobalTheme(":root", {
   color: {
+    accentColor: "#00cc00",
+    
     labelPrimary: "#fff",
-    labelSecondary: "#ddd",
+    labelSecondary: "#9a9cab",
     labelTertiary: "#bbb",
     labelQuaternary: "#aaa",
 
-    backgroundPrimary: "#000",
+    backgroundPrimary: "#0d1117",
+    backgroundSecondary: "#161b22",
+
+    borderPrimary: "#30363d",
+    borderPrimaryDisabled: "#30363d40",
+
+    buttonDefaultBackgroundRest: "#21262d",
+    buttonDefaultBackgroundHover: "#292e36",
+    buttonDefaultBackgroundActive: "#31363e",
+
+    buttonDefaultBackgroundDisabled: "#21262d40",
   },
   desktop: {
     containerWidth: "1280px",
     containerOffset: "16px",
-    navBarHeight: "60px",
   },
   mobile: {
     containerOffset: "12px",
-    navBarHeight: "60px",
   }
 });

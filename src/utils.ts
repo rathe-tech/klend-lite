@@ -59,7 +59,7 @@ export module UIUtils {
   }
 
   export function toFormattedUsd(value: Decimal | undefined) {
-    return value ? `$${value.toDecimalPlaces(2).toString()}` : "-";
+    return value ? `$${toCommaFormattedNumber(value.toDecimalPlaces(2).toString())}` : "-";
   }
 
   export function toNativeNumber(value: number | string, decimals: number) {
