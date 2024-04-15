@@ -707,10 +707,10 @@
     decimal.js "^10.4.3"
     exponential-backoff "^3.1.1"
 
-"@hubbleprotocol/kamino-lending-sdk@^2.9.11":
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.10.0.tgz#a1618ce5bbb7cd22726e596fc8ec1c030276249f"
-  integrity sha512-OZTZeXD/uYmtC5/ZgQO5y0uC9LyLAu/r4JBNmVKeVEeFy3cK1wHNCOBlAyQBB41FE0ouXhjmm3htWPRliW/qTQ==
+"@hubbleprotocol/kamino-lending-sdk@2.9.11":
+  version "2.9.11"
+  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.9.11.tgz#f74e22395bcc1562a249f6a4469abebe463bf631"
+  integrity sha512-LCnn6cjUxvY+vdIAh6E9x5ADALNnCM4iqWe5rKV8TG41IEaHI2d6rLaQTTWnkagEXc+hzYMmXFw8zR2AxWnVsw==
   dependencies:
     "@coral-xyz/anchor" "^0.28.0"
     "@coral-xyz/borsh" "^0.28.0"
