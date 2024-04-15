@@ -151,7 +151,7 @@ const SubmitForm = ({ kind, mintAddress, decimals, position }: { kind: ActionKin
       const txId = await processAction(sendTransaction, connection, market!, kind, publicKey!, mintAddress, amount, lutAddress);
 
       alert(`Transaction complete: ${txId}`);
-      refresh();
+      await refresh();
     } catch (e) {
       alert(JSON.stringify(e));
       console.log(e);

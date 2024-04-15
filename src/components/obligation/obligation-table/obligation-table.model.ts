@@ -30,8 +30,6 @@ export function usePositions({ market, positions }: { market: KaminoMarket, posi
 }
 
 function toUIPosition({ reserve, position }: { reserve: KaminoReserve, position: Position }): UIPosition {
-  const mintAddress = position.mintAddress.toBase58();
-
   return {
     mintAddress: position.mintAddress,
     symbol: reserve.getTokenSymbol(),
