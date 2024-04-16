@@ -1,3 +1,4 @@
+import { ProgressIcon } from "../../progress-icon";
 import * as css from "./refresh-button.css";
 
 export const RefreshButton = ({
@@ -15,7 +16,7 @@ export const RefreshButton = ({
       disabled={isMarketFetching || isCustomerFetching}
       onClick={() => refresh()}
     >
-      {(isMarketFetching || isCustomerFetching) && <Circle />}
+      {(isMarketFetching || isCustomerFetching) && <ProgressIcon />}
       {humanizeProgressState({ isMarketFetching, isCustomerFetching })}
     </button>
   );
@@ -32,6 +33,3 @@ function humanizeProgressState({
   if (isCustomerFetching) return "Refreshing customer...";
   else return "Refresh";
 }
-
-export const Circle = () =>
-  <div className={css.circle} />

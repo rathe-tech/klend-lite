@@ -3,31 +3,33 @@
 import { useCallback, useState } from "react";
 
 import Decimal from "decimal.js";
+
 import { Connection, PublicKey, Transaction, TransactionSignature, VersionedTransaction } from "@solana/web3.js";
 import { KaminoAction, KaminoMarket, KaminoObligation, PROGRAM_ID, Position, VanillaObligation, buildVersionedTransaction } from "@hubbleprotocol/kamino-lending-sdk";
 
 import { Assert, UIUtils } from "../../../utils";
+import { ProgressIcon } from "../../progress-icon";
 import { BalanceInfo } from "../balance-info";
 import { ActionKind, useActionForm } from "../action-form.model";
 import * as css from "./panel.css";
-import { Circle } from "../../market/refresh-button/refresh-button.view";
 import { DONATION_ADDRESS } from "../../../config";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useMarket, useMarketInfo, useRefresh } from "../../market/market.model";
+import { useMarketInfo, useRefresh } from "../../market/market.model";
 import { SendTransactionOptions } from "@solana/wallet-adapter-base";
 
+
 export function useAction({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) {
-  const { market, customer } = useActionForm();
+  const { market, obligation, tokenBalances } = useActionForm();
   Assert.some(market, "Market not loaded");
-  Assert.some(customer, "Customer not loaded");
+  Assert.some(obligation, "Customer not loaded");
+  Assert.some(tokenBalances, "Customer not loaded");
 
   const reserve = market.getReserveByMint(mintAddress);
   Assert.some(reserve, "Reserve not loaded");
 
   const { address: reserveAddress, symbol, stats: { decimals } } = reserve;
-  const balance = UIUtils.toUINumber(customer.tokenBalances.get(mintAddress.toBase58()) || new Decimal(0), decimals);
+  const balance = UIUtils.toUINumber(tokenBalances.get(mintAddress.toBase58()) || new Decimal(0), decimals);
 
-  const { obligation } = customer;
   const positionAmount = UIUtils.toUINumber(extractPositionAmount({ kind, obligation, reserveAddress }), decimals);
 
   const position = extractPosition({ kind, obligation, reserveAddress });
@@ -137,7 +139,7 @@ const SubmitForm = ({ kind, mintAddress, decimals, position }: { kind: ActionKin
   const [inProgress, setInProgress] = useState(false);
   const { publicKey } = useWallet();
   const { lutAddress } = useMarketInfo();
-  const { market, customer } = useActionForm();
+  const { market, obligation } = useActionForm();
   const refresh = useRefresh();
   const { connection } = useConnection();
   const { sendTransaction } = useWallet();
@@ -172,7 +174,7 @@ const SubmitForm = ({ kind, mintAddress, decimals, position }: { kind: ActionKin
         className={css.submit}
         onClick={() => onSubmit(value)}
       >
-        {inProgress && <Circle />}
+        {inProgress && <ProgressIcon />}
         {chooseButtonCaption(kind, inProgress)}
       </button>
     </>

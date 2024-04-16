@@ -1,7 +1,7 @@
+import Decimal from "decimal.js";
 import { createContext, useContext } from "react";
 import { PublicKey } from "@solana/web3.js";
-import { useMarket, useCustomer, Customer } from "../market/market.model";
-import { KaminoMarket } from "@hubbleprotocol/kamino-lending-sdk";
+import { KaminoMarket, KaminoObligation } from "@hubbleprotocol/kamino-lending-sdk";
 
 export enum ActionKind {
   Supply,
@@ -11,8 +11,8 @@ export enum ActionKind {
 }
 
 export module ActionKind {
-  export function isClosePositionKind(tag: ActionKind) {
-    return tag === ActionKind.Repay || tag === ActionKind.Supply;
+  export function isClosePositionKind(kind: ActionKind) {
+    return kind === ActionKind.Repay || kind === ActionKind.Withdraw;
   }
 }
 
@@ -24,7 +24,8 @@ export interface Action {
 
 export interface ActionFormContext {
   market: KaminoMarket | null | undefined;
-  customer: Customer | null | undefined;
+  obligation: KaminoObligation | null | undefined,
+  tokenBalances: Map<string, Decimal> | null | undefined,
 
   action: Action | null;
   open: (action: Action) => void;

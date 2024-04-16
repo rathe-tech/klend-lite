@@ -7,7 +7,8 @@
         "resolveJsonModule": true,
         "jsx": "react-jsx",
         "paths": {
-            "@solana/spl-token": ["./node_modules/@solana/spl-token"]
+            "@solana/spl-token": ["./node_modules/@solana/spl-token"],
+            "@queries/*": ["./src/queries/*"],
         }
     },
     "exclude": ["./node_modules"]

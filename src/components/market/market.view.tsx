@@ -1,11 +1,16 @@
 import { Reserves } from "../reserves";
 import { Obligation } from "../obligation";
-import { ActionFormProvider } from "../action-form"
+import { ActionFormProvider } from "../action-form";
 
 import { CustomerStats } from "./customer-stats";
 import { RefreshButton } from "./refresh-button";
 
-import { useCustomer, useMarket, useRefresh } from "./market.model";
+import { 
+  useMarket, 
+  useObligation, 
+  useTokenBalances, 
+  useRefresh 
+} from "./market.model";
 import * as css from "./market.css";
 
 export const Market = () =>
@@ -17,7 +22,9 @@ export const Market = () =>
 
 const Content = () => {
   const marketState = useMarket();
-  const customerState = useCustomer(marketState.data);
+  const obligationState = useObligation(marketState.data);
+  const tokenBalances = useTokenBalances(marketState.data);
+
   const refresh = useRefresh();
 
   if (marketState.isPending) {
@@ -35,26 +42,27 @@ const Content = () => {
   return (
     <ActionFormProvider
       market={marketState.data}
-      customer={customerState.data}
+      obligation={obligationState.data}
+      tokenBalances={tokenBalances.data}
     >
       <div className={css.customerStatsContainer}>
-        <CustomerStats obligation={customerState.data?.obligation} />
+        <CustomerStats obligation={obligationState.data} />
         <RefreshButton
           refresh={refresh}
           isMarketFetching={marketState.isFetching}
-          isCustomerFetching={customerState.isFetching}
+          isCustomerFetching={obligationState.isFetching || tokenBalances.isFetching}
         />
       </div>
-      {customerState.data?.obligation &&
+      {obligationState.data &&
         <Obligation
           market={marketState.data}
-          obligation={customerState.data!.obligation}
+          obligation={obligationState.data}
         />
       }
       <Reserves
         marketAddress={marketState.data.address}
         reserves={marketState.data.reservesActive}
-        isEnabled={!!customerState.isFetched}
+        isEnabled={obligationState.isFetched && tokenBalances.isFetched}
       />
     </ActionFormProvider>
   );

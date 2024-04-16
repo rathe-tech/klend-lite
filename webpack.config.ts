@@ -45,7 +45,8 @@ const config: ConfigSelector = (env, argv) => {
         "zlib": false,  // for wallet provider
       },
       alias: {
-        process: "process/browser"
+        process: "process/browser",
+        "@queries": path.resolve(__dirname, "src/queries"),
       }
     },
     module: {

@@ -1,11 +1,12 @@
+import Decimal from "decimal.js";
 import { useCallback, useState, memo, useEffect } from "react";
+import { KaminoMarket, KaminoObligation } from "@hubbleprotocol/kamino-lending-sdk";
+
 import { Tabs } from "./tabs";
 import { Panel } from "./panel";
 
 import { ActionFormContext, Action, useActionForm } from "./action-form.model";
 import * as css from "./action-form.css";
-import { KaminoMarket } from "@hubbleprotocol/kamino-lending-sdk";
-import { Customer } from "../market/market.model";
 
 const ActionFormAnchor = () => {
   const { action, close } = useActionForm();
@@ -19,7 +20,7 @@ const ActionFormAnchor = () => {
       action={action}
       close={close}
     />
-  )
+  );
 };
 
 const ActionForm = ({ action, close }: { action: Action, close: () => void }) => {
@@ -49,15 +50,15 @@ const ActionForm = ({ action, close }: { action: Action, close: () => void }) =>
   );
 };
 
-
-
 export const ActionFormProvider = ({
   market,
-  customer,
+  obligation,
+  tokenBalances,
   children
 }: {
   market: KaminoMarket | null | undefined,
-  customer: Customer | null | undefined,
+  obligation: KaminoObligation | null | undefined,
+  tokenBalances: Map<string, Decimal> | null | undefined,
   children: React.ReactNode
 }) => {
   const [action, setAction] = useState<Action | null>(null);
@@ -68,7 +69,7 @@ export const ActionFormProvider = ({
   const Children = memo(() => children);
 
   return (
-    <ActionFormContext.Provider value={{ market, customer, action, close, open }}>
+    <ActionFormContext.Provider value={{ market, obligation, tokenBalances, action, close, open }}>
       <Children />
       <ActionFormAnchor />
     </ActionFormContext.Provider>
