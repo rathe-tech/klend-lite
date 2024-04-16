@@ -19,8 +19,7 @@ import * as css from "./panel.css";
 export function useAction({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) {
   const { market, obligation, tokenBalances } = useActionForm();
   Assert.some(market, "Market not loaded");
-  Assert.some(obligation, "Customer not loaded");
-  Assert.some(tokenBalances, "Customer not loaded");
+  Assert.some(tokenBalances, "Token balances not loaded");
 
   const reserve = market.getReserveByMint(mintAddress);
   Assert.some(reserve, "Reserve not loaded");
@@ -41,7 +40,7 @@ function extractPositionAmount({
   reserveAddress,
 }: {
   kind: ActionKind,
-  obligation: KaminoObligation | null,
+  obligation: KaminoObligation | null | undefined,
   reserveAddress: PublicKey,
 }) {
   if (obligation == null) {
@@ -66,7 +65,7 @@ function extractPosition({
   reserveAddress,
 }: {
   kind: ActionKind,
-  obligation: KaminoObligation | null,
+  obligation: KaminoObligation | null | undefined,
   reserveAddress: PublicKey,
 }) {
   if (obligation == null) {

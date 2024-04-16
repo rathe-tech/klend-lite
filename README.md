@@ -12,7 +12,6 @@ lending market (https://app.kamino.finance).
 - Minimum dependencies
 
 ### Limitations:
-- Only the Solflare wallet is supported
 - Desktop-first UI
 - Some advanced user knowledge required
 
