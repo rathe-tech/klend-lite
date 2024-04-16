@@ -46,7 +46,10 @@ const config: ConfigSelector = (env, argv) => {
       },
       alias: {
         process: "process/browser",
+        "@components": path.resolve(__dirname, "src/components"),
         "@queries": path.resolve(__dirname, "src/queries"),
+        "@misc": path.resolve(__dirname, "src/misc"),
+        "@theme": path.resolve(__dirname, "src/theme"),
       }
     },
     module: {

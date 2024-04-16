@@ -1,9 +1,9 @@
 import { KaminoObligation } from "@hubbleprotocol/kamino-lending-sdk";
-import { useCustomerStats } from "./customer-stats.model";
-import * as css from "./customer-stats.css";
+import { useObligationStats } from "./obligation-stats.model";
+import * as css from "./obligation-stats.css";
 
-export const CustomerStats = ({ obligation }: { obligation: KaminoObligation | null | undefined }) => {
-  const { borrowPower, ltv, maxLtv, liquidationLtv } = useCustomerStats(obligation);
+export const ObligationStats = ({ obligation }: { obligation: KaminoObligation | null | undefined }) => {
+  const { borrowPower, ltv, maxLtv, liquidationLtv } = useObligationStats(obligation);
 
   return (
     <div className={css.stats}>

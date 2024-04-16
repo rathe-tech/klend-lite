@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { MARKETS, MarketInfo } from "../../config";
+import { MARKETS, MarketInfo } from "@misc/config";
 import * as css from "./market-select.css";
 
 export const MarketSelect = () =>

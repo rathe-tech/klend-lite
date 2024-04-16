@@ -6,10 +6,11 @@ import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { SolflareWalletAdapter } from "@solana/wallet-adapter-solflare";
 import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
 
-import { AppBar } from "./components/app-bar";
-import { MarketSelect } from "./components/market-select";
-import { Market } from "./components/market";
-import { RPC_ENDPOINT } from "./config";
+import { AppBar } from "@components/app-bar";
+import { MarketSelect } from "@components/market-select";
+import { Market } from "@components/market";
+
+import { RPC_ENDPOINT } from "@misc/config";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } }

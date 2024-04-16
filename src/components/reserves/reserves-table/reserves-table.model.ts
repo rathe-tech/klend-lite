@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
-import { UIUtils } from "../../../utils";
-import { MARKETS } from "../../../config";
+import { UIUtils } from "../../../misc/utils";
+import { MARKETS } from "../../../misc/config";
 
 export interface UIReserve {
   address: PublicKey;

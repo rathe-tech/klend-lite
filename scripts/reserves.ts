@@ -1,7 +1,7 @@
 import { Connection, VersionedTransaction } from "@solana/web3.js";
 import Solflare from "@solflare-wallet/sdk";
 import { KaminoMarket } from "@hubbleprotocol/kamino-lending-sdk";
-import { MARKETS, RPC_ENDPOINT } from "../src/config";
+import { MARKETS, RPC_ENDPOINT } from "../src/misc/config";
 
 (async () => {
   const connection = new Connection(RPC_ENDPOINT);

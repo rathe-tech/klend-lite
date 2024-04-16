@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { KaminoObligation } from "@hubbleprotocol/kamino-lending-sdk";
-import { UIUtils } from "../../../utils";
+import { UIUtils } from "@misc/utils";
 
-export function useCustomerStats(obligation: KaminoObligation | null | undefined) {
+export function useObligationStats(obligation: KaminoObligation | null | undefined) {
   return useMemo(() => {
     if (obligation == null) {
       return { borrowPower: "-", ltv: "-", maxLtv: "-", liquidationLtv: "-" };

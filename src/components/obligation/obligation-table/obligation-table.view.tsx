@@ -2,9 +2,9 @@ import { useMemo } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { KaminoMarket, Position } from "@hubbleprotocol/kamino-lending-sdk";
 
+import { ActionKind, useActionForm } from "../../action-form";
 import { PositionKind, UIPosition, usePositions } from "./obligation-table.model";
 import * as css from "./obligation-table.css";
-import { ActionKind, useActionForm } from "../../action-form";
 
 export const ObligationTable = ({
   kind,

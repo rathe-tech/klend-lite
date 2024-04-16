@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { KaminoMarket, KaminoReserve, Position } from "@hubbleprotocol/kamino-lending-sdk";
-import { UIUtils } from "../../../utils";
+import { UIUtils } from "@misc/utils";
 
 export interface MintInfo {
   mintAddress: PublicKey,

@@ -8,7 +8,10 @@
         "jsx": "react-jsx",
         "paths": {
             "@solana/spl-token": ["./node_modules/@solana/spl-token"],
+            "@components/*": ["./src/components/*"],
             "@queries/*": ["./src/queries/*"],
+            "@misc/*": ["./src/misc/*"],
+            "@theme/*": ["./src/theme/*"],
         }
     },
     "exclude": ["./node_modules"]

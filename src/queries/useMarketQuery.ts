@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { KaminoMarket } from "@hubbleprotocol/kamino-lending-sdk";
-import { Assert } from "../utils";
+import { Assert } from "@misc/utils";
 
 export function useMarketQuery(connection: Connection, marketAddress: PublicKey) {
   const marketCache = useMemo(() => new Map<string, KaminoMarket>(), [connection]);

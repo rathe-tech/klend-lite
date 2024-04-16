@@ -2,14 +2,14 @@ import { Reserves } from "../reserves";
 import { Obligation } from "../obligation";
 import { ActionFormProvider } from "../action-form";
 
-import { CustomerStats } from "./customer-stats";
+import { ObligationStats } from "../obligation-stats";
 import { RefreshButton } from "./refresh-button";
 
-import { 
-  useMarket, 
-  useObligation, 
-  useTokenBalances, 
-  useRefresh 
+import {
+  useMarket,
+  useObligation,
+  useTokenBalances,
+  useRefresh
 } from "./market.model";
 import * as css from "./market.css";
 
@@ -46,7 +46,7 @@ const Content = () => {
       tokenBalances={tokenBalances.data}
     >
       <div className={css.customerStatsContainer}>
-        <CustomerStats obligation={obligationState.data} />
+        <ObligationStats obligation={obligationState.data} />
         <RefreshButton
           refresh={refresh}
           isMarketFetching={marketState.isFetching}

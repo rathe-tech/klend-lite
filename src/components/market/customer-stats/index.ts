@@ -1,1 +1,0 @@
-export { CustomerStats } from "./customer-stats.view";

@@ -1,6 +1,6 @@
 import { KaminoMarket, KaminoObligation } from "@hubbleprotocol/kamino-lending-sdk";
+import { UIUtils } from "@misc/utils";
 import { ObligationTable, PositionKind } from "./obligation-table";
-import { UIUtils } from "../../utils";
 import * as css from "./obligation.css";
 
 export const Obligation = ({

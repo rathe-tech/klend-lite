@@ -5,8 +5,8 @@ import { PublicKey } from "@solana/web3.js";
 import { AccountLayout, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { KaminoMarket } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { Assert, Option } from "../utils";
-import { WSOL_MINT_ADDRESS } from "../config";
+import { Assert, Option } from "@misc/utils";
+import { WSOL_MINT_ADDRESS } from "@misc/config";
 
 export function useTokenBalancesQuery(market: KaminoMarket | null | undefined, walletAddress: PublicKey | null) {
   return useQuery({

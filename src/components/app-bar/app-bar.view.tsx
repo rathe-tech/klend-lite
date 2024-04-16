@@ -1,5 +1,5 @@
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { VERSION } from "../../config";
+import { VERSION } from "@misc/config";
 import * as css from "./app-bar.css";
 
 export const AppBar = () =>

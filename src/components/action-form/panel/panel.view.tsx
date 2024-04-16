@@ -1,22 +1,20 @@
 // TODO: Cleanup the mess below
 
 import { useCallback, useState } from "react";
-
 import Decimal from "decimal.js";
-
+import { SendTransactionOptions } from "@solana/wallet-adapter-base";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Connection, PublicKey, Transaction, TransactionSignature, VersionedTransaction } from "@solana/web3.js";
 import { KaminoAction, KaminoMarket, KaminoObligation, PROGRAM_ID, Position, VanillaObligation, buildVersionedTransaction } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { Assert, UIUtils } from "../../../utils";
+import { Assert, UIUtils } from "@misc/utils";
+import { DONATION_ADDRESS } from "@misc/config";
+
 import { ProgressIcon } from "../../progress-icon";
 import { BalanceInfo } from "../balance-info";
+import { useMarketInfo, useRefresh } from "../../market/market.model";
 import { ActionKind, useActionForm } from "../action-form.model";
 import * as css from "./panel.css";
-import { DONATION_ADDRESS } from "../../../config";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { useMarketInfo, useRefresh } from "../../market/market.model";
-import { SendTransactionOptions } from "@solana/wallet-adapter-base";
-
 
 export function useAction({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) {
   const { market, obligation, tokenBalances } = useActionForm();

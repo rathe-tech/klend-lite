@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css";
-import { mobileMediaQuery, vars } from "../../theme/vars.css";
+import { mobileMediaQuery, vars } from "@theme/vars.css";
 
 export const marketSelect = style({
   display: "flex",

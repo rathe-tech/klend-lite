@@ -9,7 +9,7 @@ import { useMarketQuery } from "@queries/useMarketQuery";
 import { useObligationQuery } from "@queries/useObligationQuery";
 import { useTokenBalancesQuery } from "@queries/useTokenBalancesQuery";
 
-import { chooseMarketInfo } from "../../config";
+import { chooseMarketInfo } from "@misc/config";
 
 export function useMarketInfo() {
   const { marketAddress } = useParams();

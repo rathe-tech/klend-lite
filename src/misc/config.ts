@@ -1,6 +1,6 @@
 import { PublicKey } from "@solana/web3.js";
 import { Option } from "./utils";
-import { version } from "../package.json";
+import { version } from "../../package.json";
 
 export const VERSION = version;
 export const RPC_ENDPOINT = "https://solana-mainnet.g.alchemy.com/v2/bQRVX2kT0wbFCsYAHEJrY_JlSAgAffby";
