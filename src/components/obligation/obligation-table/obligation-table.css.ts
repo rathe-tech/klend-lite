@@ -10,6 +10,9 @@ export const noPosition = style({
 export const noPositionText = style({
   textAlign: "center !important" as any,
   fontWeight: "bold",
+  paddingTop: "16px",
+  paddingBottom: "16px",
+  fontSize: "14px",
   color: vars.color.labelTertiary,
 });
 

@@ -20,7 +20,7 @@ export const ObligationTable = ({
   const formatted = usePositions({ market, positions });
 
   return (
-    <table style={{ height: "100%" }}>
+    <table>
       <thead>
         <tr>
           <th colSpan={2}>{toTitle(kind)}</th>
