@@ -7,12 +7,12 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Connection, PublicKey, Transaction, TransactionSignature, VersionedTransaction } from "@solana/web3.js";
 import { KaminoAction, KaminoMarket, KaminoObligation, PROGRAM_ID, Position, VanillaObligation, buildVersionedTransaction } from "@hubbleprotocol/kamino-lending-sdk";
 
+import { useMarket } from "@components/MarketContext";
 import { Assert, UIUtils } from "@misc/utils";
 import { DONATION_ADDRESS } from "@misc/config";
 
 import { ProgressIcon } from "../../progress-icon";
 import { BalanceInfo } from "../balance-info";
-import { useMarketInfo, useRefresh } from "../../market/market.model";
 import { ActionKind, useActionForm } from "../action-form.model";
 import * as css from "./panel.css";
 
@@ -133,9 +133,8 @@ const SubmitForm = ({ kind, mintAddress, decimals, position }: { kind: ActionKin
   const [value, setValue] = useState("");
   const [inProgress, setInProgress] = useState(false);
   const { publicKey } = useWallet();
-  const { lutAddress } = useMarketInfo();
-  const { market, obligation } = useActionForm();
-  const refresh = useRefresh();
+  const { marketInfo: { lutAddress }, refresh } = useMarket()
+  const { market } = useActionForm();
   const { connection } = useConnection();
   const { sendTransaction } = useWallet();
 

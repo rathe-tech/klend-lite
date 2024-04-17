@@ -1,8 +1,9 @@
 import { useMemo } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
-import { UIUtils } from "../../../misc/utils";
-import { MARKETS } from "../../../misc/config";
+
+import { UIUtils } from "@misc/utils";
+import { MarketInfo } from "@misc/config";
 
 export interface UIReserve {
   address: PublicKey;
@@ -119,9 +120,9 @@ const ALTCOINS_MARKET_RESERVE_ORDER = new Map([
 ].map((r, i) => [r.toBase58(), i]));
 
 const MARKET_RESERVES_ORDERS = new Map([
-  [MARKETS[0].address.toBase58(), MAIN_MARKET_RESERVES_ORDER],
-  [MARKETS[1].address.toBase58(), JLP_MARKET_RESERVE_ORDER],
-  [MARKETS[2].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[0].address.toBase58(), MAIN_MARKET_RESERVES_ORDER],
+  [MarketInfo.KNOWN_MARKETS[1].address.toBase58(), JLP_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[2].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
 ]);
 
 function chooseReservesOrder(marketAddress: string) {

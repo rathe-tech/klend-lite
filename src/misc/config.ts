@@ -14,30 +14,32 @@ export interface MarketInfo {
   main?: boolean;
 }
 
-export const MARKETS: MarketInfo[] = [
-  {
-    name: "Main Market",
-    address: new PublicKey("7u3HeHxYDLhnCoErrtycNokbQYbWGzLs6JSDqGAv5PfF"),
-    lutAddress: new PublicKey("284iwGtA9X9aLy3KsyV8uT2pXLARhYbiSi5SiM2g47M2"),
-    main: true,
-  }, {
-    name: "JLP Market",
-    address: new PublicKey("DxXdAyU3kCjnyggvHmY5nAwg5cRbbmdyX3npfDMjjMek"),
-    lutAddress: new PublicKey("GprZNyWk67655JhX6Rq9KoebQ6WkQYRhATWzkx2P2LNc"),
-  }, {
-    name: "Altcoins Market",
-    address: new PublicKey("ByYiZxp8QrdN9qbdtaAiePN8AAr3qvTPppNJDpf5DVJ5"),
-    lutAddress: new PublicKey("x2uEQSaqrZs5UnyXjiNktRhrAy6iNFeSKai9VNYFFuy"),
-  }
-];
+export module MarketInfo {
+  export const KNOWN_MARKETS: MarketInfo[] = [
+    {
+      name: "Main Market",
+      address: new PublicKey("7u3HeHxYDLhnCoErrtycNokbQYbWGzLs6JSDqGAv5PfF"),
+      lutAddress: new PublicKey("284iwGtA9X9aLy3KsyV8uT2pXLARhYbiSi5SiM2g47M2"),
+      main: true,
+    }, {
+      name: "JLP Market",
+      address: new PublicKey("DxXdAyU3kCjnyggvHmY5nAwg5cRbbmdyX3npfDMjjMek"),
+      lutAddress: new PublicKey("GprZNyWk67655JhX6Rq9KoebQ6WkQYRhATWzkx2P2LNc"),
+    }, {
+      name: "Altcoins Market",
+      address: new PublicKey("ByYiZxp8QrdN9qbdtaAiePN8AAr3qvTPppNJDpf5DVJ5"),
+      lutAddress: new PublicKey("x2uEQSaqrZs5UnyXjiNktRhrAy6iNFeSKai9VNYFFuy"),
+    },
+  ] as const;
 
-export function chooseMarketInfo(marketAddress: string | undefined | null) {
-  if (marketAddress == null) {
-    const market = MARKETS.find(x => x.main);
-    return Option.unwrap(market);
-  } else {
-    const nativeMarketAddress = new PublicKey(marketAddress);
-    const market = MARKETS.find(x => x.address.equals(nativeMarketAddress));
-    return Option.unwrap(market);
+  export function choose(marketAddress: string | undefined | null) {
+    if (marketAddress == null) {
+      const market = KNOWN_MARKETS.find(x => x.main);
+      return Option.unwrap(market);
+    } else {
+      const nativeMarketAddress = new PublicKey(marketAddress);
+      const market = KNOWN_MARKETS.find(x => x.address.equals(nativeMarketAddress));
+      return Option.unwrap(market);
+    }
   }
 }
