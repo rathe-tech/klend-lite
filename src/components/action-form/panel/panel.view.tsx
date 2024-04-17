@@ -2,14 +2,13 @@
 
 import { useCallback, useState } from "react";
 import Decimal from "decimal.js";
-import { SendTransactionOptions } from "@solana/wallet-adapter-base";
+import { PublicKey } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { Connection, PublicKey, Transaction, TransactionSignature, VersionedTransaction } from "@solana/web3.js";
-import { KaminoAction, KaminoMarket, KaminoObligation, PROGRAM_ID, Position, VanillaObligation, buildVersionedTransaction } from "@hubbleprotocol/kamino-lending-sdk";
+import { KaminoObligation, Position } from "@hubbleprotocol/kamino-lending-sdk";
 
+import { borrow, repay, supply, withdraw, ActionParams } from "@queries/api";
 import { useMarket } from "@components/market-context";
 import { Assert, UIUtils } from "@misc/utils";
-import { DONATION_ADDRESS } from "@misc/config";
 
 import { ProgressIcon } from "../../progress-icon";
 import { BalanceInfo } from "../balance-info";
@@ -123,12 +122,6 @@ export const Panel = ({ kind, mintAddress }: { kind: ActionKind, mintAddress: Pu
   );
 };
 
-type SendTransaction =
-  (transaction: Transaction | VersionedTransaction,
-    connection: Connection,
-    options?: SendTransactionOptions
-  ) => Promise<TransactionSignature>;
-
 const SubmitForm = ({ kind, mintAddress, decimals, position }: { kind: ActionKind, mintAddress: PublicKey, decimals: number, position: Position | null | undefined }) => {
   const [value, setValue] = useState("0");
   const [inProgress, setInProgress] = useState(false);
@@ -144,7 +137,7 @@ const SubmitForm = ({ kind, mintAddress, decimals, position }: { kind: ActionKin
       const inputAmount = UIUtils.toNativeNumber(value.replaceAll(",", "").trim(), decimals);
       const canBeClosed = ActionKind.isClosePositionKind(kind);
       const amount = canBeClosed ? computeClosePositionAmount(inputAmount, position) : inputAmount;
-      const txId = await processAction(sendTransaction, connection, market!, kind, publicKey!, mintAddress, amount, lutAddress);
+      const txId = await processAction(kind, { sendTransaction, connection, market: market!, walletAddress: publicKey!, mintAddress, amount, lutAddress });
 
       alert(`Transaction complete: ${txId}`);
       await refresh();
@@ -211,144 +204,17 @@ function chooseButtonCaption(kind: ActionKind, inProgress: boolean) {
   }
 }
 
-async function processAction(sendTransaction: SendTransaction, connection: Connection, market: KaminoMarket, kind: ActionKind, walletAddress: PublicKey, mintAddress: PublicKey, amount: Decimal, lutAddress: PublicKey): Promise<string> {
+async function processAction(kind: ActionKind, params: ActionParams): Promise<string> {
   switch (kind) {
     case ActionKind.Supply:
-      return await supply(sendTransaction, connection, market, walletAddress, mintAddress, amount, lutAddress);
+      return await supply(params);
     case ActionKind.Borrow:
-      return await borrow(sendTransaction, connection, market, walletAddress, mintAddress, amount, lutAddress);
+      return await borrow(params);
     case ActionKind.Repay:
-      return await repay(sendTransaction, connection, market, walletAddress, mintAddress, amount, lutAddress);
+      return await repay(params);
     case ActionKind.Withdraw:
-      return await withdraw(sendTransaction, connection, market, walletAddress, mintAddress, amount, lutAddress);
+      return await withdraw(params);
     default:
       throw new Error(`Unsupported action kind: ${kind}`);
   }
-}
-
-const OBLIGATION_TYPE = new VanillaObligation(PROGRAM_ID);
-
-async function supply(sendTransaction: SendTransaction, connection: Connection, market: KaminoMarket, walletAddress: PublicKey, mintAddress: PublicKey, amount: Decimal, lutAddress: PublicKey): Promise<string> {
-  const action = await KaminoAction.buildDepositTxns(
-    market,
-    amount.toString(),
-    mintAddress,
-    walletAddress,
-    OBLIGATION_TYPE,
-    0,
-    undefined,
-    undefined,
-    undefined,
-    DONATION_ADDRESS
-  );
-  const instructions = [
-    ...action.setupIxs,
-    ...action.lendingIxs,
-    ...action.cleanupIxs,
-  ];
-  const transaction = await buildVersionedTransaction(
-    connection,
-    walletAddress,
-    instructions,
-    [lutAddress]
-  );
-  return await sendAndConfirmTransaction(sendTransaction, connection, transaction);
-}
-
-async function borrow(sendTransaction: SendTransaction, connection: Connection, market: KaminoMarket, walletAddress: PublicKey, mintAddress: PublicKey, amount: Decimal, lutAddress: PublicKey): Promise<string> {
-  const action = await KaminoAction.buildBorrowTxns(
-    market,
-    amount.toString(),
-    mintAddress,
-    walletAddress,
-    OBLIGATION_TYPE,
-    0,
-    true,
-    false,
-    true,
-    DONATION_ADDRESS,
-  );
-  const instructions = [
-    ...action.setupIxs,
-    ...action.lendingIxs,
-    ...action.cleanupIxs,
-  ];
-  const transaction = await buildVersionedTransaction(
-    connection,
-    walletAddress,
-    instructions,
-    [lutAddress]
-  );
-  return await sendAndConfirmTransaction(sendTransaction, connection, transaction);
-}
-
-async function repay(sendTransaction: SendTransaction, connection: Connection, market: KaminoMarket, walletAddress: PublicKey, mintAddress: PublicKey, amount: Decimal, lutAddress: PublicKey): Promise<string> {
-  const slot = await connection.getSlot();
-  const action = await KaminoAction.buildRepayTxns(
-    market,
-    amount.toString(),
-    mintAddress,
-    walletAddress,
-    OBLIGATION_TYPE,
-    slot,
-    undefined,
-    0,
-    true,
-    undefined,
-    undefined,
-    DONATION_ADDRESS
-  );
-  const instructions = [
-    ...action.setupIxs,
-    ...action.lendingIxs,
-    ...action.cleanupIxs,
-  ];
-  const transaction = await buildVersionedTransaction(
-    connection,
-    walletAddress,
-    instructions,
-    [lutAddress]
-  );
-  return await sendAndConfirmTransaction(sendTransaction, connection, transaction);
-}
-
-async function withdraw(sendTransaction: SendTransaction, connection: Connection, market: KaminoMarket, walletAddress: PublicKey, mintAddress: PublicKey, amount: Decimal, lutAddress: PublicKey): Promise<string> {
-  const action = await KaminoAction.buildWithdrawTxns(
-    market,
-    amount.toString(),
-    mintAddress,
-    walletAddress,
-    OBLIGATION_TYPE,
-    0,
-    true,
-    undefined,
-    undefined,
-    DONATION_ADDRESS
-  );
-  const instructions = [
-    ...action.setupIxs,
-    ...action.lendingIxs,
-    ...action.cleanupIxs,
-  ];
-  const transaction = await buildVersionedTransaction(
-    connection,
-    walletAddress,
-    instructions,
-    [lutAddress]
-  );
-  return await sendAndConfirmTransaction(sendTransaction, connection, transaction);
-}
-
-async function sendAndConfirmTransaction(sendTransaction: SendTransaction, connection: Connection, transaction: VersionedTransaction): Promise<string> {
-  const transactionId = await sendTransaction(transaction, connection);
-  const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash({ commitment: "finalized" });
-  const status = await connection.confirmTransaction({
-    signature: transactionId,
-    blockhash,
-    lastValidBlockHeight
-  }, "confirmed");
-  if (status.value.err) {
-    throw new Error(status.value.err.toString());
-  }
-  return transactionId;
 }

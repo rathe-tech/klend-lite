@@ -17,7 +17,7 @@ export interface MarketContext {
   refresh: () => Promise<void>;
 }
 
-export const MarketContext = createContext<MarketContext | null>(null);
+const MarketContext = createContext<MarketContext | null>(null);
 
 export const MarketProvider = ({ children }: { children: React.ReactNode }) => {
   const { connection } = useConnection();
