@@ -14,7 +14,7 @@ export interface MarketContext {
   marketState: ReturnType<typeof useMarketQuery>;
   obligationState: ReturnType<typeof useObligationQuery>;
   tokenBalancesState: ReturnType<typeof useTokenBalancesQuery>;
-  refresh: () => void;
+  refresh: () => Promise<void>;
 }
 
 export const MarketContext = createContext<MarketContext | null>(null);

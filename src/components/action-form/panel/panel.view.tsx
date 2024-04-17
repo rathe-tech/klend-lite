@@ -130,7 +130,7 @@ type SendTransaction =
   ) => Promise<TransactionSignature>;
 
 const SubmitForm = ({ kind, mintAddress, decimals, position }: { kind: ActionKind, mintAddress: PublicKey, decimals: number, position: Position | null | undefined }) => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState("0");
   const [inProgress, setInProgress] = useState(false);
   const { publicKey } = useWallet();
   const { marketInfo: { lutAddress }, refresh } = useMarket()
@@ -159,6 +159,7 @@ const SubmitForm = ({ kind, mintAddress, decimals, position }: { kind: ActionKin
   return (
     <>
       <input
+        autoFocus
         className={css.input}
         value={value}
         onChange={e => setValue(e.target.value)}
