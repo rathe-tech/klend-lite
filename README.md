@@ -1,4 +1,4 @@
-# [KLEND LITE](https://klend-lite.netlify.app/) - A Lightweight client for the Kamino lending market
+# [KLEND LITE](https://klend.xyz/) - A Lightweight client for the Kamino lending market
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://badges.mit-license.org)
 
 ## About the project
