@@ -1,4 +1,4 @@
-import { MarketProvider, useMarket } from "@components/MarketContext";
+import { MarketProvider, useMarket } from "@components/market-context";
 
 import { Reserves } from "../reserves";
 import { Obligation } from "../obligation";
@@ -6,6 +6,7 @@ import { ActionFormProvider } from "../action-form";
 
 import { ObligationStats } from "../obligation-stats";
 import { RefreshButton } from "./refresh-button";
+import { Donation } from "../donation";
 
 import * as css from "./market.css";
 
@@ -58,6 +59,7 @@ const Content = () => {
           obligation={obligationState.data}
         />
       }
+      <Donation />
       <Reserves
         marketAddress={marketState.data.address}
         reserves={marketState.data.reservesActive}

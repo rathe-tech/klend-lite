@@ -7,7 +7,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Connection, PublicKey, Transaction, TransactionSignature, VersionedTransaction } from "@solana/web3.js";
 import { KaminoAction, KaminoMarket, KaminoObligation, PROGRAM_ID, Position, VanillaObligation, buildVersionedTransaction } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { useMarket } from "@components/MarketContext";
+import { useMarket } from "@components/market-context";
 import { Assert, UIUtils } from "@misc/utils";
 import { DONATION_ADDRESS } from "@misc/config";
 

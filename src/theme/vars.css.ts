@@ -7,6 +7,7 @@ export const mobileMediaQuery = `(max-width: ${mobileMax})`;
 export const vars = createGlobalTheme(":root", {
   color: {
     accentColor: "#00cc00",
+    accentColorDimmed: "#00cc0020",
     
     labelPrimary: "#fff",
     labelSecondary: "#9a9cab",
@@ -18,6 +19,7 @@ export const vars = createGlobalTheme(":root", {
 
     borderPrimary: "#30363d",
     borderPrimaryDisabled: "#30363d40",
+    borderAccent: "#00cc0040",
 
     buttonDefaultBackgroundRest: "#21262d",
     buttonDefaultBackgroundHover: "#292e36",
