@@ -26,9 +26,7 @@ export function useAction({ kind, mintAddress }: { kind: ActionKind, mintAddress
 
   const { address: reserveAddress, symbol, stats: { decimals } } = reserve;
   const balance = UIUtils.toUINumber(tokenBalances.get(mintAddress.toBase58()) || new Decimal(0), decimals);
-
   const positionAmount = UIUtils.toUINumber(extractPositionAmount({ kind, obligation, reserveAddress }), decimals);
-
   const position = extractPosition({ kind, obligation, reserveAddress });
 
   return { symbol, balance, positionAmount, decimals, position };
@@ -151,8 +149,8 @@ const SubmitForm = ({ kind, mintAddress, decimals, position }: { kind: ActionKin
 
       alert(`Transaction complete: ${txId}`);
       await refresh();
-    } catch (e) {
-      alert(JSON.stringify(e));
+    } catch (e: any) {
+      alert(e.toString());
       console.log(e);
     } finally {
       setInProgress(false);

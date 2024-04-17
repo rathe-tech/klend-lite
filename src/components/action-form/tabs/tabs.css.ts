@@ -6,7 +6,7 @@ export const tabs = style({
 });
 
 export const item = style({
-  fontSize: "14px",
+  fontSize: "16px",
   cursor: "pointer",
   flex: 1,
   display: "flex",

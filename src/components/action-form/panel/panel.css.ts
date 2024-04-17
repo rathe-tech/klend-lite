@@ -30,7 +30,7 @@ export const input = style({
 });
 
 export const submit = style({
-  fontSize: "14px",
+  fontSize: "16px",
   padding: "8px 0",
   display: "flex",
   columnGap: "10px",
