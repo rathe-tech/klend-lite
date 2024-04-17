@@ -5,7 +5,7 @@ import * as css from "./app-bar.css";
 export const AppBar = () =>
   <div className={css.appBar}>
     <div className={css.appBarBody}>
-      <div className={css.appTitle}>KLEND LITE {VERSION}</div>
+      <div className={css.appTitle}>KLEND {VERSION}</div>
       <WalletMultiButton />
     </div>
   </div>
