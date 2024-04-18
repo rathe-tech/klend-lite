@@ -12,7 +12,7 @@ export const Obligation = () => {
     return;
   }
 
-  if (marketState.isPending || obligationState.isPending) {
+  if (obligationState.isPending) {
     return (
       <div className={css.obligationContainer}>
         <SkeletonObligationTable kind={PositionKind.Supplied} />
@@ -25,7 +25,10 @@ export const Obligation = () => {
   const { data: obligation } = obligationState;
 
   Assert.some(market);
-  Assert.some(obligation);
+
+  if (obligation == null) {
+    return;
+  }
 
   return (
     <div className={css.obligationContainer}>
