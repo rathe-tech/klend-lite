@@ -4,6 +4,7 @@ import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 import { useActionForm, ActionKind } from "../../action-form";
 import { useReserves, UIReserve } from "./reserves-table.model";
 import * as css from "./reserve-table.css";
+import { SkeletonCell } from "@components/skeleton-cell";
 
 export const ReservesTable = ({
   marketAddress,
@@ -18,17 +19,7 @@ export const ReservesTable = ({
 
   return (
     <table>
-      <thead>
-        <tr>
-          <th>Asset</th>
-          <th>LTV / BF</th>
-          <th>Current Supply</th>
-          <th>Supply APY</th>
-          <th>Current Borrow</th>
-          <th>Borrow APY</th>
-          <th></th>
-        </tr>
-      </thead>
+      <ReservesColumns />
       <tbody>
         {sorted.map(reserve =>
           <ReserveRow
@@ -41,6 +32,29 @@ export const ReservesTable = ({
     </table>
   );
 }
+
+export const SkeletonReservesTable = () =>
+  <table>
+    <ReservesColumns />
+    <tbody>
+      <SkeletonReserveRow />
+      <SkeletonReserveRow />
+      <SkeletonReserveRow />
+    </tbody>
+  </table>
+
+const ReservesColumns = () =>
+  <thead>
+    <tr>
+      <th>Asset</th>
+      <th>LTV / BF</th>
+      <th>Current Supply</th>
+      <th>Supply APY</th>
+      <th>Current Borrow</th>
+      <th>Borrow APY</th>
+      <th></th>
+    </tr>
+  </thead>
 
 const ReserveRow = ({ reserve, isEnabled }: { reserve: UIReserve, isEnabled: boolean }) => {
   const { open } = useActionForm();
@@ -110,3 +124,31 @@ const ReserveRow = ({ reserve, isEnabled }: { reserve: UIReserve, isEnabled: boo
     </tr>
   );
 };
+
+const SkeletonReserveRow = () =>
+  <tr>
+    <td>
+      <SkeletonCell />
+    </td>
+    <td>
+      <SkeletonCell />
+    </td>
+    <td>
+      <SkeletonCell />
+    </td>
+    <td>
+    <SkeletonCell />
+    </td>
+    <td>
+      <SkeletonCell />
+    </td>
+    <td>
+      <SkeletonCell />
+    </td>
+    <td>
+      <div className={css.controls}>
+        <SkeletonCell />
+        <SkeletonCell />
+      </div>
+    </td>
+  </tr>

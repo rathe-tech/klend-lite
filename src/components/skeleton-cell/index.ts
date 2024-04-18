@@ -1,0 +1,1 @@
+export { SkeletonCell } from "./skeleton-cell.view";

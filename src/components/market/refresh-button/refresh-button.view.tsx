@@ -1,35 +1,37 @@
+import { useMarket } from "@components/market-context";
 import { ProgressIcon } from "../../progress-icon";
 import * as css from "./refresh-button.css";
 
-export const RefreshButton = ({
-  refresh,
-  isMarketFetching,
-  isCustomerFetching,
-}: {
-  refresh: () => void,
-  isMarketFetching: boolean,
-  isCustomerFetching: boolean,
-}) => {
+export const RefreshButton = () => {
+  const { marketState, obligationState, tokenBalancesState, refresh } = useMarket();
+  const isMarketFetching = marketState.isFetching;
+  const isObligationFetching = obligationState.isFetching;
+  const isTokenBalancesFetching = tokenBalancesState.isFetching;
+  const isInProgress = isMarketFetching || isObligationFetching || isTokenBalancesFetching;
+
   return (
     <button
       className={css.refreshButton}
-      disabled={isMarketFetching || isCustomerFetching}
+      disabled={isInProgress}
       onClick={() => refresh()}
     >
-      {(isMarketFetching || isCustomerFetching) && <ProgressIcon />}
-      {humanizeProgressState({ isMarketFetching, isCustomerFetching })}
+      {isInProgress && <ProgressIcon />}
+      {humanizeProgressState({ isMarketFetching, isObligationFetching, isTokenBalancesFetching })}
     </button>
   );
 }
 
-function humanizeProgressState({ 
-  isMarketFetching, 
-  isCustomerFetching,
-}: { 
+function humanizeProgressState({
+  isMarketFetching,
+  isObligationFetching,
+  isTokenBalancesFetching,
+}: {
   isMarketFetching: boolean,
-  isCustomerFetching: boolean,
+  isObligationFetching: boolean,
+  isTokenBalancesFetching: boolean,
 }) {
-  if (isMarketFetching) return "Refreshing market...";
-  if (isCustomerFetching) return "Refreshing customer...";
+  if (isMarketFetching) return "Fetching market...";
+  if (isObligationFetching) return "Fetching account...";
+  if (isTokenBalancesFetching) return "Fetching wallet...";
   else return "Refresh";
 }

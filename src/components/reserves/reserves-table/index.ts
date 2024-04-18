@@ -1,1 +1,1 @@
-export { ReservesTable } from "./reserves-table";
+export { ReservesTable, SkeletonReservesTable } from "./reserves-table";

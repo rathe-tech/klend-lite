@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo } from "react";
+import { createContext, memo, useCallback, useContext, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -9,12 +9,17 @@ import { useMarketQuery } from "@queries/useMarketQuery";
 import { useObligationQuery } from "@queries/useObligationQuery";
 import { useTokenBalancesQuery } from "@queries/useTokenBalancesQuery";
 
+export type MarketState = ReturnType<typeof useMarketQuery>;
+export type ObligationState = ReturnType<typeof useObligationQuery>;
+export type TokenBalancesState = ReturnType<typeof useTokenBalancesQuery>
+
 export interface MarketContext {
   marketInfo: MarketInfo;
-  marketState: ReturnType<typeof useMarketQuery>;
-  obligationState: ReturnType<typeof useObligationQuery>;
-  tokenBalancesState: ReturnType<typeof useTokenBalancesQuery>;
+  marketState: MarketState;
+  obligationState: ObligationState;
+  tokenBalancesState: TokenBalancesState;
   refresh: () => Promise<void>;
+  hasError: () => boolean;
 }
 
 const MarketContext = createContext<MarketContext | null>(null);
@@ -38,6 +43,10 @@ export const MarketProvider = ({ children }: { children: React.ReactNode }) => {
     await queryClient.invalidateQueries({ queryKey: ["balances", marketAddress, publicKey?.toBase58()] });
   }, [marketInfo.address, publicKey]);
 
+  const hasError = useCallback(() => {
+    return marketState.isError || obligationState.isError || tokenBalancesState.isError;
+  }, [marketState, obligationState, tokenBalancesState]);
+
   return (
     <MarketContext.Provider value={{
       marketInfo,
@@ -45,6 +54,7 @@ export const MarketProvider = ({ children }: { children: React.ReactNode }) => {
       obligationState,
       tokenBalancesState,
       refresh,
+      hasError,
     }}>
       {children}
     </MarketContext.Provider>

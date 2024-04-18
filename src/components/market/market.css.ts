@@ -20,7 +20,7 @@ export const marketBody = style({
   }
 });
 
-export const customerStatsContainer = style({
+export const statsContainer = style({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",

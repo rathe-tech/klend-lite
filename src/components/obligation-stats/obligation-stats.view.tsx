@@ -1,9 +1,14 @@
-import { KaminoObligation } from "@hubbleprotocol/kamino-lending-sdk";
+import { useMarket } from "@components/market-context";
 import { useObligationStats } from "./obligation-stats.model";
 import * as css from "./obligation-stats.css";
 
-export const ObligationStats = ({ obligation }: { obligation: KaminoObligation | null | undefined }) => {
-  const { borrowPower, ltv, maxLtv, liquidationLtv } = useObligationStats(obligation);
+export const ObligationStats = () => {
+  const { obligationState } = useMarket();
+  const { borrowPower, ltv, maxLtv, liquidationLtv } = useObligationStats(obligationState.data);
+
+  if (obligationState.data == null) {
+    return (<div />);
+  }
 
   return (
     <div className={css.stats}>

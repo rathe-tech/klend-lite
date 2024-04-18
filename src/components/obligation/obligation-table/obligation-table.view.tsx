@@ -5,6 +5,7 @@ import { KaminoMarket, Position } from "@hubbleprotocol/kamino-lending-sdk";
 import { ActionKind, useActionForm } from "../../action-form";
 import { PositionKind, UIPosition, usePositions } from "./obligation-table.model";
 import * as css from "./obligation-table.css";
+import { SkeletonCell } from "@components/skeleton-cell";
 
 export const ObligationTable = ({
   kind,
@@ -21,17 +22,7 @@ export const ObligationTable = ({
 
   return (
     <table>
-      <thead>
-        <tr>
-          <th colSpan={2}>{toTitle(kind)}</th>
-          <th className={css.amount}>{amount}</th>
-        </tr>
-        <tr>
-          <th>Asset</th>
-          <th>Amount</th>
-          <th></th>
-        </tr>
-      </thead>
+      <ObligationColumns kind={kind} amount={amount} />
       <tbody>
         {formatted.length === 0 && <NoPositionRow kind={kind} />}
         {formatted.map(position =>
@@ -45,6 +36,28 @@ export const ObligationTable = ({
     </table>
   );
 };
+
+export const SkeletonObligationTable = ({ kind }: { kind: PositionKind }) =>
+  <table>
+    <ObligationColumns kind={kind} amount="" />
+    <tbody>
+      <SkeletonPositionRow />
+      <SkeletonPositionRow />
+    </tbody>
+  </table>
+
+const ObligationColumns = ({ kind, amount }: { kind: PositionKind, amount: string }) =>
+  <thead>
+    <tr>
+      <th colSpan={2}>{toTitle(kind)}</th>
+      <th className={css.amount}>{amount}</th>
+    </tr>
+    <tr>
+      <th>Asset</th>
+      <th>Amount</th>
+      <th></th>
+    </tr>
+  </thead>
 
 function toTitle(kind: PositionKind) {
   switch (kind) {
@@ -77,6 +90,22 @@ const NoPositionRow = ({ kind }: { kind: PositionKind }) => {
     </tr>
   );
 };
+
+const SkeletonPositionRow = () =>
+  <tr>
+    <td className={css.symbol}>
+      <SkeletonCell />
+    </td>
+    <td>
+      <SkeletonCell />
+    </td>
+    <td>
+      <div className={css.controls}>
+        <SkeletonCell />
+        <SkeletonCell />
+      </div>
+    </td>
+  </tr>
 
 const PositionRow = ({ kind, position }: { kind: PositionKind, position: UIPosition }) =>
   <tr>
