@@ -1,4 +1,4 @@
-import { useCallback, useState, memo, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 
 import { useMarket } from "../market-context";
 import { Tabs } from "./tabs";

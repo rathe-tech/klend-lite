@@ -21,7 +21,7 @@ export const ObligationTable = ({
   const formatted = usePositions({ market, positions });
 
   return (
-    <table>
+    <table style={{ height: positions.size === 0 ? "100%" : "inherit" }}>
       <ObligationColumns kind={kind} amount={amount} />
       <tbody>
         {formatted.length === 0 && <NoPositionRow kind={kind} />}
