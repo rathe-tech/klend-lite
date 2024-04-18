@@ -21,7 +21,7 @@ export const ReservesTable = ({
       <thead>
         <tr>
           <th>Asset</th>
-          <th>LTV</th>
+          <th>LTV / BF</th>
           <th>Current Supply</th>
           <th>Supply APY</th>
           <th>Current Borrow</th>
@@ -59,7 +59,11 @@ const ReserveRow = ({ reserve, isEnabled }: { reserve: UIReserve, isEnabled: boo
           {reserve.price}
         </div>
       </td>
-      <td>{reserve.ltv}</td>
+      <td>
+        {reserve.ltv}
+        <span className={css.delimiter}>/</span>
+        {reserve.borrowFactor}
+      </td>
       <td>
         <div>
           {reserve.currentSupply}

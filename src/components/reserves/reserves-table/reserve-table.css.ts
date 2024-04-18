@@ -11,6 +11,8 @@ export const symbol = style({
 
 export const delimiter = style({
   color: vars.color.labelSecondary,
+  fontSize: "12px",
+  padding: "0 4px",
 });
 
 export const sub = style({
