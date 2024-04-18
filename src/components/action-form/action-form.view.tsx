@@ -1,5 +1,5 @@
 import Decimal from "decimal.js";
-import { useCallback, useState, memo, useEffect } from "react";
+import { useCallback, useState, memo, useEffect, useMemo } from "react";
 import { KaminoMarket, KaminoObligation } from "@hubbleprotocol/kamino-lending-sdk";
 
 import { Tabs } from "./tabs";
@@ -65,12 +65,9 @@ export const ActionFormProvider = ({
   const open = useCallback((action: Action) => setAction(action), []);
   const close = useCallback(() => setAction(null), []);
 
-  // Cache children control to prevent re-render.
-  const Children = memo(() => children);
-
   return (
     <ActionFormContext.Provider value={{ market, obligation, tokenBalances, action, close, open }}>
-      <Children />
+      {children}
       <ActionFormAnchor />
     </ActionFormContext.Provider>
   );
