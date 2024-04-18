@@ -6,10 +6,6 @@ export const ObligationStats = () => {
   const { obligationState } = useMarket();
   const { borrowPower, ltv, maxLtv, liquidationLtv } = useObligationStats(obligationState.data);
 
-  if (obligationState.data == null) {
-    return (<div />);
-  }
-
   return (
     <div className={css.stats}>
       <div className={css.statItem}>

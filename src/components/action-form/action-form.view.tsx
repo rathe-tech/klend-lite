@@ -56,9 +56,6 @@ export const ActionFormProvider = ({ children }: { children: React.ReactNode }) 
   const open = useCallback((action: Action) => setAction(action), []);
   const close = useCallback(() => setAction(null), []);
 
-  // Cache children control to prevent re-render.
-  const Children = memo(() => children);
-
   return (
     <ActionFormContext.Provider value={{
       market: marketState.data,
@@ -68,7 +65,7 @@ export const ActionFormProvider = ({ children }: { children: React.ReactNode }) 
       close,
       open
     }}>
-      <Children />
+      {children}
       <ActionFormAnchor />
     </ActionFormContext.Provider>
   );
