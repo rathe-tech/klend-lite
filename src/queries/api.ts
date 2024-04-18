@@ -1,10 +1,11 @@
 import Decimal from "decimal.js";
 import {
+  Commitment,
   Connection,
   PublicKey,
   Transaction,
   TransactionSignature,
-  VersionedTransaction
+  VersionedTransaction,
 } from "@solana/web3.js";
 import { SendTransactionOptions } from "@solana/wallet-adapter-base";
 import {
@@ -173,18 +174,22 @@ async function sendAndConfirmTransaction(
   connection: Connection,
   transaction: VersionedTransaction,
 ): Promise<string> {
-  const transactionId = await sendTransaction(transaction, connection);
-  const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash({ commitment: "finalized" });
+  const commitment: Commitment = "confirmed";
+  const { context: { slot: minContextSlot }, value: { blockhash, lastValidBlockHeight } } = 
+    await connection.getLatestBlockhashAndContext({ commitment });
 
-  // TODO: Find a better way to confirm tx.
+  const transactionId = await sendTransaction(transaction, connection, { minContextSlot });
   const status = await connection.confirmTransaction({
     signature: transactionId,
+    minContextSlot,
     blockhash,
-    lastValidBlockHeight
-  }, "confirmed");
+    lastValidBlockHeight,
+  }, commitment);
+
   if (status.value.err) {
     throw new Error(status.value.err.toString());
   }
+
   return transactionId;
 }
 
