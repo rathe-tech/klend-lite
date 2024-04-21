@@ -1,5 +1,3 @@
-// TODO: Cleanup the mess below
-
 import { useCallback, useState } from "react";
 import Decimal from "decimal.js";
 import { PublicKey } from "@solana/web3.js";
@@ -12,11 +10,16 @@ import { Assert, UIUtils } from "@misc/utils";
 
 import { ProgressIcon } from "../../progress-icon";
 import { BalanceInfo } from "../balance-info";
-import { ActionKind, useActionForm } from "../action-form.model";
+import { ActionKind } from "../action-form.model";
 import * as css from "./panel.css";
 
 export function useAction({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) {
-  const { market, obligation, tokenBalances } = useActionForm();
+  const {
+    marketState: { data: market },
+    tokenBalancesState: { data: tokenBalances },
+    obligationState: { data: obligation },
+  } = useMarket();
+
   Assert.some(market, "Market not loaded");
   Assert.some(tokenBalances, "Token balances not loaded");
 
@@ -122,14 +125,27 @@ export const Panel = ({ kind, mintAddress }: { kind: ActionKind, mintAddress: Pu
   );
 };
 
-const SubmitForm = ({ kind, mintAddress, decimals, position }: { kind: ActionKind, mintAddress: PublicKey, decimals: number, position: Position | null | undefined }) => {
+const SubmitForm = ({
+  kind,
+  mintAddress,
+  decimals,
+  position
+}: {
+  kind: ActionKind,
+  mintAddress: PublicKey,
+  decimals: number,
+  position: Position | null | undefined
+}) => {
+  const { connection } = useConnection();
+  const { sendTransaction, publicKey } = useWallet();
+  const {
+    marketInfo: { lutAddress },
+    marketState: { data: market },
+    refresh
+  } = useMarket();
+
   const [value, setValue] = useState("0");
   const [inProgress, setInProgress] = useState(false);
-  const { publicKey } = useWallet();
-  const { marketInfo: { lutAddress }, refresh } = useMarket()
-  const { market } = useActionForm();
-  const { connection } = useConnection();
-  const { sendTransaction } = useWallet();
 
   const onSubmit = useCallback(async (value: string) => {
     try {

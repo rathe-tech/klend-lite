@@ -1,5 +1,4 @@
 import { Connection } from "@solana/web3.js";
-import Solflare from "@solflare-wallet/sdk";
 import { KaminoMarket } from "@hubbleprotocol/kamino-lending-sdk";
 import { MarketInfo, RPC_ENDPOINT } from "@misc/config";
 
@@ -45,6 +44,4 @@ import { MarketInfo, RPC_ENDPOINT } from "@misc/config";
     console.log("Deposit TVL (USD): %o", depositTvl);
     console.log();
   });
-
-  const wallet = new Solflare();
 })();

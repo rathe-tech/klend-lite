@@ -4,8 +4,6 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import { SolflareWalletAdapter } from "@solana/wallet-adapter-solflare";
-import { PhantomWalletAdapter } from "@solana/wallet-adapter-phantom";
 
 import { AppBar } from "@components/app-bar";
 import { MarketSelect } from "@components/market-select";
@@ -18,10 +16,8 @@ const queryClient = new QueryClient({
 });
 
 export const Application = () => {
-  const wallets = useMemo(() => [
-    new SolflareWalletAdapter(),
-    new PhantomWalletAdapter(),
-  ], []);
+  // For backward compatibility.
+  const wallets = useMemo(() => [], []);
 
   return (
     <StrictMode>
@@ -31,10 +27,7 @@ export const Application = () => {
             endpoint={RPC_ENDPOINT}
             config={{ commitment: "confirmed" }}
           >
-            <WalletProvider
-              wallets={wallets}
-              autoConnect
-            >
+            <WalletProvider wallets={wallets} autoConnect>
               <WalletModalProvider>
                 <AppBar />
                 <MarketSelect />

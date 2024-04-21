@@ -25,5 +25,5 @@ export const form = style({
 });
 
 export const nonScroll = style({
-  overflow: "hidden",
+  overflow: "hidden !important",
 });

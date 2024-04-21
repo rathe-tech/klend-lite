@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, useRef } from "react";
 
 import { useMarket } from "../market-context";
 import { Tabs } from "./tabs";
@@ -50,18 +50,28 @@ const ActionForm = ({ action, close }: { action: Action, close: () => void }) =>
 };
 
 export const ActionFormProvider = ({ children }: { children: React.ReactNode }) => {
-  const { marketState, obligationState, tokenBalancesState } = useMarket();
+  const { marketInfo } = useMarket();
 
+  const isActive = useRef(false);
+  const cachedMarketInfo = useRef(marketInfo);
   const [action, setAction] = useState<Action | null>(null);
-  const open = useCallback((action: Action) => setAction(action), []);
+
+  // Prevent dialog opening if the cached market isn't equal to the active one.
+  // Only a user interaction will reset the flag to open the dialog.
+  if (cachedMarketInfo.current !== marketInfo) {
+    cachedMarketInfo.current = marketInfo;
+    isActive.current = false;
+  }
+
+  const open = useCallback((action: Action) => {
+    isActive.current = true;
+    setAction(action);
+  }, []);
   const close = useCallback(() => setAction(null), []);
 
   return (
     <ActionFormContext.Provider value={{
-      market: marketState.data,
-      obligation: obligationState.data,
-      tokenBalances: tokenBalancesState.data,
-      action,
+      action: isActive.current ? action : null,
       close,
       open
     }}>
