@@ -685,10 +685,10 @@
   resolved "https://registry.yarnpkg.com/@hubbleprotocol/hubble-idl/-/hubble-idl-3.0.29.tgz#1a4a320cac1b8c7a18098ba607c18af59af7027e"
   integrity sha512-52dYIzAuW48aUEGO79objdXc+CCV3qS6jOiWKZ0SvPHyXxqLoLhL+KU1kAnQPauaaCwZVLwcm+R/NGvJ+/1UUg==
 
-"@hubbleprotocol/kamino-lending-sdk@2.9.1":
-  version "2.9.1"
-  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.9.1.tgz#b7bb5ec6502a26179de664757b418cc93b5ad912"
-  integrity sha512-sfLSl+KHp2hqWcwhujD1f7dgWYnUjGXnPRuUdn2xND9S5GjjLODL73J4OJOjeZSbbzK9TUnoxLGlhFZ+N3QO/A==
+"@hubbleprotocol/kamino-lending-sdk@2.10.5":
+  version "2.10.5"
+  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.10.5.tgz#96d3605eac5d7f4dbedd26d0c49222f85bb49758"
+  integrity sha512-k5d6VL7F1Pca8CkGbxaV3QjGOTGiFGA20eKPSpZ5oP9PR/HokZ2aY2mzHQUmDxMFsMWBrYnT6OywZyViA+3+RQ==
   dependencies:
     "@coral-xyz/anchor" "^0.28.0"
     "@coral-xyz/borsh" "^0.28.0"
@@ -707,10 +707,10 @@
     decimal.js "^10.4.3"
     exponential-backoff "^3.1.1"
 
-"@hubbleprotocol/kamino-lending-sdk@2.9.11":
-  version "2.9.11"
-  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.9.11.tgz#f74e22395bcc1562a249f6a4469abebe463bf631"
-  integrity sha512-LCnn6cjUxvY+vdIAh6E9x5ADALNnCM4iqWe5rKV8TG41IEaHI2d6rLaQTTWnkagEXc+hzYMmXFw8zR2AxWnVsw==
+"@hubbleprotocol/kamino-lending-sdk@2.9.1":
+  version "2.9.1"
+  resolved "https://registry.yarnpkg.com/@hubbleprotocol/kamino-lending-sdk/-/kamino-lending-sdk-2.9.1.tgz#b7bb5ec6502a26179de664757b418cc93b5ad912"
+  integrity sha512-sfLSl+KHp2hqWcwhujD1f7dgWYnUjGXnPRuUdn2xND9S5GjjLODL73J4OJOjeZSbbzK9TUnoxLGlhFZ+N3QO/A==
   dependencies:
     "@coral-xyz/anchor" "^0.28.0"
     "@coral-xyz/borsh" "^0.28.0"
@@ -1228,7 +1228,7 @@
     "@solana/spl-token" "^0.1.8"
     "@solana/web3.js" "^1.31.0"
 
-"@noble/curves@^1.1.0", "@noble/curves@^1.2.0":
+"@noble/curves@^1.1.0", "@noble/curves@^1.2.0", "@noble/curves@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-1.4.0.tgz#f05771ef64da724997f69ee1261b2417a49522d6"
   integrity sha512-p+4cb332SFCrReJkCYe8Xzm0OWi4Jji5jVdIZRL/PmacmDkFNw6MrrV+gGpiPxLHbV+zKFRywUWbaseT+tZRXg==
@@ -1951,10 +1951,10 @@
     "@solana/codecs-core" "2.0.0-preview.2"
     "@solana/codecs-numbers" "2.0.0-preview.2"
 
-"@solana/spl-token-group@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@solana/spl-token-group/-/spl-token-group-0.0.2.tgz#23f754fd535a4df5e2b80293a03aabd58bd99167"
-  integrity sha512-vLePrFvT9+PfK2KZaddPebTWtRykXUR+060gqomFUcBk/2UPpZtsJGW+xshI9z9Ryrx7FieprZEUCApw34BwrQ==
+"@solana/spl-token-group@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@solana/spl-token-group/-/spl-token-group-0.0.4.tgz#4f45d9526c96a33b9a1929a264d0aa21c7e38a2d"
+  integrity sha512-7+80nrEMdUKlK37V6kOe024+T7J4nNss0F8LQ9OOPYdWCCfJmsGUzVx2W3oeizZR4IHM6N4yC9v1Xqwc3BTPWw==
   dependencies:
     "@solana/codecs" "2.0.0-preview.2"
     "@solana/spl-type-length-value" "0.1.0"
@@ -1969,6 +1969,14 @@
     "@solana/codecs-numbers" "2.0.0-experimental.8618508"
     "@solana/codecs-strings" "2.0.0-experimental.8618508"
     "@solana/options" "2.0.0-experimental.8618508"
+    "@solana/spl-type-length-value" "0.1.0"
+
+"@solana/spl-token-metadata@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@solana/spl-token-metadata/-/spl-token-metadata-0.1.4.tgz#5cdc3b857a8c4a6877df24e24a8648c4132d22ba"
+  integrity sha512-N3gZ8DlW6NWDV28+vCCDJoTqaCZiF/jDUnk3o8GRkAFzHObiR60Bs1gXHBa8zCPdvOwiG6Z3dg5pg7+RW6XNsQ==
+  dependencies:
+    "@solana/codecs" "2.0.0-preview.2"
     "@solana/spl-type-length-value" "0.1.0"
 
 "@solana/spl-token-registry@0.2.1105":
@@ -2026,15 +2034,15 @@
     "@solana/spl-token-metadata" "^0.1.2"
     buffer "^6.0.3"
 
-"@solana/spl-token@^0.4.3":
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.4.3.tgz#cb923184fcba3f875f5914a440a68d7f537d0bac"
-  integrity sha512-mRjJJE9CIBejsg9WAmDp369pWeObm42K2fwsZ4dkJAMCt1KBPb5Eb1vzM5+AYfV/BUTy3QP2oFx8kV+8Doa1xQ==
+"@solana/spl-token@^0.4.6":
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.4.6.tgz#eb44e5080ea7b6fc976abcb39457223211bd9076"
+  integrity sha512-1nCnUqfHVtdguFciVWaY/RKcQz1IF4b31jnKgAmjU9QVN1q7dRUkTEWJZgTYIEtsULjVnC9jRqlhgGN39WbKKA==
   dependencies:
     "@solana/buffer-layout" "^4.0.0"
     "@solana/buffer-layout-utils" "^0.2.0"
-    "@solana/spl-token-group" "^0.0.2"
-    "@solana/spl-token-metadata" "^0.1.2"
+    "@solana/spl-token-group" "^0.0.4"
+    "@solana/spl-token-metadata" "^0.1.4"
     buffer "^6.0.3"
 
 "@solana/spl-type-length-value@0.1.0":
@@ -2171,13 +2179,34 @@
     superstruct "^0.14.2"
     tweetnacl "^1.0.0"
 
-"@solana/web3.js@^1.17.0", "@solana/web3.js@^1.20.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.24.1", "@solana/web3.js@^1.31.0", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.37.0", "@solana/web3.js@^1.41.1", "@solana/web3.js@^1.42.0", "@solana/web3.js@^1.43.5", "@solana/web3.js@^1.50.1", "@solana/web3.js@^1.52.0", "@solana/web3.js@^1.66.0", "@solana/web3.js@^1.66.2", "@solana/web3.js@^1.68.0", "@solana/web3.js@^1.70.0", "@solana/web3.js@^1.87.6", "@solana/web3.js@^1.91.4":
+"@solana/web3.js@^1.17.0", "@solana/web3.js@^1.20.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.24.1", "@solana/web3.js@^1.31.0", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.37.0", "@solana/web3.js@^1.41.1", "@solana/web3.js@^1.42.0", "@solana/web3.js@^1.43.5", "@solana/web3.js@^1.50.1", "@solana/web3.js@^1.52.0", "@solana/web3.js@^1.66.0", "@solana/web3.js@^1.66.2", "@solana/web3.js@^1.68.0", "@solana/web3.js@^1.70.0", "@solana/web3.js@^1.87.6":
   version "1.91.4"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.91.4.tgz#b80295ce72aa125930dfc5b41b4b4e3f85fd87fa"
   integrity sha512-zconqecIcBqEF6JiM4xYF865Xc4aas+iWK5qnu7nwKPq9ilRYcn+2GiwpYXqUqqBUe0XCO17w18KO0F8h+QATg==
   dependencies:
     "@babel/runtime" "^7.23.4"
     "@noble/curves" "^1.2.0"
+    "@noble/hashes" "^1.3.3"
+    "@solana/buffer-layout" "^4.0.1"
+    agentkeepalive "^4.5.0"
+    bigint-buffer "^1.1.5"
+    bn.js "^5.2.1"
+    borsh "^0.7.0"
+    bs58 "^4.0.1"
+    buffer "6.0.3"
+    fast-stable-stringify "^1.0.0"
+    jayson "^4.1.0"
+    node-fetch "^2.7.0"
+    rpc-websockets "^7.5.1"
+    superstruct "^0.14.2"
+
+"@solana/web3.js@^1.91.7":
+  version "1.91.7"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.91.7.tgz#1d639f8f3cc772fd6d88b982e8fdb17dc192b9e1"
+  integrity sha512-HqljZKDwk6Z4TajKRGhGLlRsbGK4S8EY27DA7v1z6yakewiUY3J7ZKDZRxcqz2MYV/ZXRrJ6wnnpiHFkPdv0WA==
+  dependencies:
+    "@babel/runtime" "^7.23.4"
+    "@noble/curves" "^1.4.0"
     "@noble/hashes" "^1.3.3"
     "@solana/buffer-layout" "^4.0.1"
     agentkeepalive "^4.5.0"
@@ -2200,17 +2229,17 @@
     "@project-serum/anchor" "^0.24.2"
     big.js "^6.1.1"
 
-"@tanstack/query-core@5.29.0":
-  version "5.29.0"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.29.0.tgz#d0b3d12c07d5a47f42ab0c1ed4f317106f3d4b20"
-  integrity sha512-WgPTRs58hm9CMzEr5jpISe8HXa3qKQ8CxewdYZeVnA54JrPY9B1CZiwsCoLpLkf0dGRZq+LcX5OiJb0bEsOFww==
+"@tanstack/query-core@5.31.0":
+  version "5.31.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.31.0.tgz#b11372dedbf307bc8b2c25397c7107205bf50dfa"
+  integrity sha512-r1V6RXB1LUGoEp7HGHVK4Tl59kOvAfwI9/kNNwPsb6cR5oHgfn1683sQnoH/3xEDUKOen3fEO90EnGE+OjRw5A==
 
-"@tanstack/react-query@^5.29.0":
-  version "5.29.2"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.29.2.tgz#c55ffbfaf9d8cf34212428db2b6c61ca6b545188"
-  integrity sha512-nyuWILR4u7H5moLGSiifLh8kIqQDLNOHGuSz0rcp+J75fNc8aQLyr5+I2JCHU3n+nJrTTW1ssgAD8HiKD7IFBQ==
+"@tanstack/react-query@^5.29.2":
+  version "5.31.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.31.0.tgz#ead732a5323c6c2c95da3115542cabc0920e4748"
+  integrity sha512-/GUUDFA8yNIYZaSyImkecVfN9mAVw1Y+9LpHkOQ1DdWaKnbLtwfjelh6OF+6EtwQCycH50EjTL68UK3YTMxwvg==
   dependencies:
-    "@tanstack/query-core" "5.29.0"
+    "@tanstack/query-core" "5.31.0"
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.11"

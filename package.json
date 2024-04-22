@@ -4,7 +4,7 @@
   "description": "Lightweight K-Lend Web UI",
   "scripts": {
     "build": "npx webpack",
-    "dev": "npx webpack serve --mode development"
+    "dev": "NODE_OPTIONS=--max-old-space-size=6144 npx webpack serve --mode development"
   },
   "author": "Max Koverdyaev",
   "license": "MIT",
@@ -31,7 +31,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
-    "@hubbleprotocol/kamino-lending-sdk": "2.9.11",
+    "@hubbleprotocol/kamino-lending-sdk": "2.10.5",
     "@solana/spl-token": "^0.4.6",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
