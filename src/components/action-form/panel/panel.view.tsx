@@ -30,8 +30,9 @@ export function useAction({ kind, mintAddress }: { kind: ActionKind, mintAddress
   const balance = UIUtils.toUINumber(tokenBalances.get(mintAddress.toBase58()) || new Decimal(0), decimals);
   const positionAmount = UIUtils.toUINumber(extractPositionAmount({ kind, obligation, reserveAddress }), decimals);
   const position = extractPosition({ kind, obligation, reserveAddress });
+  const borrowFee = UIUtils.toFormattedPercent(reserve.getBorrowFee(), Math.max(0, reserve.getBorrowFee().dp() - 2));
 
-  return { symbol, balance, positionAmount, decimals, position };
+  return { symbol, balance, positionAmount, decimals, position, borrowFee };
 }
 
 function extractPositionAmount({
@@ -113,12 +114,13 @@ export function chooseLabel(kind: ActionKind, symbol: string) {
 }
 
 export const Panel = ({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) => {
-  const { symbol, balance, positionAmount, position, decimals } = useAction({ kind, mintAddress });
+  const { symbol, balance, positionAmount, position, decimals, borrowFee } = useAction({ kind, mintAddress });
 
   return (
     <div className={css.panel}>
       <BalanceInfo symbol={symbol} amount={balance} suffix="in wallet" />
       <BalanceInfo symbol={symbol} amount={positionAmount} suffix={choosePositionName(kind)} />
+      {kind === ActionKind.Borrow && <BalanceInfo symbol="Borrow" suffix="fee" amount={borrowFee} />}
       <div className={css.label}>{chooseLabel(kind, symbol)}</div>
       <SubmitForm kind={kind} decimals={decimals} mintAddress={mintAddress} position={position} />
     </div>

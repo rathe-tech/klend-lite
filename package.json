@@ -3,7 +3,7 @@
   "version": "1.2.2",
   "description": "Lightweight K-Lend Web UI",
   "scripts": {
-    "build": "npx webpack",
+    "build": "NODE_OPTIONS=--max-old-space-size=6144 npx webpack",
     "dev": "NODE_OPTIONS=--max-old-space-size=6144 npx webpack serve --mode development"
   },
   "author": "Max Koverdyaev",
