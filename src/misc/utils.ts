@@ -69,6 +69,13 @@ export module UIUtils {
       .floor();
   }
 
+  export function toUIPrice(price: Decimal) {
+    const normalizedPrice = (price.gte(1) ? 
+      price.toDecimalPlaces(2) :
+      price.toSignificantDigits(4)).toString()
+    return `$${toCommaFormattedNumber(normalizedPrice)}`;
+  }
+
   function toCommaFormattedNumber(value: string) {
     const [whole, fraction] = value.split(".");
     const formattedWhole = [...whole].reduce((acc, letter, index) => {

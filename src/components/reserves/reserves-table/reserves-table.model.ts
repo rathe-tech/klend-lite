@@ -61,7 +61,7 @@ function toUIReserve(reserve: KaminoReserve): UIReserve {
     address: reserve.address,
     symbol: reserve.getTokenSymbol(),
     mintAddress,
-    price: `$${reserve.getOracleMarketPrice().toSignificantDigits(4).toString()}`,
+    price: UIUtils.toUIPrice(reserve.getOracleMarketPrice()),
     ltv: loanToValuePct.toFixed(2),
     borrowFactor: (borrowFactor / 100).toFixed(2),
     currentSupply: UIUtils.toUINumber(reserve.getTotalSupply(), decimals),
