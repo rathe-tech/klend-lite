@@ -1,4 +1,4 @@
-import { ActionKind } from "../action-form.model";
+import { ActionKind } from "../action-dialog.model";
 import * as css from "./tabs.css";
 
 const TAB_TITLE_SETTINGS = [

@@ -2,27 +2,27 @@ import { useCallback, useState, useEffect, useRef } from "react";
 
 import { useMarket } from "../market-context";
 import { Tabs } from "./tabs";
-import { Panel } from "./panel";
+import { ActionForm } from "./action-form";
 
-import { ActionFormContext, Action, useActionForm } from "./action-form.model";
-import * as css from "./action-form.css";
+import { ActionDialogContext, Action, useActionDialog } from "./action-dialog.model";
+import * as css from "./action-dialog.css";
 
-const ActionFormAnchor = () => {
-  const { action, close } = useActionForm();
+const ActionDialogLayout = () => {
+  const { action, close } = useActionDialog();
 
   if (!action) {
     return;
   }
 
   return (
-    <ActionForm
+    <ActionDialog
       action={action}
       close={close}
     />
   );
 };
 
-const ActionForm = ({ action, close }: { action: Action, close: () => void }) => {
+const ActionDialog = ({ action, close }: { action: Action, close: () => void }) => {
   const [kind, setKind] = useState(() => action.kind);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const ActionForm = ({ action, close }: { action: Action, close: () => void }) =>
           isBorrowable={action.isBorrowable}
           onClick={kind => setKind(kind)}
         />
-        <Panel
+        <ActionForm
           kind={kind}
           mintAddress={action.mintAddress}
         />
@@ -70,13 +70,13 @@ export const ActionFormProvider = ({ children }: { children: React.ReactNode }) 
   const close = useCallback(() => setAction(null), []);
 
   return (
-    <ActionFormContext.Provider value={{
+    <ActionDialogContext.Provider value={{
       action: isActive.current ? action : null,
       close,
       open
     }}>
       {children}
-      <ActionFormAnchor />
-    </ActionFormContext.Provider>
+      <ActionDialogLayout />
+    </ActionDialogContext.Provider>
   );
 };

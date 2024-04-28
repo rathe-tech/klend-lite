@@ -1,10 +1,11 @@
 import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { useActionForm, ActionKind } from "../../action-form";
+import { SkeletonCell } from "@components/skeleton-cell";
+import { useActionDialog, ActionKind } from "@components/action-dialog";
+
 import { useReserves, UIReserve } from "./reserves-table.model";
 import * as css from "./reserve-table.css";
-import { SkeletonCell } from "@components/skeleton-cell";
 
 export const ReservesTable = ({
   marketAddress,
@@ -31,7 +32,7 @@ export const ReservesTable = ({
       </tbody>
     </table>
   );
-}
+};
 
 export const SkeletonReservesTable = () =>
   <table>
@@ -57,7 +58,7 @@ const ReservesColumns = () =>
   </thead>
 
 const ReserveRow = ({ reserve, isEnabled }: { reserve: UIReserve, isEnabled: boolean }) => {
-  const { open } = useActionForm();
+  const { open } = useActionDialog();
 
   return (
     <tr>

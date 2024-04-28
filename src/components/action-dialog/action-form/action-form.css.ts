@@ -1,7 +1,7 @@
 import { style } from "@vanilla-extract/css";
 import { vars } from "@theme/vars.css";
 
-export const panel = style({
+export const form = style({
   display: "flex",
   flexDirection: "column",
   padding: "2em",

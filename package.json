@@ -1,6 +1,6 @@
 {
   "name": "klend-lite",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Lightweight K-Lend Web UI",
   "scripts": {
     "build": "NODE_OPTIONS=--max-old-space-size=6144 npx webpack",
@@ -9,36 +9,36 @@
   "author": "Max Koverdyaev",
   "license": "MIT",
   "devDependencies": {
-    "@ledgerhq/hw-app-solana": "^7.1.5",
-    "@ledgerhq/hw-transport-node-hid": "^6.28.5",
-    "@types/react": "^18.2.74",
-    "@types/react-dom": "^18.2.24",
+    "@ledgerhq/hw-app-solana": "^7.1.6",
+    "@ledgerhq/hw-transport-node-hid": "^6.28.6",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
     "@vanilla-extract/css": "^1.14.2",
     "@vanilla-extract/webpack-plugin": "^2.3.7",
     "buffer": "^6.0.3",
     "copy-webpack-plugin": "^12.0.2",
     "crypto-browserify": "^3.12.0",
-    "css-loader": "7.0.0",
+    "css-loader": "7.1.1",
     "html-webpack-plugin": "^5.6.0",
-    "mini-css-extract-plugin": "^2.8.1",
+    "mini-css-extract-plugin": "^2.9.0",
     "process": "^0.11.10",
     "stream-browserify": "^3.0.0",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.4",
+    "typescript": "^5.4.5",
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
-    "@hubbleprotocol/kamino-lending-sdk": "2.10.5",
+    "@hubbleprotocol/kamino-lending-sdk": "2.10.6",
     "@solana/spl-token": "^0.4.6",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/web3.js": "^1.91.7",
-    "@tanstack/react-query": "^5.29.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.3"
+    "@tanstack/react-query": "^5.32.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.0"
   }
 }

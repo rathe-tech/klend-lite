@@ -1,0 +1,1 @@
+export { StatInfo } from "./stat-info.view";

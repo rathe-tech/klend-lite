@@ -2,10 +2,11 @@ import { useMemo } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { KaminoMarket, Position } from "@hubbleprotocol/kamino-lending-sdk";
 
-import { ActionKind, useActionForm } from "../../action-form";
+import { SkeletonCell } from "@components/skeleton-cell";
+import { ActionKind, useActionDialog } from "@components/action-dialog";
+
 import { PositionKind, UIPosition, usePositions } from "./obligation-table.model";
 import * as css from "./obligation-table.css";
-import { SkeletonCell } from "@components/skeleton-cell";
 
 export const ObligationTable = ({
   kind,
@@ -129,7 +130,7 @@ const PositionControls = ({ kind, position }: { kind: PositionKind, position: UI
 
 const DepositControls = ({ position }: { position: UIPosition }) => {
   const { mintAddress, isBorrowable } = position;
-  const { open } = useActionForm();
+  const { open } = useActionDialog();
 
   return (
     <div className={css.controls}>
@@ -141,7 +142,7 @@ const DepositControls = ({ position }: { position: UIPosition }) => {
 
 const BorrowControls = ({ position }: { position: UIPosition }) => {
   const { mintAddress, isBorrowable } = position;
-  const { open } = useActionForm();
+  const { open } = useActionDialog();
 
   return (
     <div className={css.controls}>

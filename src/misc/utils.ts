@@ -70,9 +70,7 @@ export module UIUtils {
   }
 
   export function toUIPrice(price: Decimal) {
-    const normalizedPrice = (price.gte(1) ? 
-      price.toDecimalPlaces(2) :
-      price.toSignificantDigits(4)).toString()
+    const normalizedPrice = price.gte(1) ? price.toFixed(2) : price.toPrecision(4);
     return `$${toCommaFormattedNumber(normalizedPrice)}`;
   }
 

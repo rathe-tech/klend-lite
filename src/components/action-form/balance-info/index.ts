@@ -1,1 +1,0 @@
-export { BalanceInfo } from "./balance-info.view";

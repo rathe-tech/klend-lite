@@ -2,7 +2,7 @@ import { MarketProvider, useMarket } from "@components/market-context";
 import { Reserves } from "../reserves";
 import { Obligation } from "../obligation";
 import { ObligationStats } from "../obligation-stats";
-import { ActionFormProvider } from "../action-form";
+import { ActionFormProvider } from "../action-dialog";
 import { Donation } from "../donation";
 import { RefreshButton } from "./refresh-button";
 import * as css from "./market.css";

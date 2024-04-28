@@ -20,19 +20,19 @@ export interface Action {
   isBorrowable: boolean;
 }
 
-export interface ActionFormContext {
+export interface ActionDialogContext {
   action: Action | null;
   open: (action: Action) => void;
   close: () => void;
 };
 
-export const ActionFormContext = createContext<ActionFormContext | null>(null);
+export const ActionDialogContext = createContext<ActionDialogContext | null>(null);
 
-export function useActionForm() {
-  const actionForm = useContext(ActionFormContext);
-  if (actionForm == null) {
-    throw new Error("Could not use ActionFormContext outside ActionFormProvider");
+export function useActionDialog() {
+  const actionDialog = useContext(ActionDialogContext);
+  if (actionDialog == null) {
+    throw new Error("Could not use ActionDialogContext outside ActionDialogProvider");
   }
 
-  return actionForm;
+  return actionDialog;
 };

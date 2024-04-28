@@ -9,7 +9,7 @@ export const root = style({
   justifyContent: "right",
 });
 
-export const title = style({
+export const label = style({
   color: vars.color.labelSecondary,
 });
 

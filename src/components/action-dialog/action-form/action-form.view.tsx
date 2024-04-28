@@ -9,9 +9,10 @@ import { useMarket } from "@components/market-context";
 import { Assert, UIUtils } from "@misc/utils";
 
 import { ProgressIcon } from "../../progress-icon";
-import { BalanceInfo } from "../balance-info";
-import { ActionKind } from "../action-form.model";
-import * as css from "./panel.css";
+import { StatInfo } from "../stat-info";
+
+import { ActionKind, computeSubmittedAmount } from "./action-form.model";
+import * as css from "./action-form.css";
 
 export function useAction({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) {
   const {
@@ -109,18 +110,18 @@ export function chooseLabel(kind: ActionKind, symbol: string) {
     case ActionKind.Withdraw:
       return `Amount of ${symbol} to withdraw:`;
     default:
-      throw new Error(`Not supported action: ${kind}`);
+      throw new Error(`Unsupported action: ${kind}`);
   }
 }
 
-export const Panel = ({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) => {
+export const ActionForm = ({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) => {
   const { symbol, balance, positionAmount, position, decimals, borrowFee } = useAction({ kind, mintAddress });
 
   return (
-    <div className={css.panel}>
-      <BalanceInfo symbol={symbol} amount={balance} suffix="in wallet" />
-      <BalanceInfo symbol={symbol} amount={positionAmount} suffix={choosePositionName(kind)} />
-      {kind === ActionKind.Borrow && <BalanceInfo symbol="Borrow" suffix="fee" amount={borrowFee} />}
+    <div className={css.form}>
+      <StatInfo label={`${symbol} in wallet`} value={balance} />
+      <StatInfo label={`${symbol} ${choosePositionName(kind)}`} value={positionAmount} />
+      {kind === ActionKind.Borrow && <StatInfo label="Borrow fee" value={borrowFee} />}
       <div className={css.label}>{chooseLabel(kind, symbol)}</div>
       <SubmitForm kind={kind} decimals={decimals} mintAddress={mintAddress} position={position} />
     </div>
@@ -146,15 +147,14 @@ const SubmitForm = ({
     refresh
   } = useMarket();
 
-  const [value, setValue] = useState("0");
+  const [value, setValue] = useState("");
   const [inProgress, setInProgress] = useState(false);
 
   const onSubmit = useCallback(async (value: string) => {
     try {
       setInProgress(true);
       const inputAmount = UIUtils.toNativeNumber(value.replaceAll(",", "").trim(), decimals);
-      const canBeClosed = ActionKind.isClosePositionKind(kind);
-      const amount = canBeClosed ? computeClosePositionAmount(inputAmount, position) : inputAmount;
+      const amount = computeSubmittedAmount(kind, inputAmount, position);
       const txId = await processAction(kind, { sendTransaction, connection, market: market!, walletAddress: publicKey!, mintAddress, amount, lutAddress });
 
       alert(`Transaction complete: ${txId}`);
@@ -185,22 +185,6 @@ const SubmitForm = ({
       </button>
     </>
   );
-}
-
-const U64_MAX = new Decimal("18446744073709551615");
-const EPS = new Decimal("1");
-
-function computeClosePositionAmount(probeAmount: Decimal, position?: Position | null | undefined) {
-  if (position == null) {
-    return probeAmount;
-  }
-
-  const diff = position.amount.minus(probeAmount).abs();
-  if (diff.lte(EPS)) {
-    return U64_MAX;
-  } else {
-    return probeAmount;
-  }
 }
 
 function chooseButtonCaption(kind: ActionKind, inProgress: boolean) {
