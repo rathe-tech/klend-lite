@@ -9,7 +9,7 @@ export enum ActionKind {
 }
 
 export module ActionKind {
-  export function isClosePositionKind(kind: ActionKind) {
+  export function canBeClosed(kind: ActionKind) {
     return kind === ActionKind.Repay || kind === ActionKind.Withdraw;
   }
 }

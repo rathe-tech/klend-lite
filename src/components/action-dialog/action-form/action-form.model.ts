@@ -1,33 +1,72 @@
 import Decimal from "decimal.js";
-import { Position, U64_MAX } from "@hubbleprotocol/kamino-lending-sdk";
+import { PublicKey } from "@solana/web3.js";
+import { KaminoObligation, U64_MAX } from "@hubbleprotocol/kamino-lending-sdk";
+import { ActionParams, borrow, repay, supply, withdraw } from "@queries/api";
 import { ActionKind } from "../action-dialog.model";
 
 export { ActionKind };
 
+const MAX_AMOUNT = new Decimal(U64_MAX);
+const EPS = new Decimal(1);
+const ZERO = new Decimal(0);
+
 export function computeSubmittedAmount(
   kind: ActionKind,
-  amount: Decimal,
-  position?: Position | null | undefined
+  inputAmount: Decimal,
+  positionAmount: Decimal | null | undefined,
 ) {
-  const canBeClosed = ActionKind.isClosePositionKind(kind);
-  return canBeClosed ? computeClosePositionAmount(amount, position) : amount;
+  const canBeClosed = ActionKind.canBeClosed(kind);
+  return canBeClosed ? computeClosePositionAmount(inputAmount, positionAmount) : inputAmount;
 }
-
-const MAX_AMOUNT = new Decimal(U64_MAX);
-const EPS = new Decimal("1");
 
 function computeClosePositionAmount(
   probeAmount: Decimal,
-  position?: Position | null | undefined
+  positionAmount: Decimal | null | undefined,
 ) {
-  if (position == null) {
+  if (positionAmount == null) {
     return probeAmount;
   }
 
-  const diff = position.amount.minus(probeAmount).abs();
+  const diff = positionAmount.minus(probeAmount).abs();
   if (diff.lte(EPS)) {
     return MAX_AMOUNT;
   } else {
     return probeAmount;
+  }
+}
+
+export function extractPosition(
+  kind: ActionKind,
+  obligation: KaminoObligation | null | undefined,
+  reserveAddress: PublicKey,
+) {
+  if (obligation == null) {
+    return;
+  }
+
+  switch (kind) {
+    case ActionKind.Supply:
+    case ActionKind.Withdraw:
+      return obligation.deposits.get(reserveAddress);
+    case ActionKind.Borrow:
+    case ActionKind.Repay:
+      return obligation.borrows.get(reserveAddress);
+    default:
+      throw new Error(`Unsupported action kind: ${kind}`);
+  }
+}
+
+export async function processAction(kind: ActionKind, params: ActionParams): Promise<string> {
+  switch (kind) {
+    case ActionKind.Supply:
+      return await supply(params);
+    case ActionKind.Borrow:
+      return await borrow(params);
+    case ActionKind.Repay:
+      return await repay(params);
+    case ActionKind.Withdraw:
+      return await withdraw(params);
+    default:
+      throw new Error(`Unsupported action kind: ${kind}`);
   }
 }

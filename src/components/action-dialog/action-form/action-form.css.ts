@@ -28,12 +28,3 @@ export const input = style({
     outline: `2px solid ${vars.color.accentColor}`,
   },
 });
-
-export const submit = style({
-  fontSize: "16px",
-  padding: "8px 0",
-  display: "flex",
-  columnGap: "10px",
-  justifyContent: "center",
-  alignItems: "center",
-});

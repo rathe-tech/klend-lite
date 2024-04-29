@@ -1,6 +1,6 @@
 {
   "name": "klend-lite",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Lightweight K-Lend Web UI",
   "scripts": {
     "build": "NODE_OPTIONS=--max-old-space-size=6144 npx webpack",
