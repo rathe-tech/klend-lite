@@ -105,14 +105,12 @@ export async function repay({
   walletAddress,
   lutAddress,
 }: ActionParams): Promise<string> {
-  const slot = await connection.getSlot();
   const action = await KaminoAction.buildRepayTxns(
     market,
     amount.toString(),
     mintAddress,
     walletAddress,
     new VanillaObligation(PROGRAM_ID),
-    slot,
     undefined,
     0,
     true,
@@ -175,7 +173,7 @@ async function sendAndConfirmTransaction(
   transaction: VersionedTransaction,
 ): Promise<string> {
   const commitment: Commitment = "confirmed";
-  const { context: { slot: minContextSlot }, value: { blockhash, lastValidBlockHeight } } = 
+  const { context: { slot: minContextSlot }, value: { blockhash, lastValidBlockHeight } } =
     await connection.getLatestBlockhashAndContext({ commitment });
 
   const transactionId = await sendTransaction(transaction, connection, { minContextSlot });
