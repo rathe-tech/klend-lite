@@ -8,7 +8,7 @@ export const vars = createGlobalTheme(":root", {
   color: {
     accentColor: "#00cc00",
     accentColorDimmed: "#00cc0020",
-    
+
     labelPrimary: "#fff",
     labelSecondary: "#9a9cab",
     labelTertiary: "#bbb",
