@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { PublicKey } from "@solana/web3.js";
 import { AccountLayout, TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { KaminoMarket } from "@hubbleprotocol/kamino-lending-sdk";
+import { KaminoMarket } from "@kamino-finance/klend-sdk";
 
 import { Assert, Option } from "@misc/utils";
 import { WSOL_MINT_ADDRESS } from "@misc/config";

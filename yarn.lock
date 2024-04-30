@@ -1036,10 +1036,10 @@
     decimal.js "^10.3.1"
     tiny-invariant "^1.2.0"
 
-"@kamino-finance/klend-sdk@2.10.6":
-  version "2.10.6"
-  resolved "https://registry.yarnpkg.com/@kamino-finance/klend-sdk/-/klend-sdk-2.10.6.tgz#9bc8cd810ab751b79693d2bfbc74b50ac919acb5"
-  integrity sha512-M2UxrXk/9OTkHHIprSYW5/s3ZIudGmL+BAp5nqHHRbkc5q4TJZaWNXlGKoC9VVJRUo0aEoDSgiPBw81HAgRi7g==
+"@kamino-finance/klend-sdk@2.10.7":
+  version "2.10.7"
+  resolved "https://registry.yarnpkg.com/@kamino-finance/klend-sdk/-/klend-sdk-2.10.7.tgz#01f77879ef95ef89f3fe9cc2e095f2b144df53e9"
+  integrity sha512-KEdzqVIPGGIegbeIivEjMAEIr57DIqf1Nuq5YWeRtA6BEWbdODdTMgKLeGEpsQYVgZQpO62zwL8zgNTsayqi4w==
   dependencies:
     "@coral-xyz/anchor" "^0.28.0"
     "@coral-xyz/borsh" "^0.28.0"
@@ -2177,17 +2177,17 @@
     "@project-serum/anchor" "^0.24.2"
     big.js "^6.1.1"
 
-"@tanstack/query-core@5.32.0":
-  version "5.32.0"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.32.0.tgz#e097ec2b394a2f64de33c98cd8baf3525c99641a"
-  integrity sha512-Z3flEgCat55DRXU5UMwYU1U+DgFZKA3iufyOKs+II7iRAo0uXkeU7PH5e6sOH1CGEag0IpKmZxlUFpCg6roSKw==
+"@tanstack/query-core@5.32.1":
+  version "5.32.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.32.1.tgz#742b0293bcefd91b2a4d6bd7543e710ab666ac94"
+  integrity sha512-mCWa1wdGb1jiny4+qYegbSeadcFj+Nq65KFSs4A1DRveoIq7SrTwUhqu7hrB6d54cQH5x59DfJvxusn3w1Cj/g==
 
 "@tanstack/react-query@^5.32.0":
-  version "5.32.0"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.32.0.tgz#52d441e7ad2a0098dc426f3834f68150c13f265b"
-  integrity sha512-+E3UudQtarnx9A6xhpgMZapyF+aJfNBGFMgI459FnduEZqT/9KhOWnMOneZahLRt52yzskSA0AuOyLkXHK0yBA==
+  version "5.32.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.32.1.tgz#ddb2c5aef342694ad288fac61e12269775c46161"
+  integrity sha512-+nXLMB0JK0XwTJ+lQt49DPNLrbSppni9N5W5yMR085yW3YaRKRUFhfVTER3TvQd1UycHpoGPFnt1gHiijXERAg==
   dependencies:
-    "@tanstack/query-core" "5.32.0"
+    "@tanstack/query-core" "5.32.1"
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.11"
@@ -6807,9 +6807,9 @@ sockjs@^0.3.24:
     websocket-driver "^0.7.4"
 
 sonic-forest@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/sonic-forest/-/sonic-forest-1.0.0.tgz#b0b77d9bca76434f4ef87b61042d041da63f3be5"
-  integrity sha512-yFO2N4uTUFtgKLw03WWFpN1iEwZySweMsa18XN3Kt0yYrlmVHunC2ZgM+437zDoKISAJHcH3Cg18U7d6tuSgSQ==
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/sonic-forest/-/sonic-forest-1.0.1.tgz#856d790bc21070bf94baf33d752604e5b7cbff2d"
+  integrity sha512-YWIS40U3Y7N2e5gxkQiz40eisSsi7s+plZpqU6CSOehjybSDGkhFIMXmr5dmM7GaqqE+VZDihfTrxxdb0of/wA==
 
 source-map-js@^1.2.0:
   version "1.2.0"

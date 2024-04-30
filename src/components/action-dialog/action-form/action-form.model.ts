@@ -1,6 +1,6 @@
 import Decimal from "decimal.js";
 import { PublicKey } from "@solana/web3.js";
-import { KaminoObligation, U64_MAX } from "@hubbleprotocol/kamino-lending-sdk";
+import { KaminoObligation, U64_MAX } from "@kamino-finance/klend-sdk";
 import { ActionParams, borrow, repay, supply, withdraw } from "@queries/api";
 import { ActionKind } from "../action-dialog.model";
 

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { PublicKey } from "@solana/web3.js";
-import { KaminoMarket, KaminoReserve, Position } from "@hubbleprotocol/kamino-lending-sdk";
+import { KaminoMarket, KaminoReserve, Position } from "@kamino-finance/klend-sdk";
 import { UIUtils } from "@misc/utils";
 
 export interface MintInfo {

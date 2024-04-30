@@ -1,5 +1,5 @@
 import { PublicKey } from "@solana/web3.js";
-import { KaminoReserve } from "@hubbleprotocol/kamino-lending-sdk";
+import { KaminoReserve } from "@kamino-finance/klend-sdk";
 
 import { SkeletonCell } from "@components/skeleton-cell";
 import { useActionDialog, ActionKind } from "@components/action-dialog";

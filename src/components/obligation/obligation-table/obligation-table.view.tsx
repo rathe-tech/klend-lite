@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { PublicKey } from "@solana/web3.js";
-import { KaminoMarket, Position } from "@hubbleprotocol/kamino-lending-sdk";
+import { KaminoMarket, Position } from "@kamino-finance/klend-sdk";
 
 import { SkeletonCell } from "@components/skeleton-cell";
 import { ActionKind, useActionDialog } from "@components/action-dialog";

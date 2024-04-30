@@ -31,7 +31,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
-    "@kamino-finance/klend-sdk": "2.10.6",
+    "@kamino-finance/klend-sdk": "2.10.7",
     "@solana/spl-token": "^0.4.6",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",

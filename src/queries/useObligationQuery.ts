@@ -4,7 +4,7 @@ import {
   KaminoMarket,
   VanillaObligation,
   PROGRAM_ID,
-} from "@hubbleprotocol/kamino-lending-sdk";
+} from "@kamino-finance/klend-sdk";
 
 export function useObligationQuery(market: KaminoMarket | null | undefined, walletAddress: PublicKey | null) {
   return useQuery({

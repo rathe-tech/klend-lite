@@ -13,7 +13,7 @@ import {
   KaminoAction,
   VanillaObligation, buildVersionedTransaction,
   PROGRAM_ID,
-} from "@hubbleprotocol/kamino-lending-sdk";
+} from "@kamino-finance/klend-sdk";
 import { DONATION_ADDRESS } from "@misc/config";
 
 export interface ActionParams {
@@ -105,12 +105,14 @@ export async function repay({
   walletAddress,
   lutAddress,
 }: ActionParams): Promise<string> {
+  const slot = await connection.getSlot();
   const action = await KaminoAction.buildRepayTxns(
     market,
     amount.toString(),
     mintAddress,
     walletAddress,
     new VanillaObligation(PROGRAM_ID),
+    slot,
     undefined,
     0,
     true,

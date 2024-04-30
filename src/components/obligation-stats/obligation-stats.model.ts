@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { KaminoObligation } from "@hubbleprotocol/kamino-lending-sdk";
+import { KaminoObligation } from "@kamino-finance/klend-sdk";
 import { UIUtils } from "@misc/utils";
 
 export function useObligationStats(obligation: KaminoObligation | null | undefined) {

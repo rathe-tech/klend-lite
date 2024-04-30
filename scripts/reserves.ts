@@ -1,5 +1,5 @@
 import { Connection } from "@solana/web3.js";
-import { KaminoMarket } from "@hubbleprotocol/kamino-lending-sdk";
+import { KaminoMarket } from "@kamino-finance/klend-sdk";
 import { MarketInfo, RPC_ENDPOINT } from "@misc/config";
 
 (async () => {
