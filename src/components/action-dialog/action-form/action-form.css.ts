@@ -4,7 +4,7 @@ import { vars } from "@theme/vars.css";
 export const form = style({
   display: "flex",
   flexDirection: "column",
-  padding: "2em",
+  padding: "1.5em",
   rowGap: "1em",
   justifyContent: "end",
 });

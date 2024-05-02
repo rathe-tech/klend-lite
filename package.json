@@ -1,6 +1,6 @@
 {
   "name": "klend-lite",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "A lightweight UI for the Kamino lending market",
   "scripts": {
     "build": "NODE_OPTIONS=--max-old-space-size=6144 npx webpack",

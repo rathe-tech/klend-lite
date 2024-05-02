@@ -17,7 +17,7 @@ export const overlay = style({
 export const form = style({
   margin: "0 auto",
   marginTop: "120px",
-  width: "560px",
+  width: "520px",
   border: `1px solid ${vars.color.borderPrimary}`,
   backgroundColor: vars.color.backgroundPrimary,
   display: "flex",

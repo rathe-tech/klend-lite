@@ -8,9 +8,11 @@ import { Assert, UIUtils } from "@misc/utils";
 
 import { StatInfo } from "../stat-info";
 import { SubmitButton } from "../submit-button";
+import { CustomerBalances } from "../customer-balances";
 
 import { ActionKind, computeSubmittedAmount, extractPosition, processAction } from "./action-form.model";
 import * as css from "./action-form.css";
+import { KaminoReserve, Position } from "@kamino-finance/klend-sdk";
 
 export function useAction({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) {
   const {
@@ -25,26 +27,10 @@ export function useAction({ kind, mintAddress }: { kind: ActionKind, mintAddress
   const reserve = market.getReserveByMint(mintAddress);
   Assert.some(reserve, "Reserve not loaded");
 
-  const { address: reserveAddress, symbol, stats: { decimals } } = reserve;
-  const walletAmount = UIUtils.toUINumber(tokenBalances.get(mintAddress.toBase58()) || new Decimal(0), decimals);
+  const { address: reserveAddress } = reserve;
   const position = extractPosition(kind, obligation, reserveAddress);
-  const positionAmount = position?.amount ?? new Decimal(0);
-  const borrowFee = UIUtils.toFormattedPercent(reserve.getBorrowFee(), Math.max(0, reserve.getBorrowFee().dp() - 2));
 
-  return { symbol, decimals, walletAmount, positionAmount, borrowFee };
-}
-
-export function choosePositionName(kind: ActionKind) {
-  switch (kind) {
-    case ActionKind.Supply:
-    case ActionKind.Withdraw:
-      return "supplied";
-    case ActionKind.Borrow:
-    case ActionKind.Repay:
-      return "borrowed";
-    default:
-      throw new Error(`Unsupported action kind: ${kind}`);
-  }
+  return { reserve, position, tokenBalances };
 }
 
 export function chooseLabel(kind: ActionKind, symbol: string) {
@@ -63,29 +49,43 @@ export function chooseLabel(kind: ActionKind, symbol: string) {
 }
 
 export const ActionForm = ({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) => {
-  const { symbol, walletAmount, positionAmount, decimals, borrowFee } = useAction({ kind, mintAddress });
+  const { reserve, position, tokenBalances } = useAction({ kind, mintAddress });
 
   return (
     <div className={css.form}>
-      <StatInfo label={`${symbol} in wallet`} value={walletAmount} />
-      <StatInfo label={`${symbol} ${choosePositionName(kind)}`} value={UIUtils.toUINumber(positionAmount, decimals)} />
-      {kind === ActionKind.Borrow && <StatInfo label="Borrow fee" value={borrowFee} />}
-      <div className={css.label}>{chooseLabel(kind, symbol)}</div>
-      <SubmitForm kind={kind} decimals={decimals} mintAddress={mintAddress} positionAmount={positionAmount} />
+      <BorrowFeeStatInfo kind={kind} reserve={reserve} />
+      <div className={css.label}>{chooseLabel(kind, reserve.getTokenSymbol())}</div>
+      <SubmitForm kind={kind} reserve={reserve} position={position} tokenBalances={tokenBalances} />
     </div>
   );
 };
 
-const SubmitForm = ({
+const BorrowFeeStatInfo = ({
   kind,
-  mintAddress,
-  decimals,
-  positionAmount
+  reserve,
 }: {
   kind: ActionKind,
-  mintAddress: PublicKey,
-  decimals: number,
-  positionAmount: Decimal | null | undefined
+  reserve: KaminoReserve,
+}) => {
+  if (kind !== ActionKind.Borrow) return;
+
+  const borrowFee = UIUtils.toFormattedPercent(
+    reserve.getBorrowFee(),
+    Math.max(0, reserve.getBorrowFee().dp() - 2)
+  );
+  return <StatInfo label="Borrow fee" value={borrowFee} />
+};
+
+const SubmitForm = ({
+  kind,
+  reserve,
+  position,
+  tokenBalances,
+}: {
+  kind: ActionKind,
+  reserve: KaminoReserve,
+  position: Position | null | undefined,
+  tokenBalances: Map<string, Decimal>,
 }) => {
   const { connection } = useConnection();
   const { sendTransaction, publicKey } = useWallet();
@@ -94,6 +94,9 @@ const SubmitForm = ({
     marketState: { data: market },
     refresh,
   } = useMarket();
+
+  const positionAmount = position?.amount ?? new Decimal(0);
+  const { stats: { decimals, mintAddress } } = reserve;
 
   const [value, setValue] = useState("");
   const [inProgress, setInProgress] = useState(false);
@@ -128,6 +131,14 @@ const SubmitForm = ({
         kind={kind}
         inProgress={inProgress}
         onSubmit={() => onSubmit(value)}
+      />
+      <CustomerBalances
+        kind={kind}
+        reserve={reserve}
+        position={position}
+        tokenBalances={tokenBalances}
+        onWalletBalanceClick={v => setValue(v)}
+        onPositionBalanceClick={v => setValue(v)}
       />
     </>
   );
