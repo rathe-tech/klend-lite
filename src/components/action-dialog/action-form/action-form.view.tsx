@@ -2,23 +2,26 @@ import { useCallback, useState } from "react";
 import Decimal from "decimal.js";
 import { PublicKey } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { KaminoReserve } from "@kamino-finance/klend-sdk";
 
 import { useMarket } from "@components/market-context";
 import { Assert, UIUtils } from "@misc/utils";
 
 import { StatInfo } from "../stat-info";
+import { Input } from "../input";
 import { SubmitButton } from "../submit-button";
 import { CustomerBalances } from "../customer-balances";
 
 import { ActionKind, computeSubmittedAmount, extractPosition, processAction } from "./action-form.model";
 import * as css from "./action-form.css";
-import { KaminoReserve, Position } from "@kamino-finance/klend-sdk";
 
 export function useAction({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) {
   const {
+    marketInfo,
     marketState: { data: market },
     tokenBalancesState: { data: tokenBalances },
     obligationState: { data: obligation },
+    refresh,
   } = useMarket();
 
   Assert.some(market, "Market not loaded");
@@ -30,32 +33,70 @@ export function useAction({ kind, mintAddress }: { kind: ActionKind, mintAddress
   const { address: reserveAddress } = reserve;
   const position = extractPosition(kind, obligation, reserveAddress);
 
-  return { reserve, position, tokenBalances };
-}
-
-export function chooseLabel(kind: ActionKind, symbol: string) {
-  switch (kind) {
-    case ActionKind.Borrow:
-      return `Amount of ${symbol} to borrow:`;
-    case ActionKind.Supply:
-      return `Amount of ${symbol} to supply:`;
-    case ActionKind.Repay:
-      return `Amount of ${symbol} to repay:`;
-    case ActionKind.Withdraw:
-      return `Amount of ${symbol} to withdraw:`;
-    default:
-      throw new Error(`Unsupported action: ${kind}`);
-  }
+  return { marketInfo, market, reserve, position, tokenBalances, refresh };
 }
 
 export const ActionForm = ({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) => {
-  const { reserve, position, tokenBalances } = useAction({ kind, mintAddress });
+  const { marketInfo: { lutAddress }, market, reserve, position, tokenBalances, refresh } = useAction({ kind, mintAddress });
+  const { connection } = useConnection();
+  const { sendTransaction, publicKey } = useWallet();
+
+  const [value, setValue] = useState("");
+  const [inProgress, setInProgress] = useState(false);
+
+  const positionAmount = position?.amount ?? new Decimal(0);
+  const { stats: { decimals } } = reserve;
+
+  const onSubmit = useCallback(async (value: string) => {
+    try {
+      setInProgress(true);
+      const inputAmount = UIUtils.toNativeNumber(value.replaceAll(",", "").trim(), decimals);
+      const amount = computeSubmittedAmount(kind, inputAmount, positionAmount);
+      const txId = await processAction(kind, {
+        sendTransaction,
+        connection,
+        market: market!,
+        walletAddress: publicKey!,
+        mintAddress,
+        amount,
+        lutAddress,
+      });
+
+      alert(`Transaction complete: ${txId}`);
+      await refresh();
+    } catch (e: any) {
+      alert(e.toString());
+      console.log(e);
+    } finally {
+      setInProgress(false);
+    }
+  }, [kind, mintAddress]);
 
   return (
     <div className={css.form}>
-      <BorrowFeeStatInfo kind={kind} reserve={reserve} />
-      <div className={css.label}>{chooseLabel(kind, reserve.getTokenSymbol())}</div>
-      <SubmitForm kind={kind} reserve={reserve} position={position} tokenBalances={tokenBalances} />
+      <Input
+        value={value}
+        symbol={reserve.getTokenSymbol()}
+        price={reserve.getReserveMarketPrice()}
+        onChange={value => setValue(value)}
+      />
+      <BorrowFeeStatInfo
+        kind={kind}
+        reserve={reserve}
+      />
+      <SubmitButton
+        kind={kind}
+        inProgress={inProgress}
+        onSubmit={() => onSubmit(value)}
+      />
+      <CustomerBalances
+        kind={kind}
+        reserve={reserve}
+        position={position}
+        tokenBalances={tokenBalances}
+        onWalletBalanceClick={v => setValue(v)}
+        onPositionBalanceClick={v => setValue(v)}
+      />
     </div>
   );
 };
@@ -75,71 +116,3 @@ const BorrowFeeStatInfo = ({
   );
   return <StatInfo label="Borrow fee" value={borrowFee} />
 };
-
-const SubmitForm = ({
-  kind,
-  reserve,
-  position,
-  tokenBalances,
-}: {
-  kind: ActionKind,
-  reserve: KaminoReserve,
-  position: Position | null | undefined,
-  tokenBalances: Map<string, Decimal>,
-}) => {
-  const { connection } = useConnection();
-  const { sendTransaction, publicKey } = useWallet();
-  const {
-    marketInfo: { lutAddress },
-    marketState: { data: market },
-    refresh,
-  } = useMarket();
-
-  const positionAmount = position?.amount ?? new Decimal(0);
-  const { stats: { decimals, mintAddress } } = reserve;
-
-  const [value, setValue] = useState("");
-  const [inProgress, setInProgress] = useState(false);
-
-  const onSubmit = useCallback(async (value: string) => {
-    try {
-      setInProgress(true);
-      const inputAmount = UIUtils.toNativeNumber(value.replaceAll(",", "").trim(), decimals);
-      const amount = computeSubmittedAmount(kind, inputAmount, positionAmount);
-      const txId = await processAction(kind, { sendTransaction, connection, market: market!, walletAddress: publicKey!, mintAddress, amount, lutAddress });
-
-      alert(`Transaction complete: ${txId}`);
-      await refresh();
-    } catch (e: any) {
-      alert(e.toString());
-      console.log(e);
-    } finally {
-      setInProgress(false);
-    }
-  }, [kind, mintAddress]);
-
-  return (
-    <>
-      <input
-        autoFocus
-        className={css.input}
-        value={value}
-        placeholder="0"
-        onChange={e => setValue(e.target.value)}
-      />
-      <SubmitButton
-        kind={kind}
-        inProgress={inProgress}
-        onSubmit={() => onSubmit(value)}
-      />
-      <CustomerBalances
-        kind={kind}
-        reserve={reserve}
-        position={position}
-        tokenBalances={tokenBalances}
-        onWalletBalanceClick={v => setValue(v)}
-        onPositionBalanceClick={v => setValue(v)}
-      />
-    </>
-  );
-}

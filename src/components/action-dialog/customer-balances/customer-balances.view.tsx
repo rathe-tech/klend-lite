@@ -48,7 +48,12 @@ const WalletBalance = ({
 
   return (
     <div className={css.item}>
-      <span className={css.prefix} onClick={() => onBalanceClick(balance)}>{balance}</span>
+      <span 
+        className={css.prefix} 
+        onClick={() => onBalanceClick(balance.replaceAll(",", ""))}
+      >
+        {balance}
+      </span>
       <span className={css.suffix}>{symbol}</span>
       <span className={css.suffix}>in wallet</span>
     </div>
@@ -71,7 +76,12 @@ const PositionBalance = ({
 
   return (
     <div className={css.item}>
-      <span className={css.prefix} onClick={() => onBalanceClick(balance)}>{balance}</span>
+      <span 
+        className={css.prefix} 
+        onClick={() => onBalanceClick(balance.replaceAll(",", ""))}
+      >
+        {balance}
+      </span>
       <span className={css.suffix}>{symbol}</span>
       <span className={css.suffix}>{choosePositionName(kind)}</span>
     </div>
