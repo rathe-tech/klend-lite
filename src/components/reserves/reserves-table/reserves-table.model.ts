@@ -19,6 +19,7 @@ export interface UIReserve {
   maxBorrow: string;
   borrowApy: string;
   isBorrowable: boolean;
+  isSuppliable: boolean;
 }
 
 export function useReserves({
@@ -71,6 +72,7 @@ function toUIReserve(reserve: KaminoReserve): UIReserve {
     maxBorrow: UIUtils.toUINumber(reserveBorrowLimit, decimals),
     borrowApy: UIUtils.toPercent(borrowInterestAPY, 4),
     isBorrowable: !reserveBorrowLimit.isZero(),
+    isSuppliable: !reserveDepositLimit.isZero(),
   };
 }
 

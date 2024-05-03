@@ -100,6 +100,7 @@ const ReserveRow = ({ reserve, isEnabled }: { reserve: UIReserve, isEnabled: boo
       <td>
         <div className={css.controls}>
           <button
+            style={{ visibility: reserve.isSuppliable ? "initial" : "hidden" }}
             disabled={!isEnabled}
             onClick={() => open({
               kind: ActionKind.Supply,
