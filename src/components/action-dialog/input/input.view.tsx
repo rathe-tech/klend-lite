@@ -1,5 +1,5 @@
 import Decimal from "decimal.js";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import * as css from "./input.css";
 
 const formatter = new Intl.NumberFormat('en-US', {
@@ -13,15 +13,18 @@ const formatter = new Intl.NumberFormat('en-US', {
 export const Input = ({
   value,
   symbol,
+  decimals,
   price,
   onChange,
 }: {
   value: string,
   symbol: string,
+  decimals: number,
   price: Decimal,
   onChange: (value: string) => void,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const step = useMemo(() => 1 / (10 ** decimals), [decimals]);
   const amount = price.mul(value ? Number.parseFloat(value) : 0);
 
   return (
@@ -38,6 +41,7 @@ export const Input = ({
             className={css.input}
             placeholder="0"
             min="0"
+            step={step}
             value={value}
             onChange={e => onChange(e.target.value)}
           />

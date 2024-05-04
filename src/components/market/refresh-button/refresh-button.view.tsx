@@ -3,8 +3,8 @@ import { ProgressIcon } from "../../progress-icon";
 import * as css from "./refresh-button.css";
 
 export const RefreshButton = () => {
-  const { marketState, obligationState, tokenBalancesState, refresh } = useMarket();
-  const isMarketFetching = marketState.isFetching;
+  const { slotState, marketState, obligationState, tokenBalancesState, refresh } = useMarket();
+  const isMarketFetching = slotState.isFetching || marketState.isFetching;
   const isObligationFetching = obligationState.isFetching;
   const isTokenBalancesFetching = tokenBalancesState.isFetching;
   const isInProgress = isMarketFetching || isObligationFetching || isTokenBalancesFetching;

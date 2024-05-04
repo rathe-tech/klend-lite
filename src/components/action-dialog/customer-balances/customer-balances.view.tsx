@@ -1,7 +1,9 @@
 import Decimal from "decimal.js";
 import { KaminoReserve, Position } from "@kamino-finance/klend-sdk";
 
+import { ZERO } from "@misc/config";
 import { UIUtils } from "@misc/utils";
+
 import { ActionKind } from "../action-dialog.model";
 import * as css from "./customer-balances.css";
 
@@ -44,7 +46,7 @@ const WalletBalance = ({
   onBalanceClick: (value: string) => void,
 }) => {
   const { stats: { symbol, decimals, mintAddress } } = reserve;
-  const balance = UIUtils.toUINumber(tokenBalances.get(mintAddress.toBase58()) ?? new Decimal(0), decimals, true);
+  const balance = UIUtils.toUINumber(tokenBalances.get(mintAddress.toBase58()) ?? ZERO, decimals, true);
 
   return (
     <div className={css.item}>
@@ -72,7 +74,7 @@ const PositionBalance = ({
   onBalanceClick: (value: string) => void,
 }) => {
   const { stats: { symbol, decimals } } = reserve;
-  const balance = UIUtils.toUINumber(position?.amount ?? new Decimal(0), decimals, true);
+  const balance = UIUtils.toUINumber(position?.amount ?? ZERO, decimals, true);
 
   return (
     <div className={css.item}>

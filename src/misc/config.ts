@@ -1,3 +1,4 @@
+import Decimal from "decimal.js";
 import { PublicKey } from "@solana/web3.js";
 import { Option } from "./utils";
 import { version } from "../../package.json";
@@ -6,6 +7,7 @@ export const VERSION = version;
 export const RPC_ENDPOINT = "https://solana-mainnet.g.alchemy.com/v2/bQRVX2kT0wbFCsYAHEJrY_JlSAgAffby";
 export const DONATION_ADDRESS = new PublicKey("1DxMVkgaKW4sCNJcXGHGGEb2kv4Jh3Q4Wd9RjEvMP73");
 export const WSOL_MINT_ADDRESS = new PublicKey("So11111111111111111111111111111111111111112");
+export const ZERO = new Decimal(0);
 
 export interface MarketInfo {
   name: string;

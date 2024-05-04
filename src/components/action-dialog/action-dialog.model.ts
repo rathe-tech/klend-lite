@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 import { PublicKey } from "@solana/web3.js";
+import { ActionType } from "@kamino-finance/klend-sdk";
 
 export enum ActionKind {
   Supply,
@@ -19,6 +20,21 @@ export module ActionKind {
 
   export function isBorrowRelated(kind: ActionKind) {
     return kind === ActionKind.Borrow || kind === ActionKind.Repay;
+  }
+
+  export function toActionType(kind: ActionKind): ActionType {
+    switch (kind) {
+      case ActionKind.Borrow:
+        return "borrow";
+      case ActionKind.Repay:
+        return "repay";
+      case ActionKind.Supply:
+        return "deposit";
+      case ActionKind.Withdraw:
+        return "withdraw";
+      default:
+        throw new Error(`Unsupported ActionKind: ${kind}`);
+    }
   }
 }
 

@@ -4,9 +4,9 @@ import { ObligationTable, PositionKind } from "./obligation-table";
 import * as css from "./obligation.css";
 
 export const Obligation = () => {
-  const { marketState, obligationState, tokenBalancesState } = useMarket();
+  const { slotState, marketState, obligationState, tokenBalancesState } = useMarket();
 
-  if (!marketState.data || !obligationState.data || !tokenBalancesState.data) {
+  if (!slotState.data || !marketState.data || !obligationState.data || !tokenBalancesState.data) {
     return;
   }
 

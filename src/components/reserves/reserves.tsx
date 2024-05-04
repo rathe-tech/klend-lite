@@ -3,9 +3,9 @@ import { ReservesTable, SkeletonReservesTable } from "./reserves-table";
 import * as css from "./reserves.css";
 
 export const Reserves = () => {
-  const { marketState, obligationState, tokenBalancesState } = useMarket();
+  const { slotState, marketState, obligationState, tokenBalancesState } = useMarket();
 
-  if (marketState.isPending) {
+  if (slotState.isPending || marketState.isPending) {
     return (
       <div className={css.reserves}>
         <SkeletonReservesTable />
