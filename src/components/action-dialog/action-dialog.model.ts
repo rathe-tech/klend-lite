@@ -12,6 +12,14 @@ export module ActionKind {
   export function canBeClosed(kind: ActionKind) {
     return kind === ActionKind.Repay || kind === ActionKind.Withdraw;
   }
+
+  export function isDepositRelated(kind: ActionKind) {
+    return kind === ActionKind.Supply || kind === ActionKind.Withdraw;
+  }
+
+  export function isBorrowRelated(kind: ActionKind) {
+    return kind === ActionKind.Borrow || kind === ActionKind.Repay;
+  }
 }
 
 export interface Action {

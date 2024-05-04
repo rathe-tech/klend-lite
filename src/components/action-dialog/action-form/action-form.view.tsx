@@ -5,7 +5,7 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { KaminoReserve } from "@kamino-finance/klend-sdk";
 
 import { useMarket } from "@components/market-context";
-import { Assert, UIUtils } from "@misc/utils";
+import { Assert, UIUtils, UIPercent } from "@misc/utils";
 
 import { StatInfo } from "../stat-info";
 import { Input } from "../input";
@@ -77,13 +77,27 @@ export const ActionForm = ({ kind, mintAddress }: { kind: ActionKind, mintAddres
       <Input
         value={value}
         symbol={reserve.getTokenSymbol()}
-        price={reserve.getReserveMarketPrice()}
+        price={reserve.getOracleMarketPrice()}
         onChange={value => setValue(value)}
       />
-      <BorrowFeeStatInfo
-        kind={kind}
-        reserve={reserve}
-      />
+      <div className={css.statsWrapper}>
+        <StatInfo
+          label="Price"
+          value={UIUtils.toUIPrice(reserve.getOracleMarketPrice())}
+        />
+        <SupplyApyInfo
+          kind={kind}
+          reserve={reserve}
+        />
+        <BorrowApyInfo
+          kind={kind}
+          reserve={reserve}
+        />
+        <BorrowFeeStatInfo
+          kind={kind}
+          reserve={reserve}
+        />
+      </div>
       <SubmitButton
         kind={kind}
         inProgress={inProgress}
@@ -110,9 +124,36 @@ const BorrowFeeStatInfo = ({
 }) => {
   if (kind !== ActionKind.Borrow) return;
 
-  const borrowFee = UIUtils.toFormattedPercent(
+  const borrowFee = UIPercent.fromDecimalFraction(
     reserve.getBorrowFee(),
-    Math.max(0, reserve.getBorrowFee().dp() - 2)
+    reserve.getBorrowFee().dp() - 2
   );
+
   return <StatInfo label="Borrow fee" value={borrowFee} />
+};
+
+const SupplyApyInfo = ({
+  kind,
+  reserve,
+}: {
+  kind: ActionKind,
+  reserve: KaminoReserve,
+}) => {
+  if (ActionKind.isBorrowRelated(kind)) return;
+  const supplyApy = UIPercent.fromNumberFraction(reserve.stats.supplyInterestAPY, 4);
+
+  return <StatInfo label="Supply APY" value={supplyApy} />;
+};
+
+const BorrowApyInfo = ({
+  kind,
+  reserve,
+}: {
+  kind: ActionKind,
+  reserve: KaminoReserve,
+}) => {
+  if (ActionKind.isDepositRelated(kind)) return;
+  const borrowApy = UIPercent.fromNumberFraction(reserve.stats.borrowInterestAPY, 4);
+
+  return <StatInfo label="Borrow APY" value={borrowApy} />;
 };

@@ -2,7 +2,7 @@ import { style } from "@vanilla-extract/css";
 
 export const submitButton = style({
   fontSize: "15px",
-  padding: "10px 0",
+  padding: "12px 0",
   display: "flex",
   columnGap: "10px",
   justifyContent: "center",

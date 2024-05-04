@@ -37,6 +37,7 @@ export const Input = ({
             type="number"
             className={css.input}
             placeholder="0"
+            min="0"
             value={value}
             onChange={e => onChange(e.target.value)}
           />

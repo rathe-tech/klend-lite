@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { KaminoObligation } from "@kamino-finance/klend-sdk";
-import { UIUtils } from "@misc/utils";
+import { UIPercent, UIUtils } from "@misc/utils";
 
 export function useObligationStats(obligation: KaminoObligation | null | undefined) {
   return useMemo(() => {
@@ -18,9 +18,9 @@ export function useObligationStats(obligation: KaminoObligation | null | undefin
 
     return {
       borrowPower: UIUtils.toFormattedUsd(borrowLimit.minus(userTotalBorrowBorrowFactorAdjusted)),
-      ltv: UIUtils.toFormattedPercent(loanToValue),
-      maxLtv: UIUtils.toFormattedPercent(borrowLimit.div(userTotalDeposit)),
-      liquidationLtv: UIUtils.toFormattedPercent(liquidationLtv)
+      ltv: UIPercent.fromDecimalFraction(loanToValue),
+      maxLtv: UIPercent.fromDecimalFraction(borrowLimit.div(userTotalDeposit)),
+      liquidationLtv: UIPercent.fromDecimalFraction(liquidationLtv)
     }
   }, [obligation]);
 }

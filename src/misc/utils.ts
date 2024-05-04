@@ -39,18 +39,26 @@ export module Assert {
   }
 }
 
+export module UIPercent {
+  export function fromDecimalFraction(value: Decimal | undefined, decimalPlaces: number = 4) {
+    return fromNumberFraction(value ? value.toNumber() : value, decimalPlaces);
+  }
+
+  export function fromNumberFraction(value: number | undefined, decimalPlaces: number = 4) {
+    if (value == null) {
+      return "-";
+    } else if (value === 0) {
+      return "0%"
+    } else {
+      return `${(value * 100).toFixed(decimalPlaces)}%`;
+    }
+  }
+}
+
 export module UIUtils {
   export function toUINumber(value: Decimal, decimals: number, keepZeroes: boolean = false) {
     const rebased = value.div(10 ** decimals).toDecimalPlaces(decimals);
     return toCommaFormattedNumber(keepZeroes ? rebased.toFixed(decimals) : rebased.toString());
-  }
-
-  export function toPercent(value: number, decimalPlaces: number) {
-    return `${(value * 100).toFixed(decimalPlaces)}%`;
-  }
-
-  export function toFormattedPercent(value: Decimal | undefined, decimalPlaces: number = 4) {
-    return value ? UIUtils.toPercent(value.toNumber(), decimalPlaces) : "-";
   }
 
   export function toFormattedUsd(value: Decimal | undefined) {

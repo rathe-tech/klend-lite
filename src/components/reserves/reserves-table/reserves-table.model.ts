@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@kamino-finance/klend-sdk";
 
-import { UIUtils } from "@misc/utils";
+import { UIUtils, UIPercent } from "@misc/utils";
 import { MarketInfo } from "@misc/config";
 
 export interface UIReserve {
@@ -67,10 +67,10 @@ function toUIReserve(reserve: KaminoReserve): UIReserve {
     borrowFactor: (borrowFactor / 100).toFixed(2),
     currentSupply: UIUtils.toUINumber(reserve.getTotalSupply(), decimals),
     maxSupply: UIUtils.toUINumber(reserveDepositLimit, decimals),
-    supplyApy: UIUtils.toPercent(supplyInterestAPY, 4),
+    supplyApy: UIPercent.fromNumberFraction(supplyInterestAPY),
     currentBorrow: UIUtils.toUINumber(reserve.getBorrowedAmount(), decimals),
     maxBorrow: UIUtils.toUINumber(reserveBorrowLimit, decimals),
-    borrowApy: UIUtils.toPercent(borrowInterestAPY, 4),
+    borrowApy: UIPercent.fromNumberFraction(borrowInterestAPY),
     isBorrowable: !reserveBorrowLimit.isZero(),
     isSuppliable: !reserveDepositLimit.isZero(),
   };

@@ -6,7 +6,8 @@ export const root = style({
   flexDirection: "row",
   columnGap: "6px",
   fontSize: "14px",
-  justifyContent: "right",
+  padding: "6px 0",
+  justifyContent: "space-between",
 });
 
 export const label = style({
@@ -16,4 +17,4 @@ export const label = style({
 export const value = style({
   color: vars.color.labelPrimary,
   fontWeight: "bold",
-})
+});
