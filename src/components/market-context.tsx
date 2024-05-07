@@ -13,7 +13,7 @@ import { useSlotQuery } from "@queries/useSlotQuery";
 export type SlotState = ReturnType<typeof useSlotQuery>;
 export type MarketState = ReturnType<typeof useMarketQuery>;
 export type ObligationState = ReturnType<typeof useObligationQuery>;
-export type TokenBalancesState = ReturnType<typeof useTokenBalancesQuery>
+export type TokenBalancesState = ReturnType<typeof useTokenBalancesQuery>;
 
 export interface MarketContext {
   slotState: SlotState,
@@ -50,7 +50,7 @@ export const MarketProvider = ({ children }: { children: React.ReactNode }) => {
 
   const hasError = useCallback(() => {
     return slotState.isError || marketState.isError || obligationState.isError || tokenBalancesState.isError;
-  }, [marketState, obligationState, tokenBalancesState]);
+  }, [slotState, marketState, obligationState, tokenBalancesState]);
 
   return (
     <MarketContext.Provider value={{

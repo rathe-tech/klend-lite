@@ -12,6 +12,7 @@ import {
   ActionKind,
   computeProjectedBorrowAPY,
   computeProjectedSupplyAPY,
+  computeProjectedUtilization,
   useActionForm
 } from "./action-form.model";
 import * as css from "./action-form.css";
@@ -79,6 +80,13 @@ const StatInfoSection = ({
       label="Price"
       value={UIUtils.toUIPrice(reserve.getOracleMarketPrice())}
     />
+    <UtilizationInfo
+      kind={kind}
+      reserve={reserve}
+      inputAmount={inputAmount}
+      decimals={decimals}
+      slot={slot}
+    />
     <SupplyApyInfo
       kind={kind}
       reserve={reserve}
@@ -93,13 +101,33 @@ const StatInfoSection = ({
       decimals={decimals}
       slot={slot}
     />
-    <BorrowFeeStatInfo
+    <BorrowFeeInfo
       kind={kind}
       reserve={reserve}
     />
   </div>
 
-const BorrowFeeStatInfo = ({
+const UtilizationInfo = ({
+  kind,
+  reserve,
+  inputAmount,
+  decimals,
+  slot,
+}: {
+  kind: ActionKind,
+  reserve: KaminoReserve,
+  inputAmount: string,
+  decimals: number,
+  slot: number
+}) => {
+  const currentUtilization = UIPercent.fromNumberFraction(reserve.calculateUtilizationRatio());
+  const projectedUtilization = computeProjectedUtilization(kind, inputAmount, decimals, reserve, slot);
+  const explanation = projectedUtilization == null ? currentUtilization : `${currentUtilization} → ${projectedUtilization}`;
+
+  return <StatInfo label="Utilization" value={explanation} />
+};
+
+const BorrowFeeInfo = ({
   kind,
   reserve,
 }: {

@@ -1,13 +1,10 @@
-import { useMarket } from "@components/market-context";
 import { ProgressIcon } from "../../progress-icon";
+import { RefreshState, useRefreshState } from "./refresh-button.model";
 import * as css from "./refresh-button.css";
 
 export const RefreshButton = () => {
-  const { slotState, marketState, obligationState, tokenBalancesState, refresh } = useMarket();
-  const isMarketFetching = slotState.isFetching || marketState.isFetching;
-  const isObligationFetching = obligationState.isFetching;
-  const isTokenBalancesFetching = tokenBalancesState.isFetching;
-  const isInProgress = isMarketFetching || isObligationFetching || isTokenBalancesFetching;
+  const { state, refresh } = useRefreshState();
+  const isInProgress = RefreshState.isInProgress(state);
 
   return (
     <button
@@ -16,22 +13,7 @@ export const RefreshButton = () => {
       onClick={() => refresh()}
     >
       {isInProgress && <ProgressIcon />}
-      {humanizeProgressState({ isMarketFetching, isObligationFetching, isTokenBalancesFetching })}
+      {RefreshState.humanize(state)}
     </button>
   );
-}
-
-function humanizeProgressState({
-  isMarketFetching,
-  isObligationFetching,
-  isTokenBalancesFetching,
-}: {
-  isMarketFetching: boolean,
-  isObligationFetching: boolean,
-  isTokenBalancesFetching: boolean,
-}) {
-  if (isMarketFetching) return "Fetching market...";
-  if (isObligationFetching) return "Fetching account...";
-  if (isTokenBalancesFetching) return "Fetching wallet...";
-  else return "Refresh";
-}
+};

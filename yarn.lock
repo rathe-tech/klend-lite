@@ -175,7 +175,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.24.0"
 
-"@babel/runtime@^7.10.5", "@babel/runtime@^7.12.5", "@babel/runtime@^7.17.2", "@babel/runtime@^7.23.4":
+"@babel/runtime@^7.10.5", "@babel/runtime@^7.12.5", "@babel/runtime@^7.17.2", "@babel/runtime@^7.23.4", "@babel/runtime@^7.24.5":
   version "7.24.5"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.5.tgz#230946857c053a36ccc66e1dd03b17dd0c4ed02c"
   integrity sha512-Nms86NXrsaeU9vbBJKni6gXiEXZ4CVpYVzEjDH9Sb8vmZ3UljyA1GSOJl/6LGPO8EHLuSF9H+IxNXHPX8QHJ4g==
@@ -1257,7 +1257,7 @@
   resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.1.2.tgz#e9e035b9b166ca0af657a7848eb2718f0f22f183"
   integrity sha512-KYRCASVTv6aeUi1tsF8/vpyR7zpfs3FUzy2Jqm+MU+LmUKhQ0y2FpfwqkCcxSg2ua4GALJd8k2R76WxwZGbQpA==
 
-"@noble/hashes@1.4.0", "@noble/hashes@^1.3.1", "@noble/hashes@^1.3.3":
+"@noble/hashes@1.4.0", "@noble/hashes@^1.3.1", "@noble/hashes@^1.3.3", "@noble/hashes@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.4.0.tgz#45814aa329f30e4fe0ba49426f49dfccdd066426"
   integrity sha512-V1JJ1WTRUqHHrOSh597hURcMqVKVGL/ea3kv0gSnEdsEZ0/+VyPghM1lMNGc00z7CIQorSvbKpuJkxvuHbvdbg==
@@ -2148,7 +2148,7 @@
     superstruct "^0.14.2"
     tweetnacl "^1.0.0"
 
-"@solana/web3.js@^1.17.0", "@solana/web3.js@^1.20.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.24.1", "@solana/web3.js@^1.31.0", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.37.0", "@solana/web3.js@^1.41.1", "@solana/web3.js@^1.42.0", "@solana/web3.js@^1.43.5", "@solana/web3.js@^1.50.1", "@solana/web3.js@^1.52.0", "@solana/web3.js@^1.66.0", "@solana/web3.js@^1.66.2", "@solana/web3.js@^1.68.0", "@solana/web3.js@^1.70.0", "@solana/web3.js@^1.87.6", "@solana/web3.js@^1.91.7":
+"@solana/web3.js@^1.17.0", "@solana/web3.js@^1.20.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.24.1", "@solana/web3.js@^1.31.0", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.37.0", "@solana/web3.js@^1.41.1", "@solana/web3.js@^1.42.0", "@solana/web3.js@^1.43.5", "@solana/web3.js@^1.50.1", "@solana/web3.js@^1.52.0", "@solana/web3.js@^1.66.0", "@solana/web3.js@^1.66.2", "@solana/web3.js@^1.68.0", "@solana/web3.js@^1.70.0", "@solana/web3.js@^1.87.6":
   version "1.91.7"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.91.7.tgz#1d639f8f3cc772fd6d88b982e8fdb17dc192b9e1"
   integrity sha512-HqljZKDwk6Z4TajKRGhGLlRsbGK4S8EY27DA7v1z6yakewiUY3J7ZKDZRxcqz2MYV/ZXRrJ6wnnpiHFkPdv0WA==
@@ -2169,6 +2169,27 @@
     rpc-websockets "^7.5.1"
     superstruct "^0.14.2"
 
+"@solana/web3.js@^1.91.8":
+  version "1.91.8"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.91.8.tgz#0d5eb69626a92c391b53e15bfbb0bad3f6858e51"
+  integrity sha512-USa6OS1jbh8zOapRJ/CBZImZ8Xb7AJjROZl5adql9TpOoBN9BUzyyouS5oPuZHft7S7eB8uJPuXWYjMi6BHgOw==
+  dependencies:
+    "@babel/runtime" "^7.24.5"
+    "@noble/curves" "^1.4.0"
+    "@noble/hashes" "^1.4.0"
+    "@solana/buffer-layout" "^4.0.1"
+    agentkeepalive "^4.5.0"
+    bigint-buffer "^1.1.5"
+    bn.js "^5.2.1"
+    borsh "^0.7.0"
+    bs58 "^4.0.1"
+    buffer "6.0.3"
+    fast-stable-stringify "^1.0.0"
+    jayson "^4.1.0"
+    node-fetch "^2.7.0"
+    rpc-websockets "^7.11.0"
+    superstruct "^0.14.2"
+
 "@switchboard-xyz/sbv2-lite@^0.1.0":
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@switchboard-xyz/sbv2-lite/-/sbv2-lite-0.1.6.tgz#dc3fbb5b3b028dbd3c688b991bcc48a670131ddb"
@@ -2177,17 +2198,17 @@
     "@project-serum/anchor" "^0.24.2"
     big.js "^6.1.1"
 
-"@tanstack/query-core@5.32.1":
-  version "5.32.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.32.1.tgz#742b0293bcefd91b2a4d6bd7543e710ab666ac94"
-  integrity sha512-mCWa1wdGb1jiny4+qYegbSeadcFj+Nq65KFSs4A1DRveoIq7SrTwUhqu7hrB6d54cQH5x59DfJvxusn3w1Cj/g==
+"@tanstack/query-core@5.35.1":
+  version "5.35.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.35.1.tgz#a7e6cbf0f252475da19ba9cba6567e8fe683b2ee"
+  integrity sha512-0Dnpybqb8+ps6WgqBnqFEC+1F/xLvUosRAq+wiGisTgolOZzqZfkE2995dEXmhuzINiTM7/a6xSGznU0NIvBkw==
 
-"@tanstack/react-query@^5.32.0":
-  version "5.32.1"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.32.1.tgz#ddb2c5aef342694ad288fac61e12269775c46161"
-  integrity sha512-+nXLMB0JK0XwTJ+lQt49DPNLrbSppni9N5W5yMR085yW3YaRKRUFhfVTER3TvQd1UycHpoGPFnt1gHiijXERAg==
+"@tanstack/react-query@^5.35.1":
+  version "5.35.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.35.1.tgz#3b7c710bb32c6c71e0cbe64029dded9b0cbd9a0f"
+  integrity sha512-i2T7m2ffQdNqlX3pO+uMsnQ0H4a59Ens2GxtlMsRiOvdSB4SfYmHb27MnvFV8rGmtWRaa4gPli0/rpDoSS5LbQ==
   dependencies:
-    "@tanstack/query-core" "5.32.1"
+    "@tanstack/query-core" "5.35.1"
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.11"
@@ -2465,7 +2486,7 @@
   dependencies:
     "@babel/core" "^7.23.9"
 
-"@vanilla-extract/css@^1.14.2", "@vanilla-extract/css@^1.15.1":
+"@vanilla-extract/css@^1.15.1":
   version "1.15.1"
   resolved "https://registry.yarnpkg.com/@vanilla-extract/css/-/css-1.15.1.tgz#cf68cb95cdb521056af9ebf7907694806ae89228"
   integrity sha512-puAfTKAUtsMr2+D+grQNjU5umsdw9zdVgQflUlbzS/tGORaAHdgaYz7jfKPmz1c4ZcpJ6uFNOiI50NDOAzzhyg==
@@ -2505,7 +2526,7 @@
   resolved "https://registry.yarnpkg.com/@vanilla-extract/private/-/private-1.0.4.tgz#35946b917d6b9774a2b9bc725c63c9341049c79b"
   integrity sha512-8FGD6AejeC/nXcblgNCM5rnZb9KXa4WNkR03HCWtdJBpANjTgjHEglNLFnhuvdQ78tC6afaxBPI+g7F2NX3tgg==
 
-"@vanilla-extract/webpack-plugin@^2.3.7":
+"@vanilla-extract/webpack-plugin@^2.3.8":
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/@vanilla-extract/webpack-plugin/-/webpack-plugin-2.3.8.tgz#8818cec762a666be43d14ef3594216cbb45a66f2"
   integrity sha512-etdNKd+lB4QowW7tNLWFCkAnUUYLiJWRdcVfgwUyaYSl4IOD4SabBbY/0uTDVE3LQaCHAsiWGFflWwoKD9F1SQ==
@@ -6520,6 +6541,18 @@ rollup@^4.13.0:
     "@rollup/rollup-win32-ia32-msvc" "4.17.2"
     "@rollup/rollup-win32-x64-msvc" "4.17.2"
     fsevents "~2.3.2"
+
+rpc-websockets@^7.11.0:
+  version "7.11.0"
+  resolved "https://registry.yarnpkg.com/rpc-websockets/-/rpc-websockets-7.11.0.tgz#05451975963a7d1a4cf36d54e200bfc4402a56d7"
+  integrity sha512-IkLYjayPv6Io8C/TdCL5gwgzd1hFz2vmBZrjMw/SPEXo51ETOhnzgS4Qy5GWi2JQN7HKHa66J3+2mv0fgNh/7w==
+  dependencies:
+    eventemitter3 "^4.0.7"
+    uuid "^8.3.2"
+    ws "^8.5.0"
+  optionalDependencies:
+    bufferutil "^4.0.1"
+    utf-8-validate "^5.0.2"
 
 rpc-websockets@^7.4.2, rpc-websockets@^7.5.1:
   version "7.10.0"
