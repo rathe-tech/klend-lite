@@ -4,12 +4,12 @@ import { ActionParams, borrow, repay, supply, withdraw } from "@queries/api";
 
 import { PublicKey } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { KaminoObligation, KaminoReserve, U64_MAX, calculateAPYFromAPR } from "@kamino-finance/klend-sdk";
+import { KaminoObligation, U64_MAX } from "@kamino-finance/klend-sdk";
 
 import { ZERO } from "@misc/config";
-import { Assert, UIPercent, UIUtils } from "@misc/utils";
+import { Assert, UIUtils } from "@misc/utils";
 import { useMarket } from "@components/market-context";
-import { Action, ActionKind } from "../action-dialog.model";
+import { ActionKind } from "../action-dialog.model";
 
 export { ActionKind };
 
@@ -132,52 +132,4 @@ async function processAction(kind: ActionKind, params: ActionParams): Promise<st
     default:
       throw new Error(`Unsupported action kind: ${kind}`);
   }
-}
-
-export function computeProjectedSupplyAPY(
-  kind: ActionKind,
-  rawAmount: string,
-  decimals: number,
-  reserve: KaminoReserve,
-  slot: number
-) {
-  if (rawAmount.length === 0) return;
-
-  const amount = UIUtils.toNativeNumber(rawAmount, decimals);
-  if (amount.isZero()) return;
-
-  const apr = reserve.calcSimulatedSupplyAPR(amount, ActionKind.toActionType(kind), slot, 0);
-  return UIPercent.fromNumberFraction(calculateAPYFromAPR(apr));
-}
-
-export function computeProjectedBorrowAPY(
-  kind: ActionKind,
-  rawAmount: string,
-  decimals: number,
-  reserve: KaminoReserve,
-  slot: number
-) {
-  if (rawAmount.length === 0) return;
-
-  const amount = UIUtils.toNativeNumber(rawAmount, decimals);
-  if (amount.isZero()) return;
-
-  const apr = reserve.calcSimulatedBorrowAPR(amount, ActionKind.toActionType(kind), slot, 0);
-  return UIPercent.fromNumberFraction(calculateAPYFromAPR(apr));
-}
-
-export function computeProjectedUtilization(
-  kind: ActionKind,
-  rawAmount: string,
-  decimals: number,
-  reserve: KaminoReserve,
-  slot: number,
-) {
-  if (rawAmount.length === 0) return;
-
-  const amount = UIUtils.toNativeNumber(rawAmount, decimals);
-  if (amount.isZero()) return;
-
-  const utilization = reserve.calcSimulatedUtilizationRatio(amount, ActionKind.toActionType(kind), slot, 0);
-  return UIPercent.fromNumberFraction(utilization);
 }

@@ -14,7 +14,3 @@ export const label = style({
   fontSize: "14px",
   color: vars.color.labelSecondary,
 });
-
-export const statsWrapper = style({
-  marginBottom: "1.75em",
-});

@@ -29,6 +29,8 @@ export const input = style({
   fontWeight: "bold",
   textAlign: "right",
   outline: "none",
+  backgroundColor: "transparent",
+  color: vars.color.labelPrimary,
   WebkitAppearance: "none",
   "::-webkit-outer-spin-button": {
     appearance: "none",
