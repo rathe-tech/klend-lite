@@ -1,21 +1,23 @@
 import Decimal from "decimal.js";
-import { useCallback, useState } from "react";
-import { ActionParams, borrow, repay, supply, withdraw } from "@queries/api";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 import { PublicKey } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { KaminoObligation, U64_MAX } from "@kamino-finance/klend-sdk";
 
 import { ZERO } from "@misc/config";
-import { Assert, UIUtils } from "@misc/utils";
+import { Assert, TokenAmount } from "@misc/utils";
+import { ActionParams, borrow, repay, supply, withdraw } from "@queries/api";
 import { useMarket } from "@components/market-context";
-import { ActionKind } from "../action-dialog.model";
 
+import { ActionKind } from "../action-dialog.model";
 export { ActionKind };
 
 export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) {
   const { connection } = useConnection();
   const { sendTransaction, publicKey } = useWallet();
+
+  Assert.some(publicKey, "Wallet not connected");
 
   const {
     marketInfo: { lutAddress },
@@ -33,25 +35,24 @@ export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAdd
   const reserve = market.getReserveByMint(mintAddress);
   Assert.some(reserve, "Reserve not loaded");
 
-  const [inputAmount, setInputAmount] = useState("");
+  const { address: reserveAddress, stats: { decimals } } = reserve;
+
+  const inputAmount = useInputAmount(decimals);
   const [inProgress, setInProgress] = useState(false);
 
-  const { address: reserveAddress } = reserve;
   const position = extractPosition(kind, obligation, reserveAddress);
-
   const positionAmount = position?.amount ?? ZERO;
-  const { stats: { decimals } } = reserve;
 
-  const onSubmit = useCallback(async (rawAmount: string) => {
+  const onSubmit = useCallback(async (inputAmount: Decimal | undefined) => {
     try {
       setInProgress(true);
-      const inputAmount = UIUtils.toNativeNumber(rawAmount, decimals);
+      Assert.some(inputAmount, "Invalid input amount");
       const amount = computeSubmittedAmount(kind, inputAmount, positionAmount);
       const txId = await processAction(kind, {
         sendTransaction,
         connection,
-        market: market!,
-        walletAddress: publicKey!,
+        market,
+        walletAddress: publicKey,
         mintAddress,
         amount,
         lutAddress,
@@ -65,9 +66,15 @@ export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAdd
     } finally {
       setInProgress(false);
     }
-  }, [kind, mintAddress]);
+  }, [kind, connection, market, mintAddress]);
 
-  return { slot, reserve, position, tokenBalances, inProgress, inputAmount, setInputAmount, onSubmit };
+  return { slot, market, reserve, obligation, position, tokenBalances, mintAddress, inProgress, inputAmount, onSubmit };
+}
+
+function useInputAmount(decimals: number) {
+  const [rawValue, setValue] = useState("");
+  const nativeValue = useMemo(() => TokenAmount.toNative(rawValue, decimals), [rawValue, decimals]);
+  return { value: { raw: rawValue, native: nativeValue }, setValue };
 }
 
 const MAX_AMOUNT = new Decimal(U64_MAX);

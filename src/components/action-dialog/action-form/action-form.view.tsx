@@ -19,38 +19,40 @@ export const ActionForm = ({
   mintAddress: PublicKey,
 }) => {
   const {
-    slot, reserve, position, tokenBalances,
-    inProgress, inputAmount, setInputAmount, onSubmit,
+    slot, market, reserve, obligation, position, tokenBalances,
+    inProgress, inputAmount, onSubmit,
   } = useActionForm({ kind, mintAddress });
 
   return (
     <div className={css.form}>
       <Input
-        value={inputAmount}
+        value={inputAmount.value.raw}
         decimals={reserve.stats.decimals}
         symbol={reserve.getTokenSymbol()}
         price={reserve.getOracleMarketPrice()}
-        onChange={value => setInputAmount(value)}
+        onChange={value => inputAmount.setValue(value)}
       />
       <StatsSection
         kind={kind}
+        market={market}
         reserve={reserve}
-        inputAmount={inputAmount}
-        decimals={reserve.stats.decimals}
+        obligation={obligation}
+        inputAmount={inputAmount.value.native}
+        mintAddress={mintAddress}
         slot={slot}
       />
       <SubmitButton
         kind={kind}
         inProgress={inProgress}
-        onSubmit={() => onSubmit(inputAmount)}
+        onSubmit={() => onSubmit(inputAmount.value.native)}
       />
       <CustomerBalances
         kind={kind}
         reserve={reserve}
         position={position}
         tokenBalances={tokenBalances}
-        onWalletBalanceClick={v => setInputAmount(v)}
-        onPositionBalanceClick={v => setInputAmount(v)}
+        onWalletBalanceClick={v => inputAmount.setValue(v)}
+        onPositionBalanceClick={v => inputAmount.setValue(v)}
       />
     </div>
   );

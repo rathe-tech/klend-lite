@@ -55,6 +55,17 @@ export module UIPercent {
   }
 }
 
+export module TokenAmount {
+  export function toNative(value: string | undefined, decimals: number): Decimal | undefined {
+    if (value == null || value === "") return;
+
+    return new Decimal(value)
+      .toDecimalPlaces(decimals)
+      .mul(10 ** decimals)
+      .floor();
+  }
+}
+
 export module UIUtils {
   export function toUINumber(value: Decimal, decimals: number, keepZeroes: boolean = false) {
     const rebased = value.div(10 ** decimals).toDecimalPlaces(decimals);
@@ -63,13 +74,6 @@ export module UIUtils {
 
   export function toFormattedUsd(value: Decimal | undefined) {
     return value ? `$${toCommaFormattedNumber(value.toDecimalPlaces(2).toString())}` : "-";
-  }
-
-  export function toNativeNumber(value: number | string, decimals: number) {
-    return new Decimal(value)
-      .toDecimalPlaces(decimals)
-      .mul(10 ** decimals)
-      .floor();
   }
 
   export function toUIPrice(price: Decimal) {
