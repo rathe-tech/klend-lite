@@ -1,0 +1,1 @@
+export { NotificationProvider, useNotifications } from "./notifications.view";

@@ -1,5 +1,5 @@
 import Decimal from "decimal.js";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { PublicKey } from "@solana/web3.js";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
@@ -8,6 +8,7 @@ import { KaminoObligation, U64_MAX } from "@kamino-finance/klend-sdk";
 import { ZERO } from "@misc/config";
 import { Assert, TokenAmount } from "@misc/utils";
 import { ActionParams, borrow, repay, supply, withdraw } from "@queries/api";
+import { useNotifications } from "@components/notifications";
 import { useMarket } from "@components/market-context";
 
 import { ActionKind } from "../action-dialog.model";
@@ -16,6 +17,7 @@ export { ActionKind };
 export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) {
   const { connection } = useConnection();
   const { sendTransaction, publicKey } = useWallet();
+  const { notify } = useNotifications();
 
   Assert.some(publicKey, "Wallet not connected");
 
@@ -44,11 +46,13 @@ export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAdd
   const positionAmount = position?.amount ?? ZERO;
 
   const onSubmit = useCallback(async (inputAmount: Decimal | undefined) => {
+    const id = crypto.randomUUID();
     try {
       setInProgress(true);
+      notify({ id, content: "In progress..." });
       Assert.some(inputAmount, "Invalid input amount");
       const amount = computeSubmittedAmount(kind, inputAmount, positionAmount);
-      const txId = await processAction(kind, {
+      const sig = await processAction(kind, {
         sendTransaction,
         connection,
         market,
@@ -57,12 +61,11 @@ export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAdd
         amount,
         lutAddress,
       });
-
-      alert(`Transaction complete: ${txId}`);
       await refresh();
+      notify({ id, content: `Transaction complete: ${sig}`, closable: true });
     } catch (e: any) {
-      alert(e.toString());
-      console.log(e);
+      notify({ id, content: e.toString(), closable: true });
+      console.error(e);
     } finally {
       setInProgress(false);
     }

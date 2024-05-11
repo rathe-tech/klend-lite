@@ -105,5 +105,5 @@ function computeProjectedUtilization(
 
 function explainDiff<T>(current: T, projected: T | undefined, formatter: (value: T) => string) {
   if (projected == null) return formatter(current);
-  return `${formatter(current)} → ${formatter(projected)}`
+  return `${formatter(current)} → ${formatter(projected)}`;
 }

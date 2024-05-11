@@ -39,6 +39,14 @@ export module Assert {
   }
 }
 
+export module Simulation {
+  export async function wait(ms: number) {
+    return await new Promise<void>((resolve) => {
+      setTimeout(() => resolve(), ms);
+    });
+  }
+}
+
 export module UIPercent {
   export function fromDecimalFraction(value: Decimal | undefined, decimalPlaces: number = 4) {
     return fromNumberFraction(value ? value.toNumber() : value, decimalPlaces);

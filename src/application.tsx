@@ -7,6 +7,7 @@ import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 
 import { AppBar } from "@components/app-bar";
 import { MarketSelect } from "@components/market-select";
+import { NotificationProvider } from "@components/notifications";
 import { Market } from "@components/market";
 
 import { RPC_ENDPOINT } from "@misc/config";
@@ -29,12 +30,14 @@ export const Application = () => {
           >
             <WalletProvider wallets={wallets} autoConnect>
               <WalletModalProvider>
-                <AppBar />
-                <MarketSelect />
-                <Routes>
-                  <Route index element={<Market />} />
-                  <Route path="/market/:marketAddress" element={<Market />} />
-                </Routes>
+                <NotificationProvider>
+                  <AppBar />
+                  <MarketSelect />
+                  <Routes>
+                    <Route index element={<Market />} />
+                    <Route path="/market/:marketAddress" element={<Market />} />
+                  </Routes>
+                </NotificationProvider>
               </WalletModalProvider>
             </WalletProvider>
           </ConnectionProvider>
