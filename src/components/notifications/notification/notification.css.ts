@@ -14,11 +14,11 @@ export const notification = styleVariants({
     border: `1px solid ${vars.color.borderPrimary}`,
   }],
   error: [base, {
-    background: vars.color.errorColorDimmed,
+    background: `color-mix(in srgb, ${vars.color.errorColor} 20%, ${vars.color.backgroundPrimary})`,
     border: `1px solid ${vars.color.errorColor}`,
   }],
   success: [base, {
-    backgroundColor: vars.color.accentColorDimmed,
+    backgroundColor: `color-mix(in srgb, ${vars.color.accentColor} 20%, ${vars.color.backgroundPrimary})`,
     border: `1px solid ${vars.color.borderAccent}`,
   }],
 });
