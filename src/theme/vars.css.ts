@@ -9,6 +9,9 @@ export const vars = createGlobalTheme(":root", {
     accentColor: "#00cc00",
     accentColorDimmed: "#00cc0020",
 
+    errorColor: "#cc0000",
+    errorColorDimmed: "#cc000029",
+
     labelPrimary: "#fff",
     labelSecondary: "#9a9cab",
     labelTertiary: "#bbb",

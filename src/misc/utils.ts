@@ -39,6 +39,20 @@ export module Assert {
   }
 }
 
+export module ArrayUtils {
+  export function unionWithScalar<T>(array: T[], value: T, tail: boolean = true) {
+    return tail ? [...array, value] : [value, ...array];
+  }
+
+  export function replaceAt<T>(array: T[], index: number, newValue: T): T[] {
+    return [...array.slice(0, index), newValue, ...array.slice(index + 1)];
+  }
+
+  export function removeAt<T>(array: T[], index: number) {
+    return [...array.slice(0, index), ...array.slice(index + 1)];
+  }
+}
+
 export module Simulation {
   export async function wait(ms: number) {
     return await new Promise<void>((resolve) => {

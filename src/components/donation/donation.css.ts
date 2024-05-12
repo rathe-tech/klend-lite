@@ -3,13 +3,13 @@ import { vars } from "@theme/vars.css";
 
 export const donation = style({
   backgroundColor: vars.color.accentColorDimmed,
+  border: `1px solid ${vars.color.borderAccent}`,
   width: "100%",
   padding: `${vars.desktop.containerOffset}`,
   display: "flex",
   columnGap: "8px",
   fontSize: "14px",
   marginBottom: "12px",
-  border: `1px solid ${vars.color.borderAccent}`,
 });
 
 export const wallet = style({

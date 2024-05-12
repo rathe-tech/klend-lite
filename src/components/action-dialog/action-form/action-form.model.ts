@@ -8,7 +8,7 @@ import { KaminoObligation, U64_MAX } from "@kamino-finance/klend-sdk";
 import { ZERO } from "@misc/config";
 import { Assert, TokenAmount } from "@misc/utils";
 import { ActionParams, borrow, repay, supply, withdraw } from "@queries/api";
-import { useNotifications } from "@components/notifications";
+import { useNotifications, NotificationKind } from "@components/notifications";
 import { useMarket } from "@components/market-context";
 
 import { ActionKind } from "../action-dialog.model";
@@ -49,7 +49,7 @@ export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAdd
     const id = crypto.randomUUID();
     try {
       setInProgress(true);
-      notify({ id, content: "In progress..." });
+      notify({ id, kind: NotificationKind.Info, message: "In progress..." });
       Assert.some(inputAmount, "Invalid input amount");
       const amount = computeSubmittedAmount(kind, inputAmount, positionAmount);
       const sig = await processAction(kind, {
@@ -62,9 +62,9 @@ export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAdd
         lutAddress,
       });
       await refresh();
-      notify({ id, content: `Transaction complete: ${sig}`, closable: true });
+      notify({ id, kind: NotificationKind.Success, message: `Transaction complete: ${sig}`, closable: true });
     } catch (e: any) {
-      notify({ id, content: e.toString(), closable: true });
+      notify({ id, kind: NotificationKind.Error, message: e.toString(), closable: true });
       console.error(e);
     } finally {
       setInProgress(false);
