@@ -3,6 +3,7 @@ import { KaminoReserve } from "@kamino-finance/klend-sdk";
 
 import { SkeletonCell } from "@components/skeleton-cell";
 import { useActionDialog, ActionKind } from "@components/action-dialog";
+import { EXPLORER_URL } from "@misc/config";
 
 import { useReserves, UIReserve } from "./reserves-table.model";
 import * as css from "./reserve-table.css";
@@ -66,7 +67,7 @@ const ReserveRow = ({ reserve, isEnabled }: { reserve: UIReserve, isEnabled: boo
         <a
           className={css.symbol}
           target="_blank"
-          href={`https://explorer.solana.com/address/${reserve.address}`}
+          href={`${EXPLORER_URL}/account/${reserve.address}`}
         >
           {reserve.symbol}
         </a>
