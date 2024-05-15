@@ -4,8 +4,8 @@ import { Option } from "./utils";
 import { version } from "../../package.json";
 
 export const VERSION = version;
-export const RPC_ENDPOINT = "https://solana-mainnet.g.alchemy.com/v2/bQRVX2kT0wbFCsYAHEJrY_JlSAgAffby";
-export const DONATION_ADDRESS = new PublicKey("1DxMVkgaKW4sCNJcXGHGGEb2kv4Jh3Q4Wd9RjEvMP73");
+export const RPC_ENDPOINT = "https://rpc.hellomoon.io/aef55734-29d9-4df6-847c-f5cdc8387b60";
+export const DONATION_ADDRESS = new PublicKey("GD6tdZfRDy8o45vkxJ6pq3RZR3ZV9XuCKsMQL4sikjXY");
 export const WSOL_MINT_ADDRESS = new PublicKey("So11111111111111111111111111111111111111112");
 export const ZERO = new Decimal(0);
 
