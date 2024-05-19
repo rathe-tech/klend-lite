@@ -12,7 +12,7 @@ export const RefreshButton = () => {
       disabled={isInProgress}
       onClick={() => refresh()}
     >
-      {isInProgress && <ProgressIcon />}
+      {isInProgress && <ProgressIcon.Accent />}
       {RefreshState.humanize(state)}
     </button>
   );

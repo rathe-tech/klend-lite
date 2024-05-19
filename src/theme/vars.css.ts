@@ -24,11 +24,15 @@ export const vars = createGlobalTheme(":root", {
     borderPrimaryDisabled: "#30363d40",
     borderAccent: "#00cc0040",
 
-    buttonDefaultBackgroundRest: "#21262d",
-    buttonDefaultBackgroundHover: "#292e36",
-    buttonDefaultBackgroundActive: "#31363e",
+    buttonPrimaryBackgroundRest: "#21262d",
+    buttonPrimaryBackgroundHover: "#292e36",
+    buttonPrimaryBackgroundActive: "#31363e",
+    buttonPrimaryBackgroundDisabled: "#21262d40",
 
-    buttonDefaultBackgroundDisabled: "#21262d40",
+    buttonSecondaryBackgroundRest: "#238636",
+    buttonSecondaryBackgroundHover: "#29903b",
+    buttonSecondaryBackgroundActive: "#2e9a40",
+    buttonSecondaryBackgroundDisabled: "#105823",
   },
   desktop: {
     containerWidth: "1280px",

@@ -9,7 +9,7 @@ const shine = keyframes({
 
 export const skeletonCell = style({
   display: "inline-block",
-  backgroundColor: vars.color.buttonDefaultBackgroundRest,
+  backgroundColor: vars.color.buttonPrimaryBackgroundRest,
   borderRadius: "4px",
   backgroundSize: "40px 100%",
   backgroundRepeat: "no-repeat",

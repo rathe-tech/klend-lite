@@ -210,12 +210,12 @@ globalStyle(".wallet-adapter-dropdown-list-item", {
 });
 
 globalStyle(".wallet-adapter-dropdown-list-item:not([disabled]):hover", {
-  backgroundColor: vars.color.buttonDefaultBackgroundHover,
+  backgroundColor: vars.color.buttonPrimaryBackgroundHover,
   color: vars.color.labelPrimary,
 });
 
 globalStyle(".wallet-adapter-dropdown-list-item:not([disabled]):active", {
-  backgroundColor: vars.color.buttonDefaultBackgroundActive,
+  backgroundColor: vars.color.buttonPrimaryBackgroundActive,
 });
 
 globalStyle(".wallet-adapter-button:not([disabled]):focus-visible", {

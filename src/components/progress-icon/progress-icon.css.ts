@@ -1,4 +1,4 @@
-import { keyframes, style } from "@vanilla-extract/css";
+import { keyframes, style, styleVariants } from "@vanilla-extract/css";
 import { vars } from "@theme/vars.css";
 
 const rotate = keyframes({
@@ -6,11 +6,20 @@ const rotate = keyframes({
   '100%': { transform: 'rotate(360deg)' },
 });
 
-export const circle = style({
+const base = style({
   width: "14px",
   height: "14px",
-  border: `2px solid ${vars.color.accentColor}`,
   borderRadius: "7px",
-  borderTopColor: "transparent",
   animation: `${rotate} 1s linear infinite`,
+});
+
+export const circle = styleVariants({
+  accent: [base, {
+    border: `2px solid ${vars.color.accentColor}`,
+    borderTopColor: "transparent",
+  }],
+  default: [base, {
+    border: `2px solid ${vars.color.labelTertiary}`,
+    borderTopColor: "transparent",
+  }],
 });

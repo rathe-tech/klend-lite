@@ -16,7 +16,7 @@ export const SubmitButton = ({
     className={css.submitButton}
     onClick={onSubmit}
   >
-    {inProgress && <ProgressIcon />}
+    {inProgress && <ProgressIcon.Default />}
     {chooseCaption(kind, inProgress)}
   </button>
 
