@@ -1,9 +1,9 @@
-# [KLEND LITE](https://klend.xyz/) - A Lightweight client for the Kamino lending market
+# [KLEND LITE](https://klend.xyz/) - A Lightweight dApp for the Kamino lending markets
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://badges.mit-license.org)
 
 ## About the project
-This project is dedicated to build a lightweight open-source client for the Kamino 
-lending market (https://app.kamino.finance).
+This project is dedicated to build a lightweight open-source dApp for the Kamino 
+lending markets (https://app.kamino.finance).
 
 ### Goals:
 - Lightweight and fast
