@@ -234,6 +234,11 @@
     toformat "^2.0.0"
     yargs "^17.0.1"
 
+"@bokuweb/zstd-wasm@^0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@bokuweb/zstd-wasm/-/zstd-wasm-0.0.20.tgz#fab3cc3854ebc2a6c4f1921d5bb518e28f674a0f"
+  integrity sha512-l/48EbQXz8FobRP6/rs5Voca+mrgtCldDF787sTekiHHP6yUW5kvjpDU7xSNI6pjrXjbDVyUZq5HN8kkevu3Og==
+
 "@coral-xyz/anchor@^0.28.0":
   version "0.28.0"
   resolved "https://registry.yarnpkg.com/@coral-xyz/anchor/-/anchor-0.28.0.tgz#8345c3c9186a91f095f704d7b90cd256f7e8b2dc"
@@ -274,14 +279,6 @@
     snake-case "^3.0.4"
     superstruct "^0.15.4"
     toml "^3.0.0"
-
-"@coral-xyz/borsh@^0.26.0":
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/@coral-xyz/borsh/-/borsh-0.26.0.tgz#d054f64536d824634969e74138f9f7c52bbbc0d5"
-  integrity sha512-uCZ0xus0CszQPHYfWAqKS5swS1UxvePu83oOF+TWpUkedsNlg6p2p4azxZNSSqwXb9uXMFgxhuMBX9r3Xoi0vQ==
-  dependencies:
-    bn.js "^5.1.2"
-    buffer-layout "^1.2.0"
 
 "@coral-xyz/borsh@^0.28.0":
   version "0.28.0"
@@ -870,14 +867,9 @@
     hyperdyperid "^1.2.0"
 
 "@jup-ag/api@^6.0.1":
-  version "6.0.19"
-  resolved "https://registry.yarnpkg.com/@jup-ag/api/-/api-6.0.19.tgz#d7ff4c2aae7b07c7c606d1d4787e162897b88567"
-  integrity sha512-5IjWtAhl8evXtnmvqHCiVXtBdcxS2gZdZ07Njkx6hCpo90C+WYKUbF0v/pPio+laKddcSh6xni+yCkgM+CRpTQ==
-  dependencies:
-    "@project-serum/anchor" "^0.26.0"
-    "@solana/web3.js" "^1.87.6"
-    bs58 "^5.0.0"
-    promise-retry "2.0.1"
+  version "6.0.22"
+  resolved "https://registry.yarnpkg.com/@jup-ag/api/-/api-6.0.22.tgz#48762bdb49c93831d3f49d5ac5bc3114c98f19c5"
+  integrity sha512-15r5vmY6CZ1VreDao+Y7lQ3gugAuXNH+QfQ76PcMsx+GfqgWLgzINzBZVJFN9Y9B+dwo2EVHlsWNqSH7HaC3jw==
 
 "@jup-ag/core@=3.0.0-beta.18":
   version "3.0.0-beta.18"
@@ -1036,11 +1028,12 @@
     decimal.js "^10.3.1"
     tiny-invariant "^1.2.0"
 
-"@kamino-finance/klend-sdk@2.10.7":
-  version "2.10.7"
-  resolved "https://registry.yarnpkg.com/@kamino-finance/klend-sdk/-/klend-sdk-2.10.7.tgz#01f77879ef95ef89f3fe9cc2e095f2b144df53e9"
-  integrity sha512-KEdzqVIPGGIegbeIivEjMAEIr57DIqf1Nuq5YWeRtA6BEWbdODdTMgKLeGEpsQYVgZQpO62zwL8zgNTsayqi4w==
+"@kamino-finance/klend-sdk@2.10.15":
+  version "2.10.15"
+  resolved "https://registry.yarnpkg.com/@kamino-finance/klend-sdk/-/klend-sdk-2.10.15.tgz#228c4975f8b3b80337b0c3405337ba10b147edda"
+  integrity sha512-rtZlkshN1yOg8Rwxe8FM0W2QGWPMFVC18jDOFl8dJ3jBL+hj/L20ezG6DV+zYtxvZ+xcl7TB/mGS9p5pISBYCQ==
   dependencies:
+    "@bokuweb/zstd-wasm" "^0.0.20"
     "@coral-xyz/anchor" "^0.28.0"
     "@coral-xyz/borsh" "^0.28.0"
     "@hubbleprotocol/farms-sdk" "^0.3.7"
@@ -1051,6 +1044,7 @@
     "@solana/spl-token" "^0.1.8"
     "@solana/web3.js" "^1.87.6"
     "@switchboard-xyz/sbv2-lite" "^0.1.0"
+    axios "^1.6.8"
     bn.js "^5.2.1"
     buffer "^6.0.3"
     buffer-layout "^1.2.2"
@@ -1514,27 +1508,6 @@
     bs58 "^4.0.1"
     buffer-layout "^1.2.2"
     camelcase "^5.3.1"
-    cross-fetch "^3.1.5"
-    crypto-hash "^1.3.0"
-    eventemitter3 "^4.0.7"
-    js-sha256 "^0.9.0"
-    pako "^2.0.3"
-    snake-case "^3.0.4"
-    superstruct "^0.15.4"
-    toml "^3.0.0"
-
-"@project-serum/anchor@^0.26.0":
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.26.0.tgz#99e15a3923a5d10514f8185b2d3909e5699d60d5"
-  integrity sha512-Nq+COIjE1135T7qfnOHEn7E0q39bQTgXLFk837/rgFe6Hkew9WML7eHsS+lSYD2p3OJaTiUOHTAq1lHy36oIqQ==
-  dependencies:
-    "@coral-xyz/borsh" "^0.26.0"
-    "@solana/web3.js" "^1.68.0"
-    base64-js "^1.5.1"
-    bn.js "^5.1.2"
-    bs58 "^4.0.1"
-    buffer-layout "^1.2.2"
-    camelcase "^6.3.0"
     cross-fetch "^3.1.5"
     crypto-hash "^1.3.0"
     eventemitter3 "^4.0.7"
@@ -2148,28 +2121,7 @@
     superstruct "^0.14.2"
     tweetnacl "^1.0.0"
 
-"@solana/web3.js@^1.17.0", "@solana/web3.js@^1.20.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.24.1", "@solana/web3.js@^1.31.0", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.37.0", "@solana/web3.js@^1.41.1", "@solana/web3.js@^1.42.0", "@solana/web3.js@^1.43.5", "@solana/web3.js@^1.50.1", "@solana/web3.js@^1.52.0", "@solana/web3.js@^1.66.0", "@solana/web3.js@^1.66.2", "@solana/web3.js@^1.68.0", "@solana/web3.js@^1.70.0", "@solana/web3.js@^1.87.6":
-  version "1.91.7"
-  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.91.7.tgz#1d639f8f3cc772fd6d88b982e8fdb17dc192b9e1"
-  integrity sha512-HqljZKDwk6Z4TajKRGhGLlRsbGK4S8EY27DA7v1z6yakewiUY3J7ZKDZRxcqz2MYV/ZXRrJ6wnnpiHFkPdv0WA==
-  dependencies:
-    "@babel/runtime" "^7.23.4"
-    "@noble/curves" "^1.4.0"
-    "@noble/hashes" "^1.3.3"
-    "@solana/buffer-layout" "^4.0.1"
-    agentkeepalive "^4.5.0"
-    bigint-buffer "^1.1.5"
-    bn.js "^5.2.1"
-    borsh "^0.7.0"
-    bs58 "^4.0.1"
-    buffer "6.0.3"
-    fast-stable-stringify "^1.0.0"
-    jayson "^4.1.0"
-    node-fetch "^2.7.0"
-    rpc-websockets "^7.5.1"
-    superstruct "^0.14.2"
-
-"@solana/web3.js@^1.91.8":
+"@solana/web3.js@^1.17.0", "@solana/web3.js@^1.20.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.24.1", "@solana/web3.js@^1.31.0", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.37.0", "@solana/web3.js@^1.41.1", "@solana/web3.js@^1.42.0", "@solana/web3.js@^1.43.5", "@solana/web3.js@^1.50.1", "@solana/web3.js@^1.52.0", "@solana/web3.js@^1.66.0", "@solana/web3.js@^1.66.2", "@solana/web3.js@^1.68.0", "@solana/web3.js@^1.70.0", "@solana/web3.js@^1.87.6", "@solana/web3.js@^1.91.8":
   version "1.91.8"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.91.8.tgz#0d5eb69626a92c391b53e15bfbb0bad3f6858e51"
   integrity sha512-USa6OS1jbh8zOapRJ/CBZImZ8Xb7AJjROZl5adql9TpOoBN9BUzyyouS5oPuZHft7S7eB8uJPuXWYjMi6BHgOw==
@@ -2188,6 +2140,27 @@
     jayson "^4.1.0"
     node-fetch "^2.7.0"
     rpc-websockets "^7.11.0"
+    superstruct "^0.14.2"
+
+"@solana/web3.js@^1.32.0":
+  version "1.91.7"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.91.7.tgz#1d639f8f3cc772fd6d88b982e8fdb17dc192b9e1"
+  integrity sha512-HqljZKDwk6Z4TajKRGhGLlRsbGK4S8EY27DA7v1z6yakewiUY3J7ZKDZRxcqz2MYV/ZXRrJ6wnnpiHFkPdv0WA==
+  dependencies:
+    "@babel/runtime" "^7.23.4"
+    "@noble/curves" "^1.4.0"
+    "@noble/hashes" "^1.3.3"
+    "@solana/buffer-layout" "^4.0.1"
+    agentkeepalive "^4.5.0"
+    bigint-buffer "^1.1.5"
+    bn.js "^5.2.1"
+    borsh "^0.7.0"
+    bs58 "^4.0.1"
+    buffer "6.0.3"
+    fast-stable-stringify "^1.0.0"
+    jayson "^4.1.0"
+    node-fetch "^2.7.0"
+    rpc-websockets "^7.5.1"
     superstruct "^0.14.2"
 
 "@switchboard-xyz/sbv2-lite@^0.1.0":
@@ -2933,10 +2906,10 @@ axios@^0.27.2:
     follow-redirects "^1.14.9"
     form-data "^4.0.0"
 
-axios@^1.2.6:
-  version "1.6.8"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.6.8.tgz#66d294951f5d988a00e87a0ffb955316a619ea66"
-  integrity sha512-v/ZHtJDU39mDpyBoFVkETcd/uNdxrWRrg3bKpOKzXFA6Bvqopts6ALSMU3y6ijYxbw2B+wPrIv46egTzJXCLGQ==
+axios@^1.2.6, axios@^1.6.8:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.7.1.tgz#522145622a09dfaf49359837db9649ff245a35b9"
+  integrity sha512-+LV37nQcd1EpFalkXksWNBiA17NZ5m5/WspmHGmZmdx1qBOg/VNq/c4eRJiA9VQQHBOs+N0ZhhdU10h2TyNK7Q==
   dependencies:
     follow-redirects "^1.15.6"
     form-data "^4.0.0"
@@ -3323,9 +3296,9 @@ caniuse-lite@^1.0.30001587:
   integrity sha512-jmZQ1VpmlRwHgdP1/uiKzgiAuGOfLEJsYFP4+GBou/QQ4U6IOJCB4NP1c+1p9RGLpwObcT94jA5/uO+F1vBbog==
 
 chai-as-promised@^7.1.1:
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/chai-as-promised/-/chai-as-promised-7.1.1.tgz#08645d825deb8696ee61725dbf590c012eb00ca0"
-  integrity sha512-azL6xMoi+uxu6z4rhWQ1jbdUhOMhis2PvscD/xjLqNMkv3BPPp2JyyuTHOrf9BOosGpNQ11v6BKv/g57RXbiaA==
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/chai-as-promised/-/chai-as-promised-7.1.2.tgz#70cd73b74afd519754161386421fb71832c6d041"
+  integrity sha512-aBDHZxRzYnUYuIAIPBH2s511DjlKPzXNlXSGFC8CwmroWQLfrW0LtE1nK3MAwwNhJPa9raEjNCmRoFpG0Hurdw==
   dependencies:
     check-error "^1.0.2"
 
@@ -5262,9 +5235,9 @@ jest-worker@^27.4.5:
     supports-color "^8.0.0"
 
 joi@^17.7.0:
-  version "17.13.0"
-  resolved "https://registry.yarnpkg.com/joi/-/joi-17.13.0.tgz#b6f340b8029ee7af2397f821d17a4f03bf34b043"
-  integrity sha512-9qcrTyoBmFZRNHeVP4edKqIUEgFzq7MHvTNSDuHSqkpOPtiBkgNgcmTSqmiw1kw9tdKaiddvIDv/eCJDxmqWCA==
+  version "17.13.1"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-17.13.1.tgz#9c7b53dc3b44dd9ae200255cc3b398874918a6ca"
+  integrity sha512-vaBlIKCyo4FCUtCm7Eu4QZd/q02bWcxfUO6YSXAZOWF6gzcLBeba8kwotUdYJjDLW8Cz8RywsSOqiNJZW0mNvg==
   dependencies:
     "@hapi/hoek" "^9.3.0"
     "@hapi/topo" "^5.1.0"
@@ -5777,7 +5750,12 @@ node-forge@^1:
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-1.3.1.tgz#be8da2af243b2417d5f646a770663a92b7e9ded3"
   integrity sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==
 
-node-gyp-build@^4.2.0, node-gyp-build@^4.3.0, node-gyp-build@^4.5.0:
+node-gyp-build@^4.2.0:
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.8.1.tgz#976d3ad905e71b76086f4f0b0d3637fe79b6cda5"
+  integrity sha512-OSs33Z9yWr148JZcbZd5WiAXhh/n9z8TxQcdMhIOlpN9AhWpLfvVFO73+m77bBABQMaY9XSvIa+qk0jlI7Gcaw==
+
+node-gyp-build@^4.3.0, node-gyp-build@^4.5.0:
   version "4.8.0"
   resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.8.0.tgz#3fee9c1731df4581a3f9ead74664369ff00d26dd"
   integrity sha512-u6fs2AEUljNho3EYTJNBfImO5QTo/J/1Etd+NVdCj7qWKUSN/bSLkZwhDv7I+w/MSC6qJ4cknepkAYykDdK8og==
@@ -6542,7 +6520,7 @@ rollup@^4.13.0:
     "@rollup/rollup-win32-x64-msvc" "4.17.2"
     fsevents "~2.3.2"
 
-rpc-websockets@^7.11.0:
+rpc-websockets@^7.11.0, rpc-websockets@^7.4.2:
   version "7.11.0"
   resolved "https://registry.yarnpkg.com/rpc-websockets/-/rpc-websockets-7.11.0.tgz#05451975963a7d1a4cf36d54e200bfc4402a56d7"
   integrity sha512-IkLYjayPv6Io8C/TdCL5gwgzd1hFz2vmBZrjMw/SPEXo51ETOhnzgS4Qy5GWi2JQN7HKHa66J3+2mv0fgNh/7w==
@@ -6554,7 +6532,7 @@ rpc-websockets@^7.11.0:
     bufferutil "^4.0.1"
     utf-8-validate "^5.0.2"
 
-rpc-websockets@^7.4.2, rpc-websockets@^7.5.1:
+rpc-websockets@^7.5.1:
   version "7.10.0"
   resolved "https://registry.yarnpkg.com/rpc-websockets/-/rpc-websockets-7.10.0.tgz#8ffaf6aaab3eb18e603c7549988cf49feeddcd29"
   integrity sha512-cemZ6RiDtYZpPiBzYijdOrkQQzmBCmug0E9SdRH2gIUNT15ql4mwCYWIp0VnSZq6Qrw/JkGUygp4PrK1y9KfwQ==
@@ -6654,7 +6632,12 @@ semver@^6.0.0, semver@^6.3.0, semver@^6.3.1:
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
 
-semver@^7.2.1, semver@^7.3.4, semver@^7.3.5, semver@^7.5.3, semver@^7.5.4:
+semver@^7.2.1, semver@^7.5.3:
+  version "7.6.2"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.2.tgz#1e3b34759f896e8f14d6134732ce798aeb0c6e13"
+  integrity sha512-FNAIBWCx9qcRhoHcgcJ0gvU7SN1lYU2ZXuSfl04bSC5OpvDHFyJCjdNHomPXxjQlCBU67YW64PzY7/VIEH7F2w==
+
+semver@^7.3.4, semver@^7.3.5, semver@^7.5.4:
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.0.tgz#1a46a4db4bffcccd97b743b5005c8325f23d4e2d"
   integrity sha512-EnwXhrlwXMk9gKu5/flx5sv/an57AkRplG3hTK68W7FRDN+k+OWBj65M7719OkA82XLBxrcX0KSHj+X5COhOVg==

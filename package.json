@@ -1,6 +1,6 @@
 {
   "name": "klend-lite",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "description": "A lightweight UI for the Kamino lending market",
   "scripts": {
     "build": "NODE_OPTIONS=--max-old-space-size=6144 npx webpack",
@@ -31,7 +31,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
-    "@kamino-finance/klend-sdk": "2.10.7",
+    "@kamino-finance/klend-sdk": "2.10.15",
     "@solana/spl-token": "^0.4.6",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",

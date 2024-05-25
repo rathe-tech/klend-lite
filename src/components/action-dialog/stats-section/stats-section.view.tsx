@@ -26,7 +26,14 @@ export const StatsSection = ({
   mintAddress: PublicKey,
   slot: number,
 }) => {
-  const { supplyAPY, borrowAPY, utilization } = useStats(kind, inputAmount, reserve, slot);
+  const { supplyAPY, borrowAPY, utilization, ltv } = useStats(
+    kind,
+    inputAmount,
+    mintAddress,
+    market,
+    obligation,
+    reserve,
+    slot);
 
   return (
     <div className={css.statsWrapper}>
@@ -45,6 +52,10 @@ export const StatsSection = ({
       <StatInfo
         label="Utilization"
         value={utilization.explained}
+      />
+      <StatInfo
+        label="Loan-to-Value"
+        value={ltv.explained}
       />
       <BorrowFeeInfo
         kind={kind}
