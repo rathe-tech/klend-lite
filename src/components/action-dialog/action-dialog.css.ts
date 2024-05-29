@@ -12,16 +12,48 @@ export const overlay = style({
   backgroundColor: "rgba(0, 0, 0, 0.2)",
   backdropFilter: "blur(3px)",
   overflowY: "auto",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "flex-start",
 });
 
-export const form = style({
-  margin: "0 auto",
+export const dialog = style({
   marginTop: "120px",
-  width: "520px",
-  border: `1px solid ${vars.color.borderPrimary}`,
   backgroundColor: vars.color.backgroundPrimary,
   display: "flex",
-  flexDirection: "column",
+  flexDirection: "row",
+  position: "relative",
+});
+
+export const formContainer = style({
+  width: "520px",
+  border: `1px solid ${vars.color.borderPrimary}`,
+});
+
+export const moreContainer = style({
+  position: "absolute",
+  left: "100%",
+  top: 0,
+  height: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+export const moreButton = style({
+  border: `1px solid ${vars.color.borderPrimary}`,
+  borderLeft: "none",
+  backgroundColor: vars.color.backgroundSecondary,
+  cursor: "pointer",
+  writingMode: "vertical-rl",
+  padding: "24px 10px",
+  fontWeight: "bold",
+  fontSize: "14px",
+  userSelect: "none",
+  color: vars.color.labelSecondary,
+  ":hover": {
+    color: vars.color.labelPrimary,
+  },
 });
 
 export const nonScroll = style({
