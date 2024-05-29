@@ -2,16 +2,16 @@ import { useEffect, useRef } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@kamino-finance/klend-sdk";
 
+import { vars } from "@theme/vars.css";
 import { Assert } from "@misc/utils";
 import { useMarket } from "@components/market-context";
 
 import { Plotter, PlotterSettings } from "./plotter";
 import * as css from "./utilization-simulation.css";
-import { vars } from "@theme/vars.css";
 
-export const UtilizationSimulation = ({ 
+export const UtilizationSimulation = ({
   mintAddress,
-}: { 
+}: {
   mintAddress: PublicKey,
 }) => {
   const { marketState: { data: market } } = useMarket();
@@ -24,7 +24,6 @@ export const UtilizationSimulation = ({
 
   useEffect(() => {
     if (plotterRef.current == null) {
-      console.log("render");
       const settings = preparePlotterSettings(reserve);
       plotterRef.current = new Plotter(settings);
       plotterRef.current.mount(rootRef.current!);
@@ -37,7 +36,6 @@ export const UtilizationSimulation = ({
   useEffect(() => {
     return () => {
       if (plotterRef.current) {
-        console.log("cleanup");
         plotterRef.current.unmount();
         plotterRef.current = null;
       }
@@ -77,6 +75,7 @@ function preparePlotterSettings(reserve: KaminoReserve): PlotterSettings {
     tooltipLabelColor: vars.color.labelSecondary,
     tooltipValueColor: vars.color.labelPrimary,
     tooltipBorderColor: vars.color.borderPrimary,
+    tooltipBackgroundColor: vars.color.backgroundPrimary,
   };
 }
 
