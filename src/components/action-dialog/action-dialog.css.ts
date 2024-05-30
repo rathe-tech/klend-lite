@@ -39,7 +39,7 @@ export const moreContainer = style({
 
 export const moreExtraWrapper = style({
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "start",
   alignItems: "center",
   height: "100%",
 })
