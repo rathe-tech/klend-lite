@@ -35,10 +35,14 @@ export const moreContainer = style({
   left: "100%",
   top: 0,
   height: "100%",
+});
+
+export const moreExtraWrapper = style({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-});
+  height: "100%",
+})
 
 export const moreButton = style({
   border: `1px solid ${vars.color.borderPrimary}`,

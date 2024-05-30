@@ -50,8 +50,10 @@ const ActionDialog = ({ action, close }: { action: Action, close: () => void }) 
         </div>
         {isMoreInfo && <UtilizationSimulation mintAddress={action.mintAddress} />}
         <div className={css.moreContainer}>
-          <div className={css.moreButton} onClick={() => setMoreInfo(!isMoreInfo)}>
-            {isMoreInfo ? "Less Info" : "More Info"}
+          <div className={css.moreExtraWrapper}>
+            <div className={css.moreButton} onClick={() => setMoreInfo(!isMoreInfo)}>
+              {isMoreInfo ? "Less Info" : "More Info"}
+            </div>
           </div>
         </div>
       </div>
