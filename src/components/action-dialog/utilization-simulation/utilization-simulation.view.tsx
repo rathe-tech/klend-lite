@@ -35,7 +35,7 @@ export const UtilizationSimulation = ({
 
   useEffect(() => {
     return () => {
-      if (plotterRef.current) {
+      if (plotterRef.current != null) {
         plotterRef.current.unmount();
         plotterRef.current = null;
       }

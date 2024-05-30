@@ -82,6 +82,7 @@ const MAIN_MARKET_RESERVES_ORDER = new Map([
   new PublicKey("D6q6wuQSrifJKZYpR1M8R4YawnLDtDsMmWM1NbBmgJ59"), /* USDC */
   new PublicKey("H3t6qZ1JkguCNTi9uzVKqQ7dvt2cum4XiXWom6Gn5e5S"), /* USDT */
   // xSOL assets
+  new PublicKey("DGQZWCY17gGtBUgdaFs1VreJWsodkjFxndPsskwFKGpp"), /* jupSOL */
   new PublicKey("FBSyPnxtHKLBZ4UeeUyAnbtFuAmTHLtso9YtsqRDRWpM"), /* MSOL */
   new PublicKey("H9vmCVd77N1HZa36eBn3UnftYmg4vQzPfm1RxabHAMER"), /* bSOL */
   new PublicKey("EVbyPKrHG6WBfm4dLxLMJpUDY43cCAcHSpV3KYjKsktW"), /* JITOSOL */
