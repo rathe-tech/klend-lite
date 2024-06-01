@@ -1,6 +1,6 @@
 {
   "name": "klend-lite",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "description": "A lightweight dApp for the Kamino lending markets",
   "scripts": {
     "build": "NODE_OPTIONS=--max-old-space-size=6144 npx webpack",
@@ -11,14 +11,14 @@
   "devDependencies": {
     "@ledgerhq/hw-app-solana": "^7.1.6",
     "@ledgerhq/hw-transport-node-hid": "^6.28.6",
-    "@types/react": "^18.3.1",
+    "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@vanilla-extract/css": "^1.15.1",
-    "@vanilla-extract/webpack-plugin": "^2.3.8",
+    "@vanilla-extract/css": "^1.15.2",
+    "@vanilla-extract/webpack-plugin": "^2.3.9",
     "buffer": "^6.0.3",
     "copy-webpack-plugin": "^12.0.2",
     "crypto-browserify": "^3.12.0",
-    "css-loader": "7.1.1",
+    "css-loader": "7.1.2",
     "html-webpack-plugin": "^5.6.0",
     "mini-css-extract-plugin": "^2.9.0",
     "process": "^0.11.10",
@@ -31,14 +31,14 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
-    "@kamino-finance/klend-sdk": "2.10.15",
+    "@kamino-finance/klend-sdk": "2.10.17",
     "@solana/spl-token": "^0.4.6",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/web3.js": "^1.91.8",
-    "@tanstack/react-query": "^5.35.1",
+    "@tanstack/react-query": "^5.40.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.23.0"
+    "react-router-dom": "^6.23.1"
   }
 }

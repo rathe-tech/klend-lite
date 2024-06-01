@@ -69,7 +69,7 @@ const PausedControls = ({
   <tr className={css.pausedControlsRow}>
     <td colSpan={7}>
       <div className={css.pausedControlsWrapper}>
-        <div className={css.pausedLabel}>Paused assets:</div>
+        <div className={css.pausedLabel}>Paused Assets:</div>
         <button onClick={() => setPausedVisible(!isPausedVisible)}>
           {isPausedVisible ? "Hide" : "Show"}
         </button>
