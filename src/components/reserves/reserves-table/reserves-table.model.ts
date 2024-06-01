@@ -27,12 +27,11 @@ export function useReserves({
   reserves,
 }: {
   marketAddress: string,
-  reserves: Map<PublicKey, KaminoReserve>
+  reserves: Map<PublicKey, KaminoReserve>,
 }) {
   return useMemo(() => {
     const reservesOrder = chooseReservesOrder(marketAddress);
-
-    return Array.from(reserves.values()).map(r => {
+    const uiReserves = Array.from(reserves.values()).map(r => {
       const order = reservesOrder.get(r.address.toBase58());
       return [r, order] as [KaminoReserve, number | undefined];
     }).sort((l, r) => {
@@ -41,6 +40,9 @@ export function useReserves({
 
       return l[1] - r[1];
     }).map(([r, _]) => toUIReserve(r));
+    const active = uiReserves.filter(r => r.isBorrowable || r.isSuppliable);
+    const paused = uiReserves.filter(r => !r.isBorrowable && !r.isSuppliable);
+    return { active, paused };
   }, [marketAddress, reserves]);
 }
 
@@ -82,10 +84,11 @@ const MAIN_MARKET_RESERVES_ORDER = new Map([
   new PublicKey("D6q6wuQSrifJKZYpR1M8R4YawnLDtDsMmWM1NbBmgJ59"), /* USDC */
   new PublicKey("H3t6qZ1JkguCNTi9uzVKqQ7dvt2cum4XiXWom6Gn5e5S"), /* USDT */
   // xSOL assets
-  new PublicKey("DGQZWCY17gGtBUgdaFs1VreJWsodkjFxndPsskwFKGpp"), /* jupSOL */
-  new PublicKey("FBSyPnxtHKLBZ4UeeUyAnbtFuAmTHLtso9YtsqRDRWpM"), /* MSOL */
   new PublicKey("H9vmCVd77N1HZa36eBn3UnftYmg4vQzPfm1RxabHAMER"), /* bSOL */
+  new PublicKey("FBSyPnxtHKLBZ4UeeUyAnbtFuAmTHLtso9YtsqRDRWpM"), /* MSOL */
   new PublicKey("EVbyPKrHG6WBfm4dLxLMJpUDY43cCAcHSpV3KYjKsktW"), /* JITOSOL */
+  new PublicKey("DGQZWCY17gGtBUgdaFs1VreJWsodkjFxndPsskwFKGpp"), /* jupSOL */
+  new PublicKey("CExamod1Ai3d1N8Vh7sBjt5xbZzb2VmGMAFocf7fxCzm"), /* hSOL */
   // Blue chip assets
   new PublicKey("Hcz1o77tF9TpdEHcvrx29tz7SBKoQEwJA1wuJqGZYnTw"), /* tBTC */
   new PublicKey("febGYTnFX4GbSGoFHFeJXUHgNaK53fB23uDins9Jp1E"),  /* ETH */

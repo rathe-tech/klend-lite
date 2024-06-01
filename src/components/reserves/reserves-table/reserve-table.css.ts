@@ -25,3 +25,20 @@ export const controls = style({
   display: "inline-flex",
   columnGap: "6px",
 });
+
+export const pausedControlsRow = style({
+  borderTop: `1px solid ${vars.color.borderPrimary}`,
+  borderBottom: `1px solid ${vars.color.borderPrimary}`,
+});
+
+export const pausedControlsWrapper = style({
+  display: "flex",
+  alignItems: "center",
+  columnGap: "0.5em",
+});
+
+export const pausedLabel = style({
+  fontSize: "16px",
+  fontWeight: "bold",
+  color: vars.color.labelSecondary,
+});

@@ -7,6 +7,7 @@ import { EXPLORER_URL } from "@misc/config";
 
 import { useReserves, UIReserve } from "./reserves-table.model";
 import * as css from "./reserve-table.css";
+import { useState } from "react";
 
 export const ReservesTable = ({
   marketAddress,
@@ -17,13 +18,14 @@ export const ReservesTable = ({
   reserves: Map<PublicKey, KaminoReserve>,
   isEnabled: boolean,
 }) => {
-  const sorted = useReserves({ marketAddress, reserves });
+  const { active, paused } = useReserves({ marketAddress, reserves });
+  const [isPausedVisible, setPausedVisible] = useState(false);
 
   return (
     <table>
       <ReservesColumns />
       <tbody>
-        {sorted.map(reserve =>
+        {active.map(reserve =>
           <ReserveRow
             key={reserve.address.toBase58()}
             reserve={reserve}
@@ -31,9 +33,49 @@ export const ReservesTable = ({
           />
         )}
       </tbody>
+      {paused.length > 0 && (
+        <>
+          <PausedControls
+            isPausedVisible={isPausedVisible}
+            setPausedVisible={setPausedVisible}
+          />
+          {isPausedVisible && (
+            <>
+              <ReservesColumns />
+              <tbody>
+                {paused.map(reserve =>
+                  <ReserveRow
+                    key={reserve.address.toBase58()}
+                    reserve={reserve}
+                    isEnabled={isEnabled}
+                  />
+                )}
+              </tbody>
+            </>
+          )}
+        </>
+      )}
     </table>
   );
 };
+
+const PausedControls = ({
+  isPausedVisible,
+  setPausedVisible,
+}: {
+  isPausedVisible: boolean,
+  setPausedVisible: (value: boolean) => void,
+}) =>
+  <tr className={css.pausedControlsRow}>
+    <td colSpan={7}>
+      <div className={css.pausedControlsWrapper}>
+        <div className={css.pausedLabel}>Paused assets:</div>
+        <button onClick={() => setPausedVisible(!isPausedVisible)}>
+          {isPausedVisible ? "Hide" : "Show"}
+        </button>
+      </div>
+    </td>
+  </tr>
 
 export const SkeletonReservesTable = () =>
   <table>
@@ -140,7 +182,7 @@ const SkeletonReserveRow = () =>
       <SkeletonCell />
     </td>
     <td>
-    <SkeletonCell />
+      <SkeletonCell />
     </td>
     <td>
       <SkeletonCell />
