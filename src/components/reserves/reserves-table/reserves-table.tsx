@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { PublicKey } from "@solana/web3.js";
 import { KaminoReserve } from "@kamino-finance/klend-sdk";
 
@@ -7,7 +8,6 @@ import { EXPLORER_URL } from "@misc/config";
 
 import { useReserves, UIReserve } from "./reserves-table.model";
 import * as css from "./reserve-table.css";
-import { useState } from "react";
 
 export const ReservesTable = ({
   marketAddress,
@@ -66,16 +66,18 @@ const PausedControls = ({
   isPausedVisible: boolean,
   setPausedVisible: (value: boolean) => void,
 }) =>
-  <tr className={css.pausedControlsRow}>
-    <td colSpan={7}>
-      <div className={css.pausedControlsWrapper}>
-        <div className={css.pausedLabel}>Paused Assets:</div>
-        <button onClick={() => setPausedVisible(!isPausedVisible)}>
-          {isPausedVisible ? "Hide" : "Show"}
-        </button>
-      </div>
-    </td>
-  </tr>
+  <tbody>
+    <tr className={css.pausedControlsRow}>
+      <td colSpan={7}>
+        <div className={css.pausedControlsWrapper}>
+          <div className={css.pausedLabel}>Paused Assets:</div>
+          <button onClick={() => setPausedVisible(!isPausedVisible)}>
+            {isPausedVisible ? "Hide" : "Show"}
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
 
 export const SkeletonReservesTable = () =>
   <table>

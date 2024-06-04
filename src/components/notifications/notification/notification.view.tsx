@@ -26,6 +26,7 @@ export const Notification = ({
 }) => {
   const timerId = useRef<ReturnType<typeof setInterval> | null>(null);
   const tillClose = useRef(CLOSE_TIMEOUT);
+  const isPaused = useRef(false);
 
   const onClose = useCallback(() => {
     if (timerId.current != null) {
@@ -33,10 +34,15 @@ export const Notification = ({
     }
     close(notification.id);
   }, []);
+  const onPointerEnter = useCallback(() => isPaused.current = true, []);
+  const onPointerLeave = useCallback(() => isPaused.current = false, []);
 
   useEffect(() => {
     if (notification.closable && timerId.current == null) {
       timerId.current = setInterval(() => {
+        if (isPaused.current) {
+          return;
+        }
         tillClose.current -= CLOSE_CHECK_INTERVAL;
         if (tillClose.current <= 0) {
           onClose();
@@ -46,14 +52,25 @@ export const Notification = ({
   }, [notification.closable]);
 
   return (
-    <div className={pickClassName(notification.kind)}>
-      {notification.closable && <div className={css.close} onClick={onClose} />}
+    <div
+      className={pickClassName(notification.kind)}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
+    >
+      {notification.closable && <CloseButton onClick={onClose} />}
       <div className={css.content}>
         {notification.message}
       </div>
     </div>
   );
 };
+
+const CloseButton = ({
+  onClick,
+}: {
+  onClick: () => void,
+}) =>
+  <div className={css.close} onClick={onClick} />
 
 function pickClassName(kind: NotificationKind) {
   switch (kind) {
