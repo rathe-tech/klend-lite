@@ -1,7 +1,7 @@
 import { globalStyle } from "@vanilla-extract/css";
 import { vars } from "./vars.css";
 
-globalStyle("button", {
+globalStyle("button, .link-button", {
   padding: "0.5em 0.75em",
   borderRadius: "4px",
   color: vars.color.labelPrimary,

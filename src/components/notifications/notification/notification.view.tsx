@@ -14,8 +14,7 @@ export interface NotificationProps {
   closable?: boolean;
 }
 
-const CLOSE_TIMEOUT = 10_000; //ms
-const CLOSE_CHECK_INTERVAL = 100;
+const CLOSE_TIMEOUT = 5_000; //ms
 
 export const Notification = ({
   notification,
@@ -24,13 +23,13 @@ export const Notification = ({
   notification: NotificationProps,
   close: (id: string) => void,
 }) => {
-  const timerId = useRef<ReturnType<typeof setInterval> | null>(null);
-  const tillClose = useRef(CLOSE_TIMEOUT);
+  const animationId = useRef<ReturnType<typeof requestAnimationFrame> | null>(null);
   const isPaused = useRef(false);
 
   const onClose = useCallback(() => {
-    if (timerId.current != null) {
-      clearInterval(timerId.current);
+    if (animationId.current != null) {
+      window.cancelAnimationFrame(animationId.current);
+      animationId.current = null;
     }
     close(notification.id);
   }, []);
@@ -38,16 +37,14 @@ export const Notification = ({
   const onPointerLeave = useCallback(() => isPaused.current = false, []);
 
   useEffect(() => {
-    if (notification.closable && timerId.current == null) {
-      timerId.current = setInterval(() => {
-        if (isPaused.current) {
-          return;
-        }
-        tillClose.current -= CLOSE_CHECK_INTERVAL;
-        if (tillClose.current <= 0) {
-          onClose();
-        }
-      }, CLOSE_CHECK_INTERVAL);
+    if (notification.closable && animationId.current == null) {
+      let [start, passed] = [performance.now(), 0];
+      const tick = () => {
+        const now = performance.now();
+        [start, passed] = isPaused.current ? [now, passed] : [now, passed + (now - start)];
+        passed >= CLOSE_TIMEOUT ? onClose() : (animationId.current = window.requestAnimationFrame(tick));
+      }
+      animationId.current = window.requestAnimationFrame(tick);
     }
   }, [notification.closable]);
 
