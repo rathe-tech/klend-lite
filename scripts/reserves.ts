@@ -1,10 +1,10 @@
 import { Connection } from "@solana/web3.js";
-import { KaminoMarket } from "@kamino-finance/klend-sdk";
+import { DEFAULT_RECENT_SLOT_DURATION_MS, KaminoMarket } from "@kamino-finance/klend-sdk";
 import { MarketInfo, RPC_ENDPOINT } from "@misc/config";
 
 (async () => {
   const connection = new Connection(RPC_ENDPOINT);
-  const market = await KaminoMarket.load(connection, MarketInfo.KNOWN_MARKETS[0].address);
+  const market = await KaminoMarket.load(connection, MarketInfo.KNOWN_MARKETS[0].address, DEFAULT_RECENT_SLOT_DURATION_MS);
   if (market == null) {
     throw new Error("Couldn't load market");
   }
