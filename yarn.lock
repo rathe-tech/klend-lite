@@ -1028,10 +1028,10 @@
     decimal.js "^10.3.1"
     tiny-invariant "^1.2.0"
 
-"@kamino-finance/klend-sdk@2.10.21":
-  version "2.10.21"
-  resolved "https://registry.yarnpkg.com/@kamino-finance/klend-sdk/-/klend-sdk-2.10.21.tgz#6974ce71723f847405f27b27bb65e79c35fac314"
-  integrity sha512-H4ineqdxElH6VbRd/K6oyfPzuwx8yvwAIe0TZ/HbYoV78oqx7ga7zzQRBXAvRlQ0vKmAYlWkwmZ/xKzWxEkmGQ==
+"@kamino-finance/klend-sdk@2.10.17":
+  version "2.10.17"
+  resolved "https://registry.yarnpkg.com/@kamino-finance/klend-sdk/-/klend-sdk-2.10.17.tgz#35130c702632b39021778d2ed582b65e4e713897"
+  integrity sha512-opPKUR1sSJZjHKWwcq6lQ6X2vjqhnbexqFEPMwOtTTiYjs5nQeZHR+7bbCwSPSBCjDCJOeZNFMDY+Kh6L+RpBQ==
   dependencies:
     "@bokuweb/zstd-wasm" "^0.0.20"
     "@coral-xyz/anchor" "^0.28.0"
