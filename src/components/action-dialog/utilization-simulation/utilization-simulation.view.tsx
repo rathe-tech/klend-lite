@@ -80,7 +80,8 @@ function preparePlotterSettings(reserve: KaminoReserve): PlotterSettings {
 }
 
 function extractData(reserve: KaminoReserve) {
-  const points = reserve.stats.borrowCurve.map(([x, y]) => ({ x, y }));
+  const slotAdjustmentFactor = reserve.slotAdjustmentFactor();
+  const points = reserve.stats.borrowCurve.map(([x, y]) => ({ x, y: y * slotAdjustmentFactor }));
   const x = reserve.calculateUtilizationRatio();
   return { points, x };
 }
