@@ -1,5 +1,6 @@
 import { MarketProvider, useMarket } from "@components/market-context";
 import { MarketSelect } from "@components/market-select";
+import { Section } from "../section";
 import { Reserves } from "../reserves";
 import { Obligation } from "../obligation";
 import { ObligationStats } from "../obligation-stats";
@@ -10,11 +11,9 @@ import * as css from "./market.css";
 export const Market = () =>
   <MarketProvider>
     <MarketSelect />
-    <div className={css.market}>
-      <div className={css.marketBody}>
-        <Content />
-      </div>
-    </div>
+    <Section.Body>
+      <Content />
+    </Section.Body>
   </MarketProvider>
 
 const Content = () => {

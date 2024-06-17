@@ -1,10 +1,11 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { MarketInfo } from "@misc/config";
+import { Section } from "../section";
 import * as css from "./market-select.css";
 
 export const MarketSelect = () =>
-  <div className={css.marketSelect}>
-    <div className={css.marketSelectBody}>
+  <Section.Header>
+    <div className={css.marketList}>
       {MarketInfo.KNOWN_MARKETS.map((market) =>
         <MarketItem
           key={market.address.toBase58()}
@@ -12,7 +13,7 @@ export const MarketSelect = () =>
         />
       )}
     </div>
-  </div>
+  </Section.Header>
 
 const MarketItem = ({ name, address, main }: MarketInfo) => {
   const { pathname } = useLocation();

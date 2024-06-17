@@ -1,23 +1,6 @@
 import { style } from "@vanilla-extract/css";
 import { mobileMediaQuery, vars } from "@theme/vars.css";
 
-export const donation = style({
-  display: "flex",
-  justifyContent: "center",
-});
-
-export const donationBody = style({
-  width: vars.desktop.containerWidth,
-  padding: `12px ${vars.desktop.containerOffset}`,
-  fontSize: "16px",
-  "@media": {
-    [mobileMediaQuery]: {
-      width: "100%",
-      padding: `12px ${vars.mobile.containerOffset}`,
-    }
-  }
-});
-
 export const h1 = style({
   fontSize: "20px",
 })
@@ -40,13 +23,13 @@ export const donationWrapper = style({
   display: "flex",
   alignItems: "center",
   columnGap: "8px",
-  fontSize: "16px",
+  fontSize: "14px",
   marginTop: "1.5em",
 
-  padding: `16px ${vars.desktop.containerOffset}`,
+  padding: `14px ${vars.desktop.containerOffset}`,
   "@media": {
     [mobileMediaQuery]: {
-      padding: `16px ${vars.mobile.containerOffset}`,
+      padding: `14px ${vars.mobile.containerOffset}`,
     }
   }
 });
