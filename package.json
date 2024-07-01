@@ -1,6 +1,6 @@
 {
   "name": "klend-lite",
-  "version": "1.6.14",
+  "version": "1.6.15",
   "description": "A lightweight dApp for the Kamino lending markets",
   "scripts": {
     "build": "NODE_OPTIONS=--max-old-space-size=6144 npx webpack",

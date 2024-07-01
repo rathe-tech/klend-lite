@@ -2,7 +2,7 @@ import Decimal from "decimal.js";
 import { useQuery } from "@tanstack/react-query";
 
 import { PublicKey } from "@solana/web3.js";
-import { AccountLayout, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { AccountLayout, TOKEN_2022_PROGRAM_ID, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { KaminoMarket } from "@kamino-finance/klend-sdk";
 
 import { Assert, Option } from "@misc/utils";
@@ -20,8 +20,10 @@ export function useTokenBalancesQuery(market: KaminoMarket | null | undefined, w
       const solAccount = await connection.getAccountInfo(walletAddress);
       const solBalance = solAccount ? new Decimal(solAccount.lamports) : ZERO;
 
-      const { value } = await connection.getTokenAccountsByOwner(walletAddress, { programId: TOKEN_PROGRAM_ID });
-      const balances = new Map(value
+      const { value: classic_token_accounts } = await connection.getTokenAccountsByOwner(walletAddress, { programId: TOKEN_PROGRAM_ID });
+      const { value: token2022_accounts } = await connection.getTokenAccountsByOwner(walletAddress, { programId: TOKEN_2022_PROGRAM_ID });
+      const token_accounts = [...classic_token_accounts, ...token2022_accounts];
+      const balances = new Map(token_accounts
         .map(x => AccountLayout.decode(x.account.data))
         .map(({ amount, mint }) => [mint.toBase58(), new Decimal(amount.toString(10))] as const));
 
