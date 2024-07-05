@@ -1,14 +1,7 @@
 import Decimal from "decimal.js";
 import { useMemo, useRef } from "react";
+import { usdFormatter } from "@misc/utils";
 import * as css from "./input.css";
-
-const formatter = new Intl.NumberFormat('en-US', {
-  notation: "compact",
-  compactDisplay: "short",
-  currency: "USD",
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
 
 export const Input = ({
   value,
@@ -50,7 +43,7 @@ export const Input = ({
           </div>
         </div>
         <div className={css.auxLine}>
-          ≈ ${formatter.format(amount.toNumber())}
+          ≈ ${usdFormatter.format(amount.toNumber())}
         </div>
       </div>
     </div>

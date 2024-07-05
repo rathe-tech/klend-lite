@@ -28,3 +28,9 @@ export const amount = style({
 export const symbol = style({
   fontWeight: "bold",
 });
+
+export const sub = style({
+  color: vars.color.labelSecondary,
+  fontSize: "12px",
+  marginTop: "0.35em",
+});

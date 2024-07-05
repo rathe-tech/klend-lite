@@ -111,7 +111,14 @@ const SkeletonPositionRow = () =>
 const PositionRow = ({ kind, position }: { kind: PositionKind, position: UIPosition }) =>
   <tr>
     <td className={css.symbol}>{position.symbol}</td>
-    <td>{position.amount}</td>
+    <td>
+      <div>
+        {position.amount}
+      </div>
+      <div className={css.sub}>
+        {position.usd}
+      </div>
+    </td>
     <td>
       <PositionControls kind={kind} position={position} />
     </td>

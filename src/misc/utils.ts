@@ -120,3 +120,11 @@ export module UIUtils {
     }
   }
 }
+
+export const usdFormatter = new Intl.NumberFormat("en-US", {
+  notation: "compact",
+  compactDisplay: "short",
+  currency: "USD",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
