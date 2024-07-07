@@ -10,6 +10,7 @@ import { Assert, Simulation, TokenAmount } from "@misc/utils";
 import { ActionParams, borrow, repay, supply, withdraw } from "@queries/api";
 import { useNotifications, NotificationKind } from "@components/notifications";
 import { useMarket } from "@components/market-context";
+import { useSettings } from "@components/settings-context";
 
 import { ActionKind } from "../action-dialog.model";
 export { ActionKind };
@@ -20,6 +21,8 @@ export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAdd
   const { notify } = useNotifications();
 
   Assert.some(publicKey, "Wallet not connected");
+
+  const { priorityFee } = useSettings();
 
   const {
     marketInfo: { lutAddress },
@@ -60,6 +63,7 @@ export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAdd
         mintAddress,
         amount,
         lutAddress,
+        priorityFee,
       });
       await refresh();
       notify({ id, kind: NotificationKind.Success, message: `Transaction complete: ${sig}`, closable: true });

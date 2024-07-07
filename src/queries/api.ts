@@ -1,6 +1,7 @@
 import Decimal from "decimal.js";
 import {
   Commitment,
+  ComputeBudgetProgram,
   Connection,
   PublicKey,
   Transaction,
@@ -24,6 +25,7 @@ export interface ActionParams {
   amount: Decimal;
   walletAddress: PublicKey;
   lutAddress: PublicKey;
+  priorityFee?: Decimal;
 }
 
 export async function supply({
@@ -34,6 +36,7 @@ export async function supply({
   amount,
   walletAddress,
   lutAddress,
+  priorityFee,
 }: ActionParams): Promise<string> {
   const action = await KaminoAction.buildDepositTxns(
     market,
@@ -48,6 +51,7 @@ export async function supply({
     DONATION_ADDRESS
   );
   const instructions = [
+    ...createPriorityFeeInstructions(priorityFee),
     ...action.setupIxs,
     ...action.lendingIxs,
     ...action.cleanupIxs,
@@ -68,7 +72,8 @@ export async function borrow({
   mintAddress,
   amount,
   walletAddress,
-  lutAddress
+  lutAddress,
+  priorityFee,
 }: ActionParams): Promise<string> {
   const action = await KaminoAction.buildBorrowTxns(
     market,
@@ -83,6 +88,7 @@ export async function borrow({
     DONATION_ADDRESS,
   );
   const instructions = [
+    ...createPriorityFeeInstructions(priorityFee),
     ...action.setupIxs,
     ...action.lendingIxs,
     ...action.cleanupIxs,
@@ -104,6 +110,7 @@ export async function repay({
   amount,
   walletAddress,
   lutAddress,
+  priorityFee,
 }: ActionParams): Promise<string> {
   const slot = await connection.getSlot();
   const action = await KaminoAction.buildRepayTxns(
@@ -121,6 +128,7 @@ export async function repay({
     DONATION_ADDRESS
   );
   const instructions = [
+    ...createPriorityFeeInstructions(priorityFee),
     ...action.setupIxs,
     ...action.lendingIxs,
     ...action.cleanupIxs,
@@ -142,6 +150,7 @@ export async function withdraw({
   amount,
   walletAddress,
   lutAddress,
+  priorityFee,
 }: ActionParams): Promise<string> {
   const action = await KaminoAction.buildWithdrawTxns(
     market,
@@ -156,6 +165,7 @@ export async function withdraw({
     DONATION_ADDRESS
   );
   const instructions = [
+    ...createPriorityFeeInstructions(priorityFee),
     ...action.setupIxs,
     ...action.lendingIxs,
     ...action.cleanupIxs,
@@ -167,6 +177,13 @@ export async function withdraw({
     [lutAddress]
   );
   return await sendAndConfirmTransaction(sendTransaction, connection, transaction);
+}
+
+function createPriorityFeeInstructions(priorityFee?: Decimal) {
+  if (priorityFee == null) {
+    return [];
+  }
+  return [ComputeBudgetProgram.setComputeUnitPrice({ microLamports: priorityFee.toNumber() })];
 }
 
 async function sendAndConfirmTransaction(

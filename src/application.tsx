@@ -6,6 +6,7 @@ import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 
 import { AppBar } from "@components/app-bar";
+import { SettingsProvider } from "@components/settings-context";
 import { NotificationProvider } from "@components/notifications";
 import { Market } from "@components/market";
 
@@ -30,14 +31,16 @@ export const Application = () => {
           >
             <WalletProvider wallets={wallets} autoConnect>
               <WalletModalProvider>
-                <NotificationProvider>
-                  <AppBar />
-                  <Routes>
-                    <Route index element={<Market />} />
-                    <Route path="/market/:marketAddress" element={<Market />} />
-                    <Route path="/donation" element={<Donation />} />
-                  </Routes>
-                </NotificationProvider>
+                <SettingsProvider>
+                  <NotificationProvider>
+                    <AppBar />
+                    <Routes>
+                      <Route index element={<Market />} />
+                      <Route path="/market/:marketAddress" element={<Market />} />
+                      <Route path="/donation" element={<Donation />} />
+                    </Routes>
+                  </NotificationProvider>
+                </SettingsProvider>
               </WalletModalProvider>
             </WalletProvider>
           </ConnectionProvider>
