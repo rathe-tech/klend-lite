@@ -1,4 +1,3 @@
-import Decimal from "decimal.js";
 import { useCallback, useState } from "react";
 import { useSettings } from "@components/settings-context";
 import { UIUtils, TokenAmount } from "@misc/utils";

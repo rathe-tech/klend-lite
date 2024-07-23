@@ -1,5 +1,6 @@
 import Decimal from "decimal.js";
 import { createContext, useCallback, useContext, useState } from "react";
+import { SettingsDialogLayout } from "./settings-dialog";
 
 export interface SettingsContext {
   priorityFee: Decimal;
@@ -25,6 +26,7 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   return (
     <SettingsContext.Provider value={{ priorityFee, changePriorityFee, isOpen, open, close }}>
       {children}
+      <SettingsDialogLayout />
     </SettingsContext.Provider>
   );
 };

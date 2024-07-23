@@ -1,8 +1,14 @@
 import { useEffect, useRef } from "react";
+import { useSettings } from "@components/settings-context";
 import { useSettingsForm } from "./settings-dialog.model";
 import * as css from "./settings-dialog.css";
 
-export const SettingsDialog = () => {
+export const SettingsDialogLayout = () => {
+  const { isOpen } = useSettings();
+  return (isOpen && <SettingsDialog />);
+};
+
+const SettingsDialog = () => {
   const { priorityFee, setPriorityFee, isOpen, save, close } = useSettingsForm();
   const inputRef = useRef<HTMLInputElement>(null);
 

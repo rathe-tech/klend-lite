@@ -1,1 +1,1 @@
-export { SettingsDialog } from "./settings-dialog.view";
+export { SettingsDialogLayout } from "./settings-dialog.view";

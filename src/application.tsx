@@ -7,7 +7,6 @@ import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 
 import { NotificationProvider } from "@components/notifications";
 import { SettingsProvider } from "@components/settings-context";
-import { SettingsDialog } from "@components/settings-dialog";
 import { AppBar } from "@components/app-bar";
 import { Donation } from "@components/donation";
 import { Market } from "@components/market";
@@ -34,7 +33,6 @@ export const Application = () => {
                 <SettingsProvider>
                   <NotificationProvider>
                     <AppBar />
-                    <SettingsDialog />
                     <Routes>
                       <Route index element={<Market />} />
                       <Route path="/market/:marketAddress" element={<Market />} />
