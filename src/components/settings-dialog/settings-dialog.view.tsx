@@ -9,7 +9,7 @@ export const SettingsDialogLayout = () => {
 };
 
 const SettingsDialog = () => {
-  const { priorityFee, setPriorityFee, isOpen, save, close } = useSettingsForm();
+  const { priorityFee, setPriorityFee, save, close } = useSettingsForm();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -18,10 +18,6 @@ const SettingsDialog = () => {
       document.body.classList.remove(css.nonScroll);
     };
   }, []);
-
-  if (!isOpen) {
-    return;
-  }
 
   return (
     <div className={css.overlay} onClick={() => close()}>
