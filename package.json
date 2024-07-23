@@ -1,10 +1,10 @@
 {
   "name": "klend-lite",
-  "version": "1.6.17",
+  "version": "1.7.0",
   "description": "A lightweight dApp for the Kamino lending markets",
   "scripts": {
     "build": "NODE_OPTIONS=--max-old-space-size=6144 npx webpack",
-    "dev": "NODE_OPTIONS=--max-old-space-size=6144 npx webpack serve --mode development"
+    "dev": "NODE_OPTIONS=--max-old-space-size=8192 npx webpack serve --mode development"
   },
   "author": "Max Koverdyaev",
   "license": "MIT",
@@ -13,8 +13,8 @@
     "@ledgerhq/hw-transport-node-hid": "^6.28.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@vanilla-extract/css": "^1.15.2",
-    "@vanilla-extract/webpack-plugin": "^2.3.9",
+    "@vanilla-extract/css": "^1.15.3",
+    "@vanilla-extract/webpack-plugin": "^2.3.11",
     "buffer": "^6.0.3",
     "copy-webpack-plugin": "^12.0.2",
     "crypto-browserify": "^3.12.0",
@@ -25,20 +25,20 @@
     "stream-browserify": "^3.0.0",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5",
-    "webpack": "^5.91.0",
+    "typescript": "^5.5.4",
+    "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
     "@kamino-finance/klend-sdk": "2.12.2",
-    "@solana/spl-token": "^0.4.6",
+    "@solana/spl-token": "^0.4.8",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
-    "@solana/web3.js": "^1.91.8",
-    "@tanstack/react-query": "^5.40.0",
+    "@solana/web3.js": "^1.95.1",
+    "@tanstack/react-query": "^5.51.11",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.25.1"
   }
 }

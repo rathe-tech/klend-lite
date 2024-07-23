@@ -1,17 +1,29 @@
 import Decimal from "decimal.js";
-import { createContext, useContext } from "react";
+import { createContext, useCallback, useContext, useState } from "react";
 
 export interface SettingsContext {
-  priorityFee?: Decimal;
+  priorityFee: Decimal;
+  changePriorityFee: (value: Decimal) => void;
+  isOpen: boolean;
+  open: () => void;
+  close: () => void;
 }
 
 const SettingsContext = createContext<SettingsContext | null>(null);
 
 export const SettingsProvider = ({ children }: { children: React.ReactNode }) => {
-  const priorityFee = loadPriorityFee();
+  const [priorityFee, setPriorityFee] = useState(() => loadPriorityFee() ?? new Decimal(0));
+  const [isOpen, setOpen] = useState(false);
+
+  const changePriorityFee = useCallback((value: Decimal) => {
+    savePriorityFee(value);
+    setPriorityFee(value);
+  }, []);
+  const open = useCallback(() => setOpen(true), []);
+  const close = useCallback(() => setOpen(false), []);
 
   return (
-    <SettingsContext.Provider value={{ priorityFee }}>
+    <SettingsContext.Provider value={{ priorityFee, changePriorityFee, isOpen, open, close }}>
       {children}
     </SettingsContext.Provider>
   );
@@ -33,4 +45,8 @@ function loadPriorityFee() {
   if (rawPriorityFee != null) {
     return new Decimal(rawPriorityFee);
   }
+}
+
+function savePriorityFee(value: Decimal) {
+  window.localStorage.setItem(PRIORITY_FEE_KEY, value.toString());
 }

@@ -5,13 +5,13 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ConnectionProvider, WalletProvider } from "@solana/wallet-adapter-react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 
-import { AppBar } from "@components/app-bar";
-import { SettingsProvider } from "@components/settings-context";
 import { NotificationProvider } from "@components/notifications";
-import { Market } from "@components/market";
-
-import { RPC_ENDPOINT } from "@misc/config";
+import { SettingsProvider } from "@components/settings-context";
+import { SettingsDialog } from "@components/settings-dialog";
+import { AppBar } from "@components/app-bar";
 import { Donation } from "@components/donation";
+import { Market } from "@components/market";
+import { RPC_ENDPOINT } from "@misc/config";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } }
@@ -34,6 +34,7 @@ export const Application = () => {
                 <SettingsProvider>
                   <NotificationProvider>
                     <AppBar />
+                    <SettingsDialog />
                     <Routes>
                       <Route index element={<Market />} />
                       <Route path="/market/:marketAddress" element={<Market />} />

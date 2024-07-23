@@ -33,3 +33,7 @@ export const appDonateBase = style({
 });
 
 export const appDonate = [appDonateBase, "link-button"].join(" ");
+
+export const paledText = style({
+  color: vars.color.labelSecondary,
+});
