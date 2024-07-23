@@ -30,16 +30,16 @@ export const Application = () => {
           >
             <WalletProvider wallets={wallets} autoConnect>
               <WalletModalProvider>
-                <SettingsProvider>
-                  <NotificationProvider>
+                <NotificationProvider>
+                  <SettingsProvider>
                     <AppBar />
                     <Routes>
                       <Route index element={<Market />} />
                       <Route path="/market/:marketAddress" element={<Market />} />
                       <Route path="/donation" element={<Donation />} />
                     </Routes>
-                  </NotificationProvider>
-                </SettingsProvider>
+                  </SettingsProvider>
+                </NotificationProvider>
               </WalletModalProvider>
             </WalletProvider>
           </ConnectionProvider>
