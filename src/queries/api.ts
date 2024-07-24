@@ -12,7 +12,8 @@ import { SendTransactionOptions } from "@solana/wallet-adapter-base";
 import {
   KaminoMarket,
   KaminoAction,
-  VanillaObligation, buildVersionedTransaction,
+  VanillaObligation,
+  buildVersionedTransaction,
   PROGRAM_ID,
 } from "@kamino-finance/klend-sdk";
 import { DONATION_ADDRESS } from "@misc/config";
@@ -48,7 +49,7 @@ export async function supply({
     undefined,
     undefined,
     undefined,
-    DONATION_ADDRESS
+    undefined,
   );
   const instructions = [
     ...createPriorityFeeInstructions(priorityFee),
@@ -85,7 +86,7 @@ export async function borrow({
     true,
     false,
     true,
-    DONATION_ADDRESS,
+    undefined,
   );
   const instructions = [
     ...createPriorityFeeInstructions(priorityFee),
@@ -125,7 +126,7 @@ export async function repay({
     true,
     undefined,
     undefined,
-    DONATION_ADDRESS
+    undefined,
   );
   const instructions = [
     ...createPriorityFeeInstructions(priorityFee),
@@ -162,7 +163,7 @@ export async function withdraw({
     true,
     undefined,
     undefined,
-    DONATION_ADDRESS
+    undefined,
   );
   const instructions = [
     ...createPriorityFeeInstructions(priorityFee),
