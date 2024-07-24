@@ -13,7 +13,7 @@ export const Reserves = () => {
     );
   }
 
-  if (marketState.data == null) {
+  if (marketState.data == null || slotState.data == null) {
     return <div>No data found</div>;
   }
 
@@ -22,6 +22,7 @@ export const Reserves = () => {
       <ReservesTable
         marketAddress={marketState.data.address}
         reserves={marketState.data.reservesActive}
+        slot={slotState.data}
         isEnabled={obligationState.isFetched && tokenBalancesState.isFetched}
       />
     </div>

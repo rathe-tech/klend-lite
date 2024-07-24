@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { PublicKey } from "@solana/web3.js";
-import { KaminoReserve } from "@kamino-finance/klend-sdk";
+import { calculateAPYFromAPR, KaminoReserve } from "@kamino-finance/klend-sdk";
 
 import { UIUtils, UIPercent } from "@misc/utils";
 import { MarketInfo } from "@misc/config";
@@ -25,9 +25,11 @@ export interface UIReserve {
 export function useReserves({
   marketAddress,
   reserves,
+  slot,
 }: {
   marketAddress: string,
   reserves: Map<PublicKey, KaminoReserve>,
+  slot: number,
 }) {
   return useMemo(() => {
     const reservesOrder = chooseReservesOrder(marketAddress);
@@ -39,14 +41,14 @@ export function useReserves({
       if (r[1] == undefined) return 1;
 
       return l[1] - r[1];
-    }).map(([r, _]) => toUIReserve(r));
+    }).map(([r, _]) => toUIReserve(r, slot));
     const active = uiReserves.filter(r => r.isBorrowable || r.isSuppliable);
     const paused = uiReserves.filter(r => !r.isBorrowable && !r.isSuppliable);
     return { active, paused };
   }, [marketAddress, reserves]);
 }
 
-function toUIReserve(reserve: KaminoReserve): UIReserve {
+function toUIReserve(reserve: KaminoReserve, slot: number): UIReserve {
   const {
     stats: {
       decimals,
@@ -54,12 +56,13 @@ function toUIReserve(reserve: KaminoReserve): UIReserve {
       loanToValuePct,
       borrowFactor,
       reserveDepositLimit,
-      supplyInterestAPY,
       reserveBorrowLimit,
-      borrowInterestAPY,
     }
   } = reserve;
+  const borrowAPY = calculateAPYFromAPR(reserve.calculateBorrowAPR(slot, 0));
+  const supplyAPY = calculateAPYFromAPR(reserve.calculateSupplyAPR(slot, 0));
 
+  calculateAPYFromAPR
   return {
     address: reserve.address,
     symbol: reserve.getTokenSymbol(),
@@ -69,10 +72,10 @@ function toUIReserve(reserve: KaminoReserve): UIReserve {
     borrowFactor: (borrowFactor / 100).toFixed(2),
     currentSupply: UIUtils.toUINumber(reserve.getTotalSupply(), decimals),
     maxSupply: UIUtils.toUINumber(reserveDepositLimit, decimals),
-    supplyApy: UIPercent.fromNumberFraction(supplyInterestAPY),
+    supplyApy: UIPercent.fromNumberFraction(supplyAPY),
     currentBorrow: UIUtils.toUINumber(reserve.getBorrowedAmount(), decimals),
     maxBorrow: UIUtils.toUINumber(reserveBorrowLimit, decimals),
-    borrowApy: UIPercent.fromNumberFraction(borrowInterestAPY),
+    borrowApy: UIPercent.fromNumberFraction(borrowAPY),
     isBorrowable: !reserveBorrowLimit.isZero(),
     isSuppliable: !reserveDepositLimit.isZero(),
   };

@@ -31,7 +31,7 @@ function computeSupplyApyStats(
   reserve: KaminoReserve,
   slot: number,
 ) {
-  const current = reserve.stats.supplyInterestAPY;
+  const current = calculateAPYFromAPR(reserve.calculateSupplyAPR(slot, 0));
   const projected = computeProjectedSupplyAPY(kind, amount, reserve, slot);
   const explanation = explainDiff(current, projected, UIPercent.fromNumberFraction);
   return { current, projected, explanation };
@@ -55,7 +55,7 @@ function computeBorrowApyStats(
   reserve: KaminoReserve,
   slot: number,
 ) {
-  const current = reserve.stats.borrowInterestAPY;
+  const current = calculateAPYFromAPR(reserve.calculateBorrowAPR(slot, 0));
   const projected = computeProjectedBorrowAPY(kind, amount, reserve, slot);
   const explanation = explainDiff(current, projected, UIPercent.fromNumberFraction);
   return { current, projected, explanation };

@@ -12,13 +12,15 @@ import * as css from "./reserve-table.css";
 export const ReservesTable = ({
   marketAddress,
   reserves,
+  slot,
   isEnabled,
 }: {
   marketAddress: string,
   reserves: Map<PublicKey, KaminoReserve>,
+  slot: number,
   isEnabled: boolean,
 }) => {
-  const { active, paused } = useReserves({ marketAddress, reserves });
+  const { active, paused } = useReserves({ marketAddress, reserves, slot });
   const [isPausedVisible, setPausedVisible] = useState(false);
 
   return (
