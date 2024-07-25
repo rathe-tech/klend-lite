@@ -21,7 +21,8 @@ export function useStats(
     const borrowAPY = computeBorrowApyStats(kind, amount, reserve, slot);
     const utilization = computeUtilizationStats(kind, amount, reserve, slot);
     const ltv = computeLtvStats(kind, amount, mintAddress, market, obligation);
-    return { supplyAPY, borrowAPY, utilization, ltv };
+    const protocolTakeRate = UIPercent.fromNumberFraction(reserve.stats.protocolTakeRate);
+    return { supplyAPY, borrowAPY, utilization, ltv, protocolTakeRate };
   }, [kind, amount, reserve, slot]);
 }
 
