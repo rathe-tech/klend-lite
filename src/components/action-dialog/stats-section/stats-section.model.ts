@@ -22,7 +22,8 @@ export function useStats(
     const utilization = computeUtilizationStats(kind, amount, reserve, slot);
     const ltv = computeLtvStats(kind, amount, mintAddress, market, obligation);
     const protocolTakeRate = UIPercent.fromNumberFraction(reserve.stats.protocolTakeRate);
-    return { supplyAPY, borrowAPY, utilization, ltv, protocolTakeRate };
+    const fixedHostInterestRate = UIPercent.fromDecimalFraction(reserve.getFixedHostInterestRate());
+    return { supplyAPY, borrowAPY, utilization, ltv, protocolTakeRate, fixedHostInterestRate };
   }, [kind, amount, reserve, slot]);
 }
 

@@ -26,7 +26,7 @@ export const StatsSection = ({
   mintAddress: PublicKey,
   slot: number,
 }) => {
-  const { supplyAPY, borrowAPY, utilization, ltv, protocolTakeRate } = useStats(
+  const { supplyAPY, borrowAPY, utilization, ltv, protocolTakeRate, fixedHostInterestRate } = useStats(
     kind,
     inputAmount,
     mintAddress,
@@ -61,9 +61,13 @@ export const StatsSection = ({
         kind={kind}
         reserve={reserve}
       />
-      <ProtocolTakeRateInfo
-        kind={kind}
-        protocolTakeRate={protocolTakeRate}
+      <StatInfo
+        label="Protocol Take Rate"
+        value={protocolTakeRate}
+      />
+      <StatInfo
+        label="Fixed Host Interest Rate"
+        value={fixedHostInterestRate}
       />
     </div>
   );
@@ -89,8 +93,3 @@ const BorrowFeeInfo = ({ kind, reserve }: { kind: ActionKind, reserve: KaminoRes
 
   return <StatInfo label="Borrow fee" value={borrowFee} />;
 };
-
-const ProtocolTakeRateInfo = ({ kind, protocolTakeRate }: { kind: ActionKind, protocolTakeRate: string }) => {
-  if (ActionKind.isDepositRelated(kind)) return;
-  return <StatInfo label="Protocol Take Rate" value={protocolTakeRate} />;
-}
