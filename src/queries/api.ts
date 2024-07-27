@@ -181,7 +181,7 @@ export async function withdraw({
 }
 
 function createPriorityFeeInstructions(priorityFee?: Decimal) {
-  if (priorityFee == null) {
+  if (priorityFee == null || priorityFee.isZero()) {
     return [];
   }
   return [ComputeBudgetProgram.setComputeUnitPrice({ microLamports: priorityFee.toNumber() })];
