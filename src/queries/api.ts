@@ -1,6 +1,5 @@
 import Decimal from "decimal.js";
 import {
-  AddressLookupTableAccount,
   Commitment,
   ComputeBudgetProgram,
   Connection,
@@ -54,9 +53,9 @@ export async function supply({
     undefined,
     undefined,
   );
-  const initialInstructions = prepareInitialInstructions(action, priorityFee);
+  const initialInstructions = prepareInitialInstructions(action);
   const units = await getExpectedComputeUnits(connection, initialInstructions, walletAddress, lutAddress);
-  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units);
+  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units, priorityFee);
   const transaction = await buildVersionedTransaction(
     connection,
     walletAddress,
@@ -88,9 +87,9 @@ export async function borrow({
     true,
     undefined,
   );
-  const initialInstructions = prepareInitialInstructions(action, priorityFee);
+  const initialInstructions = prepareInitialInstructions(action);
   const units = await getExpectedComputeUnits(connection, initialInstructions, walletAddress, lutAddress);
-  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units);
+  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units, priorityFee);
   const transaction = await buildVersionedTransaction(
     connection,
     walletAddress,
@@ -125,9 +124,9 @@ export async function repay({
     undefined,
     undefined,
   );
-  const initialInstructions = prepareInitialInstructions(action, priorityFee);
+  const initialInstructions = prepareInitialInstructions(action);
   const units = await getExpectedComputeUnits(connection, initialInstructions, walletAddress, lutAddress);
-  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units);
+  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units, priorityFee);
   const transaction = await buildVersionedTransaction(
     connection,
     walletAddress,
@@ -159,9 +158,9 @@ export async function withdraw({
     undefined,
     undefined,
   );
-  const initialInstructions = prepareInitialInstructions(action, priorityFee);
+  const initialInstructions = prepareInitialInstructions(action);
   const units = await getExpectedComputeUnits(connection, initialInstructions, walletAddress, lutAddress);
-  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units);
+  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units, priorityFee);
   const transaction = await buildVersionedTransaction(
     connection,
     walletAddress,
@@ -171,18 +170,19 @@ export async function withdraw({
   return await sendAndConfirmTransaction(sendTransaction, connection, transaction);
 }
 
-function createPriorityFeeInstructions(priorityFee?: Decimal) {
-  if (priorityFee == null || priorityFee.isZero()) {
+function createPriorityFeeInstructions(units: number | null, priorityFee?: Decimal) {
+  if (priorityFee == null || priorityFee.isZero() || units == null || units === 0) {
     return [];
   }
-  return [ComputeBudgetProgram.setComputeUnitPrice({ microLamports: priorityFee.toNumber() })];
+  const price = BigInt(priorityFee.mul(10 ** 6).div(units).floor().toString());
+  return [ComputeBudgetProgram.setComputeUnitPrice({ microLamports: price })];
 }
 
 function createModifyComputeUnitsInstructions(units: number | null) {
   if (units == null || units === 0) {
     return [];
   }
-  return [ComputeBudgetProgram.setComputeUnitLimit({ units: Math.ceil(units * 1.05) })];
+  return [ComputeBudgetProgram.setComputeUnitLimit({ units })];
 }
 
 async function sendAndConfirmTransaction(
@@ -215,9 +215,8 @@ type SendTransaction =
     options?: SendTransactionOptions
   ) => Promise<TransactionSignature>;
 
-function prepareInitialInstructions(action: KaminoAction, priorityFee: Decimal | undefined) {
+function prepareInitialInstructions(action: KaminoAction) {
   return [
-    ...createPriorityFeeInstructions(priorityFee),
     ...action.setupIxs,
     ...action.lendingIxs,
     ...action.cleanupIxs,
@@ -226,10 +225,12 @@ function prepareInitialInstructions(action: KaminoAction, priorityFee: Decimal |
 
 function patchInstructionsWithComputeUnits(
   instructions: TransactionInstruction[],
-  units: number | null
+  units: number | null,
+  priorityFee?: Decimal,
 ) {
   return [
     ...createModifyComputeUnitsInstructions(units),
+    ...createPriorityFeeInstructions(units, priorityFee),
     ...instructions,
   ];
 }
@@ -265,5 +266,6 @@ async function getExpectedComputeUnits(
     console.error(JSON.stringify(response.value.err));
     throw new Error("Transaction simulation failed");
   }
-  return response.value.unitsConsumed || null;
+  const units = response.value.unitsConsumed;
+  return units != null ? Math.ceil(units * 1.05) : null;
 }
