@@ -1,10 +1,13 @@
 import Decimal from "decimal.js";
 import {
+  AddressLookupTableAccount,
   Commitment,
   ComputeBudgetProgram,
   Connection,
   PublicKey,
   Transaction,
+  TransactionInstruction,
+  TransactionMessage,
   TransactionSignature,
   VersionedTransaction,
 } from "@solana/web3.js";
@@ -51,12 +54,9 @@ export async function supply({
     undefined,
     undefined,
   );
-  const instructions = [
-    ...createPriorityFeeInstructions(priorityFee),
-    ...action.setupIxs,
-    ...action.lendingIxs,
-    ...action.cleanupIxs,
-  ];
+  const initialInstructions = prepareInitialInstructions(action, priorityFee);
+  const units = await getExpectedComputeUnits(connection, initialInstructions, walletAddress, lutAddress);
+  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units);
   const transaction = await buildVersionedTransaction(
     connection,
     walletAddress,
@@ -88,12 +88,9 @@ export async function borrow({
     true,
     undefined,
   );
-  const instructions = [
-    ...createPriorityFeeInstructions(priorityFee),
-    ...action.setupIxs,
-    ...action.lendingIxs,
-    ...action.cleanupIxs,
-  ];
+  const initialInstructions = prepareInitialInstructions(action, priorityFee);
+  const units = await getExpectedComputeUnits(connection, initialInstructions, walletAddress, lutAddress);
+  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units);
   const transaction = await buildVersionedTransaction(
     connection,
     walletAddress,
@@ -128,12 +125,9 @@ export async function repay({
     undefined,
     undefined,
   );
-  const instructions = [
-    ...createPriorityFeeInstructions(priorityFee),
-    ...action.setupIxs,
-    ...action.lendingIxs,
-    ...action.cleanupIxs,
-  ];
+  const initialInstructions = prepareInitialInstructions(action, priorityFee);
+  const units = await getExpectedComputeUnits(connection, initialInstructions, walletAddress, lutAddress);
+  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units);
   const transaction = await buildVersionedTransaction(
     connection,
     walletAddress,
@@ -165,12 +159,9 @@ export async function withdraw({
     undefined,
     undefined,
   );
-  const instructions = [
-    ...createPriorityFeeInstructions(priorityFee),
-    ...action.setupIxs,
-    ...action.lendingIxs,
-    ...action.cleanupIxs,
-  ];
+  const initialInstructions = prepareInitialInstructions(action, priorityFee);
+  const units = await getExpectedComputeUnits(connection, initialInstructions, walletAddress, lutAddress);
+  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units);
   const transaction = await buildVersionedTransaction(
     connection,
     walletAddress,
@@ -185,6 +176,13 @@ function createPriorityFeeInstructions(priorityFee?: Decimal) {
     return [];
   }
   return [ComputeBudgetProgram.setComputeUnitPrice({ microLamports: priorityFee.toNumber() })];
+}
+
+function createModifyComputeUnitsInstructions(units: number | null) {
+  if (units == null || units === 0) {
+    return [];
+  }
+  return [ComputeBudgetProgram.setComputeUnitLimit({ units: Math.ceil(units * 1.05) })];
 }
 
 async function sendAndConfirmTransaction(
@@ -216,3 +214,56 @@ type SendTransaction =
     connection: Connection,
     options?: SendTransactionOptions
   ) => Promise<TransactionSignature>;
+
+function prepareInitialInstructions(action: KaminoAction, priorityFee: Decimal | undefined) {
+  return [
+    ...createPriorityFeeInstructions(priorityFee),
+    ...action.setupIxs,
+    ...action.lendingIxs,
+    ...action.cleanupIxs,
+  ];
+}
+
+function patchInstructionsWithComputeUnits(
+  instructions: TransactionInstruction[],
+  units: number | null
+) {
+  return [
+    ...createModifyComputeUnitsInstructions(units),
+    ...instructions,
+  ];
+}
+
+async function getExpectedComputeUnits(
+  connection: Connection,
+  instructions: TransactionInstruction[],
+  payer: PublicKey,
+  lookupTableAddress: PublicKey,
+) {
+  const { value: lookupTableAccount } = await connection.getAddressLookupTable(lookupTableAddress);
+  if (lookupTableAccount == null) {
+    throw new Error("Can't fetch lookup table account");
+  }
+
+  const probeInstructions = [
+    ComputeBudgetProgram.setComputeUnitLimit({ units: 2_000_000 }),
+    ...instructions,
+  ];
+  const probeTransaction = new VersionedTransaction(
+    new TransactionMessage({
+      instructions: probeInstructions,
+      payerKey: payer,
+      recentBlockhash: PublicKey.default.toBase58(),
+    }).compileToV0Message([lookupTableAccount])
+  );
+
+  const response = await connection.simulateTransaction(probeTransaction, {
+    replaceRecentBlockhash: true,
+    sigVerify: false
+  });
+  if (response.value.err) {
+    console.error(JSON.stringify(response.value.err));
+    throw new Error("Transaction simulation failed");
+  }
+  return response.value.unitsConsumed || null;
+}
