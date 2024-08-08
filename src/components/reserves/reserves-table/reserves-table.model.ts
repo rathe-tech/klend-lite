@@ -37,7 +37,6 @@ export function useReserves({
       const order = reservesOrder.get(r.address.toBase58());
       return [r, order] as [KaminoReserve, number | undefined];
     }).sort((l, r) => {
-      console.log(l[1], r[1]);
       if (l[1] == undefined) return -1;
       if (r[1] == undefined) return 1;
 
