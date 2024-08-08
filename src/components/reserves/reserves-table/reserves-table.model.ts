@@ -37,6 +37,7 @@ export function useReserves({
       const order = reservesOrder.get(r.address.toBase58());
       return [r, order] as [KaminoReserve, number | undefined];
     }).sort((l, r) => {
+      console.log(l[1], r[1]);
       if (l[1] == undefined) return -1;
       if (r[1] == undefined) return 1;
 
@@ -134,10 +135,17 @@ const ALTCOINS_MARKET_RESERVE_ORDER = new Map([
   new PublicKey("E9Y7wNfjcHVhukm7tmqSke5DUhea5Rkq5oXhXFmcJ9GB"), /* TNSR */
 ].map((r, i) => [r.toBase58(), i]));
 
+const ETHENA_MARKET_RESERVE_ORDER = new Map([
+  new PublicKey("EDf6dGbVnCCABbNhE3mp5i1jV2JhDAVmTWb1ztij1Yhs"), /* PYUSD */
+  new PublicKey("2erD9GTGcaQbLsVSQweg3HvMpfKxScmz95raWv8H4iPN"), /* USDe */
+  new PublicKey("EwBTjwCXJ3TsKP8dNTYnzRmBWRd6h48FdLFSAGJ3sCtx"), /* sUSDe */
+].map((r, i) => [r.toBase58(), i]));
+
 const MARKET_RESERVES_ORDERS = new Map([
   [MarketInfo.KNOWN_MARKETS[0].address.toBase58(), MAIN_MARKET_RESERVES_ORDER],
   [MarketInfo.KNOWN_MARKETS[1].address.toBase58(), JLP_MARKET_RESERVE_ORDER],
-  [MarketInfo.KNOWN_MARKETS[2].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[2].address.toBase58(), ETHENA_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[3].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
 ]);
 
 function chooseReservesOrder(marketAddress: string) {
