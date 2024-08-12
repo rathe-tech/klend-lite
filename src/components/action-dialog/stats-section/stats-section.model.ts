@@ -98,7 +98,54 @@ function computeProjectedLTV(
   if (obligation == null) return;
   if (amount == null || amount.isZero()) return;
 
-  const { stats } = obligation.getSimulatedObligationStats(amount, ActionKind.toActionType(kind), mintAddress, market, market.reserves);
+  const action = ActionKind.toActionType(kind);
+  const computeStats = () => {
+    switch (action) {
+      case "deposit":
+        return obligation.getSimulatedObligationStats({
+          amountCollateral: amount,
+          amountDebt: new Decimal(0),
+          action,
+          mintDebt: undefined,
+          mintCollateral: mintAddress,
+          market,
+          reserves: market.reserves,
+        });
+      case "withdraw":
+        return obligation.getSimulatedObligationStats({
+          amountCollateral: amount,
+          amountDebt: new Decimal(0),
+          action,
+          mintDebt: undefined,
+          mintCollateral: mintAddress,
+          market,
+          reserves: market.reserves,
+        });
+      case "borrow":
+        return obligation.getSimulatedObligationStats({
+          amountCollateral: new Decimal(0),
+          amountDebt: amount,
+          action,
+          mintDebt: mintAddress,
+          mintCollateral: undefined,
+          market,
+          reserves: market.reserves,
+        });
+      case "repay":
+        return obligation.getSimulatedObligationStats({
+          amountCollateral: new Decimal(0),
+          amountDebt: amount,
+          action,
+          mintDebt: mintAddress,
+          mintCollateral: undefined,
+          market,
+          reserves: market.reserves,
+        });
+      default:
+        throw new Error(`Not supported action type; ${action}`);
+    };
+  };
+  const { stats } = computeStats();
   return stats.loanToValue;
 }
 
