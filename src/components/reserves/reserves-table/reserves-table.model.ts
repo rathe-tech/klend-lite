@@ -143,8 +143,8 @@ const ETHENA_MARKET_RESERVE_ORDER = new Map([
 const MARKET_RESERVES_ORDERS = new Map([
   [MarketInfo.KNOWN_MARKETS[0].address.toBase58(), MAIN_MARKET_RESERVES_ORDER],
   [MarketInfo.KNOWN_MARKETS[1].address.toBase58(), JLP_MARKET_RESERVE_ORDER],
-  [MarketInfo.KNOWN_MARKETS[2].address.toBase58(), ETHENA_MARKET_RESERVE_ORDER],
-  [MarketInfo.KNOWN_MARKETS[3].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[2].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[3].address.toBase58(), ETHENA_MARKET_RESERVE_ORDER],
 ]);
 
 function chooseReservesOrder(marketAddress: string) {

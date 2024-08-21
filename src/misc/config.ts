@@ -29,13 +29,13 @@ export module MarketInfo {
       address: new PublicKey("DxXdAyU3kCjnyggvHmY5nAwg5cRbbmdyX3npfDMjjMek"),
       lutAddress: new PublicKey("GprZNyWk67655JhX6Rq9KoebQ6WkQYRhATWzkx2P2LNc"),
     }, {
-      name: "Ethena Market",
-      address: new PublicKey("BJnbcRHqvppTyGesLzWASGKnmnF1wq9jZu6ExrjT7wvF"),
-      lutAddress: new PublicKey("5Cx8pxA2LuCPnt8RZG9LKjKc7PnzWwvCx6xJZis7MTwm"),
-    }, {
       name: "Altcoins Market",
       address: new PublicKey("ByYiZxp8QrdN9qbdtaAiePN8AAr3qvTPppNJDpf5DVJ5"),
       lutAddress: new PublicKey("x2uEQSaqrZs5UnyXjiNktRhrAy6iNFeSKai9VNYFFuy"),
+    }, {
+      name: "Ethena Market",
+      address: new PublicKey("BJnbcRHqvppTyGesLzWASGKnmnF1wq9jZu6ExrjT7wvF"),
+      lutAddress: new PublicKey("5Cx8pxA2LuCPnt8RZG9LKjKc7PnzWwvCx6xJZis7MTwm"),
     },
   ] as const;
 

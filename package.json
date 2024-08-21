@@ -1,6 +1,6 @@
 {
   "name": "klend-lite",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "description": "A lightweight dApp for the Kamino lending markets",
   "scripts": {
     "build": "NODE_OPTIONS=--max-old-space-size=8192 npx webpack",
@@ -11,16 +11,16 @@
   "devDependencies": {
     "@ledgerhq/hw-app-solana": "^7.1.6",
     "@ledgerhq/hw-transport-node-hid": "^6.28.6",
-    "@types/react": "^18.3.3",
+    "@types/react": "^18.3.4",
     "@types/react-dom": "^18.3.0",
-    "@vanilla-extract/css": "^1.15.3",
-    "@vanilla-extract/webpack-plugin": "^2.3.11",
+    "@vanilla-extract/css": "^1.15.5",
+    "@vanilla-extract/webpack-plugin": "^2.3.13",
     "buffer": "^6.0.3",
     "copy-webpack-plugin": "^12.0.2",
     "crypto-browserify": "^3.12.0",
     "css-loader": "7.1.2",
     "html-webpack-plugin": "^5.6.0",
-    "mini-css-extract-plugin": "^2.9.0",
+    "mini-css-extract-plugin": "^2.9.1",
     "process": "^0.11.10",
     "stream-browserify": "^3.0.0",
     "ts-loader": "^9.5.1",
@@ -36,9 +36,9 @@
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/web3.js": "^1.95.1",
-    "@tanstack/react-query": "^5.51.11",
+    "@tanstack/react-query": "^5.52.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.25.1"
+    "react-router-dom": "^6.26.1"
   }
 }
