@@ -18,7 +18,6 @@ import { MarketInfo, RPC_ENDPOINT } from "@misc/config";
         decimals,
         // Token address
         mintAddress,
-        loanToValuePct,
         // Max token amount to deposit
         reserveDepositLimit,
         // Max token amount to borrow
@@ -35,7 +34,6 @@ import { MarketInfo, RPC_ENDPOINT } from "@misc/config";
     console.log("Decimals: %o", decimals);
     console.log("Reserve address: %o (https://explorer.solana.com/address/%s)", address.toBase58(), address.toBase58());
     console.log("Mint address: %o (https://explorer.solana.com/address/%s)", mintAddress, mintAddress);
-    console.log("Loan to value: %o", loanToValuePct);
     console.log("Reserve deposit limit: %o (%o)", reserveDepositLimit.div(10 ** decimals).toDecimalPlaces(decimals).toString(), reserveDepositLimit);
     console.log("Reserve borrow limit: %o (%o)", reserveBorrowLimit.div(10 ** decimals).toDecimalPlaces(decimals).toString(), reserveBorrowLimit);
     console.log("Mint total supply: %o", mintTotalSupply.toString());

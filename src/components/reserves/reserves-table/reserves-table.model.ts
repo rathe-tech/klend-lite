@@ -53,7 +53,7 @@ function toUIReserve(reserve: KaminoReserve, slot: number): UIReserve {
     stats: {
       decimals,
       mintAddress,
-      loanToValuePct,
+      loanToValue,
       borrowFactor,
       reserveDepositLimit,
       reserveBorrowLimit,
@@ -62,13 +62,12 @@ function toUIReserve(reserve: KaminoReserve, slot: number): UIReserve {
   const borrowAPY = calculateAPYFromAPR(reserve.calculateBorrowAPR(slot, 0));
   const supplyAPY = calculateAPYFromAPR(reserve.calculateSupplyAPR(slot, 0));
 
-  calculateAPYFromAPR
   return {
     address: reserve.address,
     symbol: reserve.getTokenSymbol(),
     mintAddress,
     price: UIUtils.toUIPrice(reserve.getOracleMarketPrice()),
-    ltv: loanToValuePct.toFixed(2),
+    ltv: loanToValue.toFixed(2),
     borrowFactor: (borrowFactor / 100).toFixed(2),
     currentSupply: UIUtils.toUINumber(reserve.getTotalSupply(), decimals),
     maxSupply: UIUtils.toUINumber(reserveDepositLimit, decimals),
