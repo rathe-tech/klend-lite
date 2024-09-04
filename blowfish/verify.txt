@@ -1,1 +1,2 @@
-The file is created to confirm that this repository and the domain https://klend.xyz belong to @shadeglare
+This file is created to confirm that this repository and the domain https://klend.xyz belong to @shadeglare.
+The original Blowfish ticket: 2888.
