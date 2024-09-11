@@ -15,15 +15,15 @@ export function useTokenBalancesQuery(market: KaminoMarket | null | undefined, w
       Assert.some(market, "Market can't be null");
 
       const connection = market.getConnection();
-      const walletAddress = new PublicKey(Option.unwrap(rawWalletAddress))
+      const walletAddress = new PublicKey(Option.unwrap(rawWalletAddress));
 
       const solAccount = await connection.getAccountInfo(walletAddress);
       const solBalance = solAccount ? new Decimal(solAccount.lamports) : ZERO;
 
-      const { value: classic_token_accounts } = await connection.getTokenAccountsByOwner(walletAddress, { programId: TOKEN_PROGRAM_ID });
-      const { value: token2022_accounts } = await connection.getTokenAccountsByOwner(walletAddress, { programId: TOKEN_2022_PROGRAM_ID });
-      const token_accounts = [...classic_token_accounts, ...token2022_accounts];
-      const balances = new Map(token_accounts
+      const { value: classicTokenAccounts } = await connection.getTokenAccountsByOwner(walletAddress, { programId: TOKEN_PROGRAM_ID });
+      const { value: token2022Accounts } = await connection.getTokenAccountsByOwner(walletAddress, { programId: TOKEN_2022_PROGRAM_ID });
+      const tokenAccounts = [...classicTokenAccounts, ...token2022Accounts];
+      const balances = new Map(tokenAccounts
         .map(x => AccountLayout.decode(x.account.data))
         .map(({ amount, mint }) => [mint.toBase58(), new Decimal(amount.toString(10))] as const));
 
