@@ -4,7 +4,6 @@ import { Option } from "./utils";
 import { version } from "../../package.json";
 
 export const VERSION = version;
-export const RPC_ENDPOINT = "https://rpc.hellomoon.io/aef55734-29d9-4df6-847c-f5cdc8387b60";
 export const EXPLORER_URL = "https://solana.fm";
 export const DONATION_ADDRESS = new PublicKey("GD6tdZfRDy8o45vkxJ6pq3RZR3ZV9XuCKsMQL4sikjXY");
 export const WSOL_MINT_ADDRESS = new PublicKey("So11111111111111111111111111111111111111112");
