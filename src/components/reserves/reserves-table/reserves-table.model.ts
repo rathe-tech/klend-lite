@@ -10,7 +10,8 @@ export interface UIReserve {
   symbol: string;
   mintAddress: PublicKey;
   price: string;
-  ltv: string;
+  maxLtv: string;
+  liquidationLtv: string;
   borrowFactor: string;
   currentSupply: string;
   maxSupply: string;
@@ -54,6 +55,7 @@ function toUIReserve(reserve: KaminoReserve, slot: number): UIReserve {
       decimals,
       mintAddress,
       loanToValue,
+      liquidationThreshold,
       borrowFactor,
       reserveDepositLimit,
       reserveBorrowLimit,
@@ -67,7 +69,8 @@ function toUIReserve(reserve: KaminoReserve, slot: number): UIReserve {
     symbol: reserve.getTokenSymbol(),
     mintAddress,
     price: UIUtils.toUIPrice(reserve.getOracleMarketPrice()),
-    ltv: loanToValue.toFixed(2),
+    maxLtv: loanToValue.toFixed(2),
+    liquidationLtv: liquidationThreshold.toFixed(2),
     borrowFactor: (borrowFactor / 100).toFixed(2),
     currentSupply: UIUtils.toUINumber(reserve.getTotalSupply(), decimals),
     maxSupply: UIUtils.toUINumber(reserveDepositLimit, decimals),

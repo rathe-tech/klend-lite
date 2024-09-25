@@ -95,7 +95,7 @@ const ReservesColumns = () =>
   <thead>
     <tr>
       <th>Asset</th>
-      <th>LTV / BF</th>
+      <th style={{fontSize: "14px"}}>LTV / Liq.LTV / BF</th>
       <th>Current Supply</th>
       <th>Supply APY</th>
       <th>Current Borrow</th>
@@ -122,7 +122,9 @@ const ReserveRow = ({ reserve, isEnabled }: { reserve: UIReserve, isEnabled: boo
         </div>
       </td>
       <td>
-        {reserve.ltv}
+        {reserve.maxLtv}
+        <span className={css.delimiter}>/</span>
+        {reserve.liquidationLtv}
         <span className={css.delimiter}>/</span>
         {reserve.borrowFactor}
       </td>
