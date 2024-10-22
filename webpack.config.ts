@@ -6,6 +6,7 @@ import * as vanilla from "@vanilla-extract/webpack-plugin";
 import * as terser from "terser-webpack-plugin";
 import * as copy from "copy-webpack-plugin";
 import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
+import ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 
 type ExtendedConfig = webpack.Configuration & { devServer: server.Configuration };
 type ConfigSelector = (env: any, argv: any) => ExtendedConfig;
@@ -70,6 +71,7 @@ const config: ConfigSelector = (env, argv) => {
       new copy({ patterns: [{ from: "public/icon_128.png" }] }),
       new vanilla.VanillaExtractPlugin(),
       new MiniCssExtractPlugin({ filename: "theme.css" }),
+      new ForkTsCheckerWebpackPlugin(),
       new webpack.ProvidePlugin({
         Buffer: ["buffer", "Buffer"],
         process: 'process/browser',

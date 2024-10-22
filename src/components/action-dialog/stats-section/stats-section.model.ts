@@ -20,7 +20,7 @@ export function useStats(
     const supplyAPY = computeSupplyApyStats(kind, amount, reserve, slot);
     const borrowAPY = computeBorrowApyStats(kind, amount, reserve, slot);
     const utilization = computeUtilizationStats(kind, amount, reserve, slot);
-    const ltv = computeLtvStats(kind, amount, mintAddress, market, obligation);
+    const ltv = computeLtvStats(kind, amount, mintAddress, market, obligation, slot);
     const protocolTakeRate = UIPercent.fromNumberFraction(reserve.stats.protocolTakeRate);
     const fixedHostInterestRate = UIPercent.fromDecimalFraction(reserve.getFixedHostInterestRate());
     return { supplyAPY, borrowAPY, utilization, ltv, protocolTakeRate, fixedHostInterestRate };
@@ -81,9 +81,10 @@ function computeLtvStats(
   mintAddress: PublicKey,
   market: KaminoMarket,
   obligation: KaminoObligation | undefined | null,
+  slot: number,
 ) {
   const current = obligation?.loanToValue() || ZERO;
-  const projected = computeProjectedLTV(kind, amount, market, mintAddress, obligation);
+  const projected = computeProjectedLTV(kind, amount, market, mintAddress, obligation, slot);
   const explained = explainDiff(current, projected, UIPercent.fromDecimalFraction);
   return { current, projected, explained };
 }
@@ -94,6 +95,7 @@ function computeProjectedLTV(
   market: KaminoMarket,
   mintAddress: PublicKey,
   obligation: KaminoObligation | undefined | null,
+  slot: number,
 ) {
   if (obligation == null) return;
   if (amount == null || amount.isZero()) return;
@@ -110,6 +112,7 @@ function computeProjectedLTV(
           mintCollateral: mintAddress,
           market,
           reserves: market.reserves,
+          slot,
         });
       case "withdraw":
         return obligation.getSimulatedObligationStats({
@@ -120,6 +123,7 @@ function computeProjectedLTV(
           mintCollateral: mintAddress,
           market,
           reserves: market.reserves,
+          slot,
         });
       case "borrow":
         return obligation.getSimulatedObligationStats({
@@ -130,6 +134,7 @@ function computeProjectedLTV(
           mintCollateral: undefined,
           market,
           reserves: market.reserves,
+          slot,
         });
       case "repay":
         return obligation.getSimulatedObligationStats({
@@ -140,6 +145,7 @@ function computeProjectedLTV(
           mintCollateral: undefined,
           market,
           reserves: market.reserves,
+          slot,
         });
       default:
         throw new Error(`Not supported action type; ${action}`);

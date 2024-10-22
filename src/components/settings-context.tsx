@@ -18,7 +18,7 @@ const rpcUrlStorage = createSettingStorage<string>({
   key: "KLEND_RPC_URL",
   serializer: v => v,
   deserializer: v => v,
-  defaultValue: "https://rpc.hellomoon.io/aef55734-29d9-4df6-847c-f5cdc8387b60",
+  defaultValue: "https://rpc.hanabi.so/DWsseY2nLGoMMOF7tq6IJOcLlQdcVvrD",
 });
 
 const priorityFeeStorage = createSettingStorage<Decimal>({
