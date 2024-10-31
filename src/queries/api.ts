@@ -4,6 +4,7 @@ import {
   ComputeBudgetProgram,
   Connection,
   PublicKey,
+  SystemProgram,
   Transaction,
   TransactionInstruction,
   TransactionMessage,
@@ -18,17 +19,28 @@ import {
   buildVersionedTransaction,
   PROGRAM_ID,
 } from "@kamino-finance/klend-sdk";
-import { DONATION_ADDRESS } from "@misc/config";
+import { DONATION_ADDRESS, ZERO } from "@misc/config";
+import {
+  GetBundleStatusesRequest,
+  GetInflightBundleStatusesRequest,
+  JitBlockEngineClient,
+  JsonRpcResponse,
+  SendBundleRequest,
+  TipAddresses,
+} from "@rathe/jito-block-engine-api";
 
 export interface ActionParams {
   sendTransaction: SendTransaction;
+  signAllTransactions: <T extends Transaction | VersionedTransaction>(transactions: T[]) => Promise<T[]>,
   connection: Connection;
   market: KaminoMarket;
   mintAddress: PublicKey;
   amount: Decimal;
   walletAddress: PublicKey;
   lutAddress: PublicKey;
-  priorityFee?: Decimal;
+  priorityFee: Decimal;
+  jitoMode: boolean;
+  jitoClient: JitBlockEngineClient,
 }
 
 export async function supply({
@@ -40,6 +52,9 @@ export async function supply({
   walletAddress,
   lutAddress,
   priorityFee,
+  jitoMode,
+  signAllTransactions,
+  jitoClient,
 }: ActionParams): Promise<string> {
   const action = await KaminoAction.buildDepositTxns(
     market,
@@ -55,14 +70,16 @@ export async function supply({
   );
   const initialInstructions = prepareInitialInstructions(action);
   const units = await getExpectedComputeUnits(connection, initialInstructions, walletAddress, lutAddress);
-  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units, priorityFee);
+  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units, jitoMode ? ZERO : priorityFee);
   const transaction = await buildVersionedTransaction(
     connection,
     walletAddress,
     instructions,
     [lutAddress]
   );
-  return await sendAndConfirmTransaction(sendTransaction, connection, transaction);
+  return jitoMode ?
+    await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signAllTransactions, jitoClient) :
+    await sendAndConfirmTransaction(sendTransaction, connection, transaction);
 }
 
 export async function borrow({
@@ -74,6 +91,9 @@ export async function borrow({
   walletAddress,
   lutAddress,
   priorityFee,
+  jitoMode,
+  jitoClient,
+  signAllTransactions,
 }: ActionParams): Promise<string> {
   const action = await KaminoAction.buildBorrowTxns(
     market,
@@ -89,14 +109,16 @@ export async function borrow({
   );
   const initialInstructions = prepareInitialInstructions(action);
   const units = await getExpectedComputeUnits(connection, initialInstructions, walletAddress, lutAddress);
-  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units, priorityFee);
+  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units, jitoMode ? ZERO : priorityFee);
   const transaction = await buildVersionedTransaction(
     connection,
     walletAddress,
     instructions,
     [lutAddress]
   );
-  return await sendAndConfirmTransaction(sendTransaction, connection, transaction);
+  return jitoMode ?
+  await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signAllTransactions, jitoClient) :
+    await sendAndConfirmTransaction(sendTransaction, connection, transaction);
 }
 
 export async function repay({
@@ -108,6 +130,9 @@ export async function repay({
   walletAddress,
   lutAddress,
   priorityFee,
+  jitoMode,
+  jitoClient,
+  signAllTransactions,
 }: ActionParams): Promise<string> {
   const slot = await connection.getSlot();
   const action = await KaminoAction.buildRepayTxns(
@@ -126,14 +151,16 @@ export async function repay({
   );
   const initialInstructions = prepareInitialInstructions(action);
   const units = await getExpectedComputeUnits(connection, initialInstructions, walletAddress, lutAddress);
-  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units, priorityFee);
+  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units, jitoMode ? ZERO : priorityFee);
   const transaction = await buildVersionedTransaction(
     connection,
     walletAddress,
     instructions,
     [lutAddress]
   );
-  return await sendAndConfirmTransaction(sendTransaction, connection, transaction);
+  return jitoMode ?
+    await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signAllTransactions, jitoClient) :
+    await sendAndConfirmTransaction(sendTransaction, connection, transaction);
 }
 
 export async function withdraw({
@@ -145,6 +172,9 @@ export async function withdraw({
   walletAddress,
   lutAddress,
   priorityFee,
+  jitoMode,
+  jitoClient,
+  signAllTransactions,
 }: ActionParams): Promise<string> {
   const action = await KaminoAction.buildWithdrawTxns(
     market,
@@ -160,20 +190,19 @@ export async function withdraw({
   );
   const initialInstructions = prepareInitialInstructions(action);
   const units = await getExpectedComputeUnits(connection, initialInstructions, walletAddress, lutAddress);
-  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units, priorityFee);
+  const instructions = patchInstructionsWithComputeUnits(initialInstructions, units, jitoMode ? ZERO : priorityFee);
   const transaction = await buildVersionedTransaction(
     connection,
     walletAddress,
     instructions,
     [lutAddress]
   );
-  return await sendAndConfirmTransaction(sendTransaction, connection, transaction);
+  return jitoMode ?
+    await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signAllTransactions, jitoClient) :
+    await sendAndConfirmTransaction(sendTransaction, connection, transaction);
 }
 
-function createPriorityFeeInstructions(units: number | null, priorityFee?: Decimal) {
-  if (priorityFee == null || priorityFee.isZero() || units == null || units === 0) {
-    return [];
-  }
+function createPriorityFeeInstructions(units: number, priorityFee: Decimal) {
   const price = BigInt(priorityFee.mul(10 ** 6).div(units).floor().toString());
   return [ComputeBudgetProgram.setComputeUnitPrice({ microLamports: price })];
 }
@@ -209,6 +238,29 @@ async function sendAndConfirmTransaction(
   return transactionId;
 }
 
+async function sendAndConfirmWithJito(
+  connection: Connection,
+  transaction: VersionedTransaction,
+  priorityFee: Decimal,
+  wallet: PublicKey,
+  signAllTransactions: <T extends Transaction | VersionedTransaction>(transactions: T[]) => Promise<T[]>,
+  jitoClient: JitBlockEngineClient,
+) {
+  const commitment: Commitment = "confirmed";
+  const { value: { blockhash } } =
+    await connection.getLatestBlockhashAndContext({ commitment });
+  const tipTransaction = createJitoTipTransaction({
+    payer: wallet!,
+    lamports: priorityFee.toNumber(),
+    recentBlockhash: blockhash,
+  });
+  const transactions = await signAllTransactions([transaction, tipTransaction]);
+  const sendBundleRequest = SendBundleRequest.fromVersionedTransactions(transactions);
+  const sendBundleResponse = await jitoClient.sendBundle(sendBundleRequest);
+  const bundleId = JsonRpcResponse.tryGetResult(sendBundleResponse);
+  return await pollJitoBundleStatus(bundleId, jitoClient, commitment);
+}
+
 type SendTransaction =
   (transaction: Transaction | VersionedTransaction,
     connection: Connection,
@@ -225,8 +277,8 @@ function prepareInitialInstructions(action: KaminoAction) {
 
 function patchInstructionsWithComputeUnits(
   instructions: TransactionInstruction[],
-  units: number | null,
-  priorityFee?: Decimal,
+  units: number,
+  priorityFee: Decimal,
 ) {
   return [
     ...createModifyComputeUnitsInstructions(units),
@@ -267,5 +319,79 @@ async function getExpectedComputeUnits(
     throw new Error("Transaction simulation failed");
   }
   const units = response.value.unitsConsumed;
-  return units != null ? Math.ceil(units * 1.05) : null;
+  return units != null ? Math.ceil(units * 1.05) : 1_400_000;
+}
+
+function createJitoTipTransaction({
+  payer,
+  tipAddress,
+  lamports,
+  recentBlockhash,
+}: {
+  payer: PublicKey,
+  tipAddress?: PublicKey,
+  lamports: number,
+  recentBlockhash: string,
+}) {
+  const instructions = [
+    ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 0 }),
+    SystemProgram.transfer({
+      fromPubkey: payer,
+      toPubkey: tipAddress ?? TipAddresses.random(),
+      lamports,
+    }),
+  ];
+  return new VersionedTransaction(
+    new TransactionMessage({
+      instructions,
+      payerKey: payer,
+      recentBlockhash,
+    }).compileToV0Message()
+  );
+}
+
+async function pollJitoBundleStatus(
+  bundleId: string,
+  jitoClient: JitBlockEngineClient,
+  commitment: Commitment,
+  timeout: number = 60_000,
+  delay: number = 500,
+) {
+  const inflightStatusRequest = GetInflightBundleStatusesRequest.create([bundleId]);
+  const detailedStatusRequest = GetBundleStatusesRequest.create([bundleId]);
+
+  const start = Date.now();
+  while (Date.now() - start < timeout) {
+    const inflightStatusResponse = await jitoClient.getInflightBundleStatuses(inflightStatusRequest);
+    const inflightResult = JsonRpcResponse.tryGetResult(inflightStatusResponse);
+
+    if (inflightResult.value != null && inflightResult.value[0] != null) {
+      const inflightBundle = inflightResult.value[0];
+      if (inflightBundle.status === "Failed") {
+        throw new Error("Failed to land transaction via Jito");
+      }
+      if (inflightBundle.status === "Landed") {
+        const detailedResponse = await jitoClient.getBundleStatuses(detailedStatusRequest);
+        const detailedResult = JsonRpcResponse.tryGetResult(detailedResponse);
+
+        if (detailedResult.value.length === 1 && detailedResult.value[0] != null) {
+          const { value: [{ confirmation_status, transactions, error: nestedError }] } = detailedResult;
+          if (nestedError) {
+            console.error(nestedError);
+            throw new Error(JSON.stringify(nestedError));
+          }
+          if (confirmation_status === "finalized" || confirmation_status === commitment) {
+            return transactions[0];
+          }
+        }
+      }
+    }
+    await sleep(delay);
+  }
+
+  throw new Error("Transaction not confirmed");
+}
+
+async function sleep(ms: number) {
+  await new Promise<void>(resolve => setTimeout(() => resolve(), ms));
 }

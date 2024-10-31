@@ -6,7 +6,9 @@ import { SettingsDialogLayout } from "./settings-dialog";
 export interface SettingsContext {
   rpcUrl: string;
   priorityFee: Decimal;
+  jitoMode: boolean;
   changePriorityFee: (value: Decimal) => void;
+  changeJitoMode: (value: boolean) => void;
   isOpen: boolean;
   open: () => void;
   close: () => void;
@@ -28,20 +30,41 @@ const priorityFeeStorage = createSettingStorage<Decimal>({
   defaultValue: new Decimal(100_000),
 });
 
+const jitoModeStorage = createSettingStorage<boolean>({
+  key: "KLEND_JITO_MODE",
+  serializer: v => v.toString(),
+  deserializer: v => v === "true",
+  defaultValue: false,
+});
+
 export const SettingsProvider = ({ children }: { children: React.ReactNode }) => {
   const [rpcUrl, _setRpcUrl] = useState(() => rpcUrlStorage.load());
   const [priorityFee, setPriorityFee] = useState(() => priorityFeeStorage.load());
+  const [jitoMode, setJitoMode] = useState(() => jitoModeStorage.load())
   const [isOpen, setOpen] = useState(false);
 
   const changePriorityFee = useCallback((value: Decimal) => {
     priorityFeeStorage.save(value);
     setPriorityFee(value);
   }, []);
+  const changeJitoMode = useCallback((value: boolean) => {
+    jitoModeStorage.save(value);
+    setJitoMode(value);
+  }, []);
   const open = useCallback(() => setOpen(true), []);
   const close = useCallback(() => setOpen(false), []);
 
   return (
-    <SettingsContext.Provider value={{ rpcUrl, priorityFee, changePriorityFee, isOpen, open, close }}>
+    <SettingsContext.Provider value={{
+      rpcUrl,
+      priorityFee,
+      changePriorityFee,
+      jitoMode,
+      changeJitoMode,
+      isOpen,
+      open,
+      close,
+    }}>
       {children}
       <SettingsDialogLayout />
     </SettingsContext.Provider>

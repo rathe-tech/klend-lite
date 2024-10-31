@@ -1,6 +1,6 @@
 {
   "name": "klend-lite",
-  "version": "1.8.7",
+  "version": "1.9.0",
   "description": "A lightweight dApp for the Kamino lending markets",
   "scripts": {
     "build": "NODE_OPTIONS=--max-old-space-size=8192 npx webpack",
@@ -19,6 +19,7 @@
     "copy-webpack-plugin": "^12.0.2",
     "crypto-browserify": "^3.12.0",
     "css-loader": "7.1.2",
+    "fork-ts-checker-webpack-plugin": "^9.0.2",
     "html-webpack-plugin": "^5.6.0",
     "mini-css-extract-plugin": "^2.9.1",
     "process": "^0.11.10",
@@ -28,11 +29,11 @@
     "typescript": "^5.5.4",
     "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.0.4",
-    "fork-ts-checker-webpack-plugin": "^9.0.2"
+    "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
     "@kamino-finance/klend-sdk": "5.1.1",
+    "@rathe/jito-block-engine-api": "^1.0.0",
     "@solana/spl-token": "^0.4.9",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",

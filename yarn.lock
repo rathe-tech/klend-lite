@@ -1069,6 +1069,13 @@
     "@coral-xyz/borsh" "^0.28.0"
     buffer "^6.0.1"
 
+"@rathe/jito-block-engine-api@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@rathe/jito-block-engine-api/-/jito-block-engine-api-1.0.0.tgz#00d9e32533ddc54190b227b2ce4b36a962aef037"
+  integrity sha512-4ZwCZNiT0eWaS53YDFDj0Pf0Uo+ccIf+DCoXSO4A16HuQ3GS41bRkvMbRIX/BRvGhu1G7id/4uTmHMzu1RTlHQ==
+  dependencies:
+    bs58 "^6.0.0"
+
 "@raydium-io/raydium-sdk@=1.3.1-beta.5":
   version "1.3.1-beta.5"
   resolved "https://registry.yarnpkg.com/@raydium-io/raydium-sdk/-/raydium-sdk-1.3.1-beta.5.tgz#85b97de063bc3e345bbef6aeb1b0d771ce29338a"

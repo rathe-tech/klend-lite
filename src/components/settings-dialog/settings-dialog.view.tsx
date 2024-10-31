@@ -9,7 +9,7 @@ export const SettingsDialogLayout = () => {
 };
 
 const SettingsDialog = () => {
-  const { priorityFee, setPriorityFee, save, close } = useSettingsForm();
+  const { priorityFee, setPriorityFee, jitoMode, setJitoMode, save, close } = useSettingsForm();
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -40,7 +40,18 @@ const SettingsDialog = () => {
             </div>
           </div>
           <div className={css.formLine}>
-            <button className={css.saveButton} onClick={() => save({ priorityFee })}>
+            <label style={{ display: "flex", alignItems: "center", cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={jitoMode}
+                onChange={e => setJitoMode(e.target.checked)}
+                style={{ marginRight: "8px" }}
+              />
+              Use Jito Block Engine
+            </label>
+          </div>
+          <div className={css.formLine}>
+            <button className={css.saveButton} onClick={() => save({ priorityFee, jitoMode })}>
               Save
             </button>
           </div>

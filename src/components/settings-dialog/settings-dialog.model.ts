@@ -5,14 +5,16 @@ import { NotificationKind, useNotifications } from "@components/notifications";
 
 export function useSettingsForm() {
   const { notify } = useNotifications();
-  const { priorityFee: initialPriorityFee, changePriorityFee, isOpen, close } = useSettings();
+  const { priorityFee: initialPriorityFee, changeJitoMode, jitoMode: initialJitoMode, changePriorityFee, isOpen, close } = useSettings();
 
   const [priorityFee, setPriorityFee] = useState(() => UIUtils.toUINumber(initialPriorityFee, 9));
-  const save = useCallback(({ priorityFee }: { priorityFee: string }) => {
+  const [jitoMode, setJitoMode] = useState(() => initialJitoMode);
+  const save = useCallback(({ priorityFee, jitoMode }: { priorityFee: string, jitoMode: boolean }) => {
     try {
       const nativePriorityFee = TokenAmount.toNative(priorityFee, 9);
       if (nativePriorityFee == null) throw new Error("No value provided");
       changePriorityFee(nativePriorityFee);
+      changeJitoMode(jitoMode);
       close();
     } catch (e: any) {
       notify({
@@ -23,5 +25,5 @@ export function useSettingsForm() {
       });
     }
   }, []);
-  return { priorityFee, setPriorityFee, isOpen, save, close };
+  return { priorityFee, setPriorityFee, jitoMode, setJitoMode, isOpen, save, close };
 }

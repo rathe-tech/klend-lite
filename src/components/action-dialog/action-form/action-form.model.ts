@@ -11,18 +11,21 @@ import { ActionParams, borrow, repay, supply, withdraw } from "@queries/api";
 import { useNotifications, NotificationKind } from "@components/notifications";
 import { useMarket } from "@components/market-context";
 import { useSettings } from "@components/settings-context";
+import { useJitoClient } from "@components/jito-client-context";
 
 import { ActionKind } from "../action-dialog.model";
 export { ActionKind };
 
 export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) {
   const { connection } = useConnection();
-  const { sendTransaction, publicKey } = useWallet();
+  const { sendTransaction, signAllTransactions, publicKey } = useWallet();
   const { notify } = useNotifications();
+  const jitoClient = useJitoClient();
 
   Assert.some(publicKey, "Wallet not connected");
+  Assert.some(signAllTransactions, "Wallet not connected");
 
-  const { priorityFee } = useSettings();
+  const { priorityFee, jitoMode } = useSettings();
 
   const {
     marketInfo: { lutAddress },
@@ -64,6 +67,9 @@ export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAdd
         amount,
         lutAddress,
         priorityFee,
+        jitoMode,
+        jitoClient,
+        signAllTransactions,
       });
       await refresh();
       notify({ id, kind: NotificationKind.Success, message: `Transaction complete: ${sig}`, closable: true });
