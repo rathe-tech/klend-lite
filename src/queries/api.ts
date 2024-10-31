@@ -117,7 +117,7 @@ export async function borrow({
     [lutAddress]
   );
   return jitoMode ?
-  await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signAllTransactions, jitoClient) :
+    await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signAllTransactions, jitoClient) :
     await sendAndConfirmTransaction(sendTransaction, connection, transaction);
 }
 
