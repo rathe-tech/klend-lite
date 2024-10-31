@@ -96,6 +96,7 @@ const MAIN_MARKET_RESERVES_ORDER = new Map([
   new PublicKey("DGQZWCY17gGtBUgdaFs1VreJWsodkjFxndPsskwFKGpp"), /* jupSOL */
   new PublicKey("CExamod1Ai3d1N8Vh7sBjt5xbZzb2VmGMAFocf7fxCzm"), /* hSOL */
   new PublicKey("CHBNUPdjeo2N5QkZY2uAqv7TW5EbCTMsfvaskCBuxbom"), /* vSOL */
+  new PublicKey("6U9CnJYCQwHUEmf4Pq4oGVKHVvD29wZvtPbFNjYmgjaF"), /* bbSOL */
   // Blue chip assets
   new PublicKey("Hcz1o77tF9TpdEHcvrx29tz7SBKoQEwJA1wuJqGZYnTw"), /* tBTC */
   new PublicKey("HYnVhjsvU1vBKTPsXs1dWe6cJeuU8E4gjoYpmwe81KzN"), /* wBTC */
