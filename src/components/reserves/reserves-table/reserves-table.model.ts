@@ -123,6 +123,11 @@ const JLP_MARKET_RESERVE_ORDER = new Map([
   new PublicKey("DdTmCCjv7zHRD1hJv3E8bpnSEQBzdKkzB1j9ApXX5QoP"), /* JLP */
 ].map((r, i) => [r.toBase58(), i]));
 
+const JITO_MARKET_RESERVE_ORDER = new Map([
+  new PublicKey("6gTJfuPHEg6uRAijRkMqNc9kan4sVZejKMxmvx2grT1p"), /* SOL */
+  new PublicKey("F9HdecRG8GPs9LEn4S5VfeJVEZVqrDJFR6bvmQTi22na"), /* JITOSOL */
+].map((r, i) => [r.toBase58(), i]));
+
 const ALTCOINS_MARKET_RESERVE_ORDER = new Map([
   new PublicKey("9TD2TSv4pENb8VwfbVYg25jvym7HN6iuAR6pFNSrKjqQ"), /* USDC */
   new PublicKey("G9T3ajJ5NL4m5v3bbu5KuSmVojWgaMGufDorLAHgJuYE"), /* USDH */
@@ -146,8 +151,9 @@ const ETHENA_MARKET_RESERVE_ORDER = new Map([
 const MARKET_RESERVES_ORDERS = new Map([
   [MarketInfo.KNOWN_MARKETS[0].address.toBase58(), MAIN_MARKET_RESERVES_ORDER],
   [MarketInfo.KNOWN_MARKETS[1].address.toBase58(), JLP_MARKET_RESERVE_ORDER],
-  [MarketInfo.KNOWN_MARKETS[2].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
-  [MarketInfo.KNOWN_MARKETS[3].address.toBase58(), ETHENA_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[2].address.toBase58(), JITO_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[3].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[4].address.toBase58(), ETHENA_MARKET_RESERVE_ORDER],
 ]);
 
 function chooseReservesOrder(marketAddress: string) {

@@ -28,6 +28,10 @@ export module MarketInfo {
       address: new PublicKey("DxXdAyU3kCjnyggvHmY5nAwg5cRbbmdyX3npfDMjjMek"),
       lutAddress: new PublicKey("GprZNyWk67655JhX6Rq9KoebQ6WkQYRhATWzkx2P2LNc"),
     }, {
+      name: "Jito Market",
+      address: new PublicKey("H6rHXmXoCQvq8Ue81MqNh7ow5ysPa1dSozwW3PU1dDH6"),
+      lutAddress: new PublicKey("7J58uyRavy93zY3NMStRJCKHd7G2kt7wu3mpscAUGte1"),
+    }, {
       name: "Altcoins Market",
       address: new PublicKey("ByYiZxp8QrdN9qbdtaAiePN8AAr3qvTPppNJDpf5DVJ5"),
       lutAddress: new PublicKey("x2uEQSaqrZs5UnyXjiNktRhrAy6iNFeSKai9VNYFFuy"),
