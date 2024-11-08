@@ -98,6 +98,7 @@ const MAIN_MARKET_RESERVES_ORDER = new Map([
   new PublicKey("CHBNUPdjeo2N5QkZY2uAqv7TW5EbCTMsfvaskCBuxbom"), /* vSOL */
   new PublicKey("6U9CnJYCQwHUEmf4Pq4oGVKHVvD29wZvtPbFNjYmgjaF"), /* bbSOL */
   // Blue chip assets
+  new PublicKey("37Jk2zkz23vkAYBT66HM2gaqJuNg2nYLsCreQAVt5MWK"), /* cbBTC */
   new PublicKey("Hcz1o77tF9TpdEHcvrx29tz7SBKoQEwJA1wuJqGZYnTw"), /* tBTC */
   new PublicKey("HYnVhjsvU1vBKTPsXs1dWe6cJeuU8E4gjoYpmwe81KzN"), /* wBTC */
   new PublicKey("febGYTnFX4GbSGoFHFeJXUHgNaK53fB23uDins9Jp1E"),  /* ETH */
