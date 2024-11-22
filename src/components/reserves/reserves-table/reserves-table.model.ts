@@ -97,12 +97,14 @@ const MAIN_MARKET_RESERVES_ORDER = new Map([
   new PublicKey("CExamod1Ai3d1N8Vh7sBjt5xbZzb2VmGMAFocf7fxCzm"), /* hSOL */
   new PublicKey("CHBNUPdjeo2N5QkZY2uAqv7TW5EbCTMsfvaskCBuxbom"), /* vSOL */
   new PublicKey("6U9CnJYCQwHUEmf4Pq4oGVKHVvD29wZvtPbFNjYmgjaF"), /* bbSOL */
+  new PublicKey("Fqjbo3L4NAyzPcy6swv1XXLm1c7tUTKWMDkjCo9mfSDq"), /* bnSOL */
   // Blue chip assets
   new PublicKey("37Jk2zkz23vkAYBT66HM2gaqJuNg2nYLsCreQAVt5MWK"), /* cbBTC */
   new PublicKey("Hcz1o77tF9TpdEHcvrx29tz7SBKoQEwJA1wuJqGZYnTw"), /* tBTC */
   new PublicKey("HYnVhjsvU1vBKTPsXs1dWe6cJeuU8E4gjoYpmwe81KzN"), /* wBTC */
   new PublicKey("febGYTnFX4GbSGoFHFeJXUHgNaK53fB23uDins9Jp1E"),  /* ETH */
   new PublicKey("EAA3VVsxUuQB1Tm5x7TJkq9ATtiX5Qwq8ok7gXwim7oo"), /* JLP */
+  new PublicKey("BHUi32TrEsfN2U821G4FprKrR4hTeK4LCWtA3BFetuqA"), /* USDS */
   new PublicKey("DaGyAQJrdkLCzYZiUWg49NV8vabDnhR7ETwLu5eQgL56"), /* USDH */
   new PublicKey("GhGPbkWmPjSkbkgZbhNGBTxzwQKjqDpZwNfaf2gQKgdG"), /* UXD */
   new PublicKey("9Ukd2MSw5RvVFaN8jLhWxjHLEGiF1F6Hf7v3Zq5hZsKB"), /* JTO */
