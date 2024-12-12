@@ -71,6 +71,8 @@ export module UIPercent {
       return "-";
     } else if (value === 0) {
       return "0%"
+    } else if (Number.isNaN(value)) {
+      return "-";
     } else {
       return `${(value * 100).toFixed(decimalPlaces)}%`;
     }
