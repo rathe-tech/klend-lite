@@ -107,6 +107,7 @@ const MAIN_MARKET_RESERVES_ORDER = new Map([
   new PublicKey("febGYTnFX4GbSGoFHFeJXUHgNaK53fB23uDins9Jp1E"),  /* ETH */
   new PublicKey("EAA3VVsxUuQB1Tm5x7TJkq9ATtiX5Qwq8ok7gXwim7oo"), /* JLP */
   new PublicKey("BHUi32TrEsfN2U821G4FprKrR4hTeK4LCWtA3BFetuqA"), /* USDS */
+  new PublicKey("Bpc4kAh29J3YDQUMJJdGdr1zBAhTQjC48R1B8YTWudsi"), /* FDUSD */
   new PublicKey("DaGyAQJrdkLCzYZiUWg49NV8vabDnhR7ETwLu5eQgL56"), /* USDH */
   new PublicKey("GhGPbkWmPjSkbkgZbhNGBTxzwQKjqDpZwNfaf2gQKgdG"), /* UXD */
   new PublicKey("9Ukd2MSw5RvVFaN8jLhWxjHLEGiF1F6Hf7v3Zq5hZsKB"), /* JTO */
