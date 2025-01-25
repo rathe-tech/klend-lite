@@ -355,7 +355,7 @@ async function pollJitoBundleStatus(
   jitoClient: JitBlockEngineClient,
   commitment: Commitment,
   timeout: number = 60_000,
-  delay: number = 500,
+  delay: number = 1_000,
 ) {
   const inflightStatusRequest = GetInflightBundleStatusesRequest.create([bundleId]);
   const detailedStatusRequest = GetBundleStatusesRequest.create([bundleId]);
