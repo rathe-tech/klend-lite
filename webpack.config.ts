@@ -1,15 +1,22 @@
-import * as path from "path";
-import * as webpack from "webpack";
-import * as server from "webpack-dev-server";
-import * as html from "html-webpack-plugin";
-import * as vanilla from "@vanilla-extract/webpack-plugin";
-import * as terser from "terser-webpack-plugin";
-import * as copy from "copy-webpack-plugin";
-import * as MiniCssExtractPlugin from "mini-css-extract-plugin";
-import ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+import path from "path";
+import { fileURLToPath } from 'url';
+import module from "node:module";
+import webpack from "webpack";
+import server from "webpack-dev-server";
+import html from "html-webpack-plugin";
+import vanilla from "@vanilla-extract/webpack-plugin";
+import terser from "terser-webpack-plugin";
+import copy from "copy-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+// @ts-ignore
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 
 type ExtendedConfig = webpack.Configuration & { devServer: server.Configuration };
 type ConfigSelector = (env: any, argv: any) => ExtendedConfig;
+
+const require = module.createRequire(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const config: ConfigSelector = (env, argv) => {
   console.log("Passed env:", env);

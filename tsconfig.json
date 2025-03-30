@@ -1,11 +1,12 @@
 {
     "compilerOptions": {
         "strict": true,
-        "module": "CommonJS",
+        "module": "ESNext",
         "moduleResolution": "Node",
         "target": "ES2022",
         "resolveJsonModule": true,
         "jsx": "react-jsx",
+        "allowSyntheticDefaultImports": true,
         "paths": {
             "@solana/spl-token": ["./node_modules/@solana/spl-token"],
             "@components/*": ["./src/components/*"],
