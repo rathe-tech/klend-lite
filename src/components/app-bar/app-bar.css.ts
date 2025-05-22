@@ -12,6 +12,7 @@ export const appTitle = style({
   fontSize: "20px",
   fontWeight: "bold",
   textDecoration: "none",
+  color: vars.color.labelPrimary,
   ":visited": {
     color: vars.color.labelPrimary,
   }

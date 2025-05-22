@@ -135,6 +135,16 @@ const JLP_MARKET_RESERVE_ORDER = new Map([
   new PublicKey("DdTmCCjv7zHRD1hJv3E8bpnSEQBzdKkzB1j9ApXX5QoP"), /* JLP */
 ].map((r, i) => [r.toBase58(), i]));
 
+const SOLBLAZE_MARKET_RESERVE_ORDER = new Map([
+  new PublicKey("7ZqBu1zJSGradNPqGpQxwSezLvuk1vr6EqKwP9Ahrezc"), /* bSOL */
+  new PublicKey("4oigbthMAgjTMPyw8dBxhxU59YMtvNDHqhpR3W4HAzBM"), /* SOL */
+].map((r, i) => [r.toBase58(), i]));
+
+const MARINADE_MARKET_RESERVE_ORDER = new Map([
+  new PublicKey("r7Tyu7QswfZncQwmTQBkG1fDd8N5tJdi4b8S6KiBtBj"), /* mSOL */
+  new PublicKey("DQ126djx5db6SMCbejHLNxoosonVes3qW5eVVUQuT93v"), /* SOL */
+].map((r, i) => [r.toBase58(), i]));
+
 const JITO_MARKET_RESERVE_ORDER = new Map([
   new PublicKey("6gTJfuPHEg6uRAijRkMqNc9kan4sVZejKMxmvx2grT1p"), /* SOL */
   new PublicKey("F9HdecRG8GPs9LEn4S5VfeJVEZVqrDJFR6bvmQTi22na"), /* JITOSOL */
@@ -163,9 +173,11 @@ const ETHENA_MARKET_RESERVE_ORDER = new Map([
 const MARKET_RESERVES_ORDERS = new Map([
   [MarketInfo.KNOWN_MARKETS[0].address.toBase58(), MAIN_MARKET_RESERVES_ORDER],
   [MarketInfo.KNOWN_MARKETS[1].address.toBase58(), JLP_MARKET_RESERVE_ORDER],
-  [MarketInfo.KNOWN_MARKETS[2].address.toBase58(), JITO_MARKET_RESERVE_ORDER],
-  [MarketInfo.KNOWN_MARKETS[3].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
-  [MarketInfo.KNOWN_MARKETS[4].address.toBase58(), ETHENA_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[2].address.toBase58(), SOLBLAZE_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[3].address.toBase58(), MARINADE_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[4].address.toBase58(), JITO_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[5].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[6].address.toBase58(), ETHENA_MARKET_RESERVE_ORDER],
 ]);
 
 function chooseReservesOrder(marketAddress: string) {

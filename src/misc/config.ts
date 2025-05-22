@@ -28,6 +28,14 @@ export module MarketInfo {
       address: new PublicKey("DxXdAyU3kCjnyggvHmY5nAwg5cRbbmdyX3npfDMjjMek"),
       lutAddress: new PublicKey("GprZNyWk67655JhX6Rq9KoebQ6WkQYRhATWzkx2P2LNc"),
     }, {
+      name: "Solblaze Market",
+      address: new PublicKey("C7h9YnjPrDvNhe2cWWDhCu4CZEB1XTTH4RzjmsHuengV"),
+      lutAddress: new PublicKey("CPM1EHHTqYMoR4Kyp2fZTwrSWc9bXvoki8MgiaTR1ciu"),
+    }, {
+      name: "Marinade Market",
+      address: new PublicKey("GVDUXFwS8uvBG35RjZv6Y8S1AkV5uASiMJ9qTUKqb5PL"),
+      lutAddress: new PublicKey("9JLvnXRXEQTdqZjNUFpSZqh4WjNozQpmoM47XX8tY8Ua"),
+    }, {
       name: "Jito Market",
       address: new PublicKey("H6rHXmXoCQvq8Ue81MqNh7ow5ysPa1dSozwW3PU1dDH6"),
       lutAddress: new PublicKey("7J58uyRavy93zY3NMStRJCKHd7G2kt7wu3mpscAUGte1"),
