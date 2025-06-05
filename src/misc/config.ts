@@ -44,9 +44,9 @@ export module MarketInfo {
       address: new PublicKey("ByYiZxp8QrdN9qbdtaAiePN8AAr3qvTPppNJDpf5DVJ5"),
       lutAddress: new PublicKey("x2uEQSaqrZs5UnyXjiNktRhrAy6iNFeSKai9VNYFFuy"),
     }, {
-      name: "Ethena Market",
-      address: new PublicKey("BJnbcRHqvppTyGesLzWASGKnmnF1wq9jZu6ExrjT7wvF"),
-      lutAddress: new PublicKey("5Cx8pxA2LuCPnt8RZG9LKjKc7PnzWwvCx6xJZis7MTwm"),
+      name: "Maple Market",
+      address: new PublicKey("6WEGfej9B9wjxRs6t4BYpb9iCXd8CpTpJ8fVSNzHCC5y"),
+      lutAddress: new PublicKey("CC6dR5rz9tuhdxzvePGvVhqJPnBu9BFyc1qdRjxbquWZ"),
     },
   ] as const;
 

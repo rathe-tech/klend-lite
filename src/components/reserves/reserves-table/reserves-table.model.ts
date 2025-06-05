@@ -165,10 +165,11 @@ const ALTCOINS_MARKET_RESERVE_ORDER = new Map([
   new PublicKey("E9Y7wNfjcHVhukm7tmqSke5DUhea5Rkq5oXhXFmcJ9GB"), /* TNSR */
 ].map((r, i) => [r.toBase58(), i]));
 
-const ETHENA_MARKET_RESERVE_ORDER = new Map([
-  new PublicKey("EDf6dGbVnCCABbNhE3mp5i1jV2JhDAVmTWb1ztij1Yhs"), /* PYUSD */
-  new PublicKey("2erD9GTGcaQbLsVSQweg3HvMpfKxScmz95raWv8H4iPN"), /* USDe */
-  new PublicKey("EwBTjwCXJ3TsKP8dNTYnzRmBWRd6h48FdLFSAGJ3sCtx"), /* sUSDe */
+const MAPLE_MARKET_RESERVE_ORDER = new Map([
+  new PublicKey("AwCyCPZYJSZ93xcVKNK7jR8e1BHzJXq1D4bReNuh9woY"), /* syrupUSDC */
+  new PublicKey("Atj6UREVWa7WxbF2EMKNyfmYUY1U1txughe2gjhcPDCo"), /* USDC */
+  new PublicKey("HokDw9LaDf9qNzJf4F21RjHU3K4pRBkGQENvWnRGyRbn"), /* USDG */
+  new PublicKey("BiSRKTadXSiyTSpiqw9nJge33N32AXewUPY7skFJwMvA"), /* USDS */
 ].map((r, i) => [r.toBase58(), i]));
 
 const MARKET_RESERVES_ORDERS = new Map([
@@ -178,7 +179,7 @@ const MARKET_RESERVES_ORDERS = new Map([
   [MarketInfo.KNOWN_MARKETS[3].address.toBase58(), MARINADE_MARKET_RESERVE_ORDER],
   [MarketInfo.KNOWN_MARKETS[4].address.toBase58(), JITO_MARKET_RESERVE_ORDER],
   [MarketInfo.KNOWN_MARKETS[5].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
-  [MarketInfo.KNOWN_MARKETS[6].address.toBase58(), ETHENA_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[6].address.toBase58(), MAPLE_MARKET_RESERVE_ORDER],
 ]);
 
 function chooseReservesOrder(marketAddress: string) {
