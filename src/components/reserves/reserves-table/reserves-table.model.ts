@@ -107,6 +107,7 @@ const MAIN_MARKET_RESERVES_ORDER = new Map([
   new PublicKey("StGKGcLQoTsWzQ1tFY2bWqrdiuBhqdFE4niiAutQxQB"),  /* dSOL */
   new PublicKey("BvafE5Sm6rLrBbVRtJ2FkCzfNJQ2TjcL8bvPZULUDYrt"), /* cgntSOL */
   new PublicKey("CkgQnPbuHHwSv2mNdAKH79TKSqC6jsyttK9yh4MPH6z3"), /* dfdvSOL */
+  new PublicKey("A2J2CEwmwa9aTKbEfNoik6YTyNep9GtvNjU65okWYhwn"), /* strongSOL */
   // Blue chip assets
   new PublicKey("37Jk2zkz23vkAYBT66HM2gaqJuNg2nYLsCreQAVt5MWK"), /* cbBTC */
   new PublicKey("Hcz1o77tF9TpdEHcvrx29tz7SBKoQEwJA1wuJqGZYnTw"), /* tBTC */
@@ -151,6 +152,11 @@ const JITO_MARKET_RESERVE_ORDER = new Map([
   new PublicKey("F9HdecRG8GPs9LEn4S5VfeJVEZVqrDJFR6bvmQTi22na"), /* JITOSOL */
 ].map((r, i) => [r.toBase58(), i]));
 
+const SANCTUM_MARKET_RESERVE_ORDER = new Map([
+  new PublicKey("HRqCpwgsHBqHWqyuaf683cvPaWJgJf6fGuTWQVv1YZaC"), /* INF */
+  new PublicKey("HaVsdBb4mMoYQ3vnS7wCdvhixg5xFQALmFwyL9QJm3fn"), /* SOL */
+].map((r, i) => [r.toBase58(), i]));
+
 const ALTCOINS_MARKET_RESERVE_ORDER = new Map([
   new PublicKey("9TD2TSv4pENb8VwfbVYg25jvym7HN6iuAR6pFNSrKjqQ"), /* USDC */
   new PublicKey("G9T3ajJ5NL4m5v3bbu5KuSmVojWgaMGufDorLAHgJuYE"), /* USDH */
@@ -178,8 +184,9 @@ const MARKET_RESERVES_ORDERS = new Map([
   [MarketInfo.KNOWN_MARKETS[2].address.toBase58(), SOLBLAZE_MARKET_RESERVE_ORDER],
   [MarketInfo.KNOWN_MARKETS[3].address.toBase58(), MARINADE_MARKET_RESERVE_ORDER],
   [MarketInfo.KNOWN_MARKETS[4].address.toBase58(), JITO_MARKET_RESERVE_ORDER],
-  [MarketInfo.KNOWN_MARKETS[5].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
-  [MarketInfo.KNOWN_MARKETS[6].address.toBase58(), MAPLE_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[5].address.toBase58(), SANCTUM_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[6].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[7].address.toBase58(), MAPLE_MARKET_RESERVE_ORDER],
 ]);
 
 function chooseReservesOrder(marketAddress: string) {
