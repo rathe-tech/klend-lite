@@ -35,7 +35,7 @@
   "dependencies": {
     "@kamino-finance/klend-sdk": "5.15.1",
     "@rathe/jito-block-engine-api": "^1.0.0",
-    "@solana/spl-token": "^0.4.9",
+    "@solana/spl-token": "^0.4.8",
     "@solana/wallet-adapter-react": "^0.15.35",
     "@solana/wallet-adapter-react-ui": "^0.9.35",
     "@solana/web3.js": "^1.95.8",
