@@ -6,7 +6,7 @@ import * as css from "./market-select.css";
 export const MarketSelect = () =>
   <Section.Header>
     <div className={css.marketList}>
-      {MarketInfo.KNOWN_MARKETS.map((market) =>
+      {MarketInfo.KNOWN_MARKETS.filter(market => !market.hide).map((market) =>
         <MarketItem
           key={market.address.toBase58()}
           {...market}

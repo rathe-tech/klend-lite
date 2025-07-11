@@ -14,6 +14,7 @@ export interface MarketInfo {
   address: PublicKey;
   lutAddress: PublicKey;
   main?: boolean;
+  hide?: boolean;
 }
 
 export module MarketInfo {
@@ -47,11 +48,21 @@ export module MarketInfo {
       name: "Altcoins Market",
       address: new PublicKey("ByYiZxp8QrdN9qbdtaAiePN8AAr3qvTPppNJDpf5DVJ5"),
       lutAddress: new PublicKey("x2uEQSaqrZs5UnyXjiNktRhrAy6iNFeSKai9VNYFFuy"),
+      hide: true,
     }, {
       name: "Maple Market",
       address: new PublicKey("6WEGfej9B9wjxRs6t4BYpb9iCXd8CpTpJ8fVSNzHCC5y"),
       lutAddress: new PublicKey("CC6dR5rz9tuhdxzvePGvVhqJPnBu9BFyc1qdRjxbquWZ"),
-    },
+    }, {
+      name: "Exponent Market",
+      address: new PublicKey("F4Pn9mAvbUazDmWET5yYATTiyLHLaCRTWgGex4tiMXAs"),
+      lutAddress: new PublicKey("CZ4WMyfH8BzkRsc6oXmhmj6ntjkBhdWB32aHrck3H8WM"),
+    }, {
+      name: "Fartcoin Market",
+      address: new PublicKey("4UwtBqa8DDtcWV6nWFregeMVkGdfWfiYeFxoHaR2hm9c"),
+      lutAddress: new PublicKey("BxHAiZXuTGxH1uT43e64679t5Z6QDtw1KHxJSqVTnXYr"),
+      hide: true,
+    }
   ] as const;
 
   export function choose(marketAddress: string | undefined | null) {

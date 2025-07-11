@@ -108,8 +108,11 @@ const MAIN_MARKET_RESERVES_ORDER = new Map([
   new PublicKey("BvafE5Sm6rLrBbVRtJ2FkCzfNJQ2TjcL8bvPZULUDYrt"), /* cgntSOL */
   new PublicKey("CkgQnPbuHHwSv2mNdAKH79TKSqC6jsyttK9yh4MPH6z3"), /* dfdvSOL */
   new PublicKey("A2J2CEwmwa9aTKbEfNoik6YTyNep9GtvNjU65okWYhwn"), /* strongSOL */
+  new PublicKey("HD93Fq3gmVh3J7euJJ5MBw8Ph3ebeMFS699JQePN4XgN"), /* jSOL */
+  new PublicKey("HV9KsS5mB4b9CFhDJVKdfxWBAomYfUk5PeUsdgMQsUrB"), /* pSOL */
   // Blue chip assets
   new PublicKey("37Jk2zkz23vkAYBT66HM2gaqJuNg2nYLsCreQAVt5MWK"), /* cbBTC */
+  new PublicKey("4Hyrqb9Mq7y1wkq4YoqHkPdPx3VQyFY3mxMj67naC1Cb"), /* xBTC */
   new PublicKey("Hcz1o77tF9TpdEHcvrx29tz7SBKoQEwJA1wuJqGZYnTw"), /* tBTC */
   new PublicKey("HYnVhjsvU1vBKTPsXs1dWe6cJeuU8E4gjoYpmwe81KzN"), /* wBTC */
   new PublicKey("febGYTnFX4GbSGoFHFeJXUHgNaK53fB23uDins9Jp1E"),  /* ETH */
@@ -178,6 +181,14 @@ const MAPLE_MARKET_RESERVE_ORDER = new Map([
   new PublicKey("BiSRKTadXSiyTSpiqw9nJge33N32AXewUPY7skFJwMvA"), /* USDS */
 ].map((r, i) => [r.toBase58(), i]));
 
+const EXPONENT_MARKET_RESERVE_ORDER = new Map([
+  new PublicKey("8sQ6biATvkuBaccpgJocvzgFCHTrfMUnSTYpFhA9JS7D"), /* SOL */
+].map((r, i) => [r.toBase58(), i]));
+
+const FARTCOIN_MARKET_RESERVE_ORDER = new Map([
+  new PublicKey("F22tnLsbv66vEU2GZRc7coaqZsr8UcBbyp9V2kqWAiWK"), /* USDC */
+].map((r, i) => [r.toBase58(), i]));
+
 const MARKET_RESERVES_ORDERS = new Map([
   [MarketInfo.KNOWN_MARKETS[0].address.toBase58(), MAIN_MARKET_RESERVES_ORDER],
   [MarketInfo.KNOWN_MARKETS[1].address.toBase58(), JLP_MARKET_RESERVE_ORDER],
@@ -187,6 +198,8 @@ const MARKET_RESERVES_ORDERS = new Map([
   [MarketInfo.KNOWN_MARKETS[5].address.toBase58(), SANCTUM_MARKET_RESERVE_ORDER],
   [MarketInfo.KNOWN_MARKETS[6].address.toBase58(), ALTCOINS_MARKET_RESERVE_ORDER],
   [MarketInfo.KNOWN_MARKETS[7].address.toBase58(), MAPLE_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[8].address.toBase58(), EXPONENT_MARKET_RESERVE_ORDER],
+  [MarketInfo.KNOWN_MARKETS[9].address.toBase58(), FARTCOIN_MARKET_RESERVE_ORDER],
 ]);
 
 function chooseReservesOrder(marketAddress: string) {

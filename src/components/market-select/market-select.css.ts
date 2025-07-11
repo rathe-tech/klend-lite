@@ -11,6 +11,7 @@ export const marketItem = style({
   fontWeight: "bold",
   textDecoration: "none",
   color: vars.color.labelSecondary,
+  whiteSpace: "pre",
   ":hover": {
     color: vars.color.labelPrimary,
   }
