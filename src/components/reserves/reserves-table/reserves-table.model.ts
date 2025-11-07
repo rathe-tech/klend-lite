@@ -89,9 +89,18 @@ const MAIN_MARKET_RESERVES_ORDER = new Map([
   new PublicKey("D6q6wuQSrifJKZYpR1M8R4YawnLDtDsMmWM1NbBmgJ59"), /* USDC */
   new PublicKey("H3t6qZ1JkguCNTi9uzVKqQ7dvt2cum4XiXWom6Gn5e5S"), /* USDT */
   new PublicKey("2gc9Dm1eB6UgVYFBUN9bWks6Kes9PbWSaPaa9DqyvEiN"), /* PYUSDT */
+  new PublicKey("BHUi32TrEsfN2U821G4FprKrR4hTeK4LCWtA3BFetuqA"), /* USDS */
+  new PublicKey("ApQkX32ULJUzszZDe986aobLDLMNDoGQK8tRm6oD6SsA"), /* CASH */
   new PublicKey("ESCkPWKHmgNE7Msf77n9yzqJd5kQVWWGy3o5Mgxhvavp"), /* USDG */
   new PublicKey("EGPE45iPkme8G8C1xFDNZoZeHdP3aRYtaAfAQuuwrcGZ"), /* EURC */
-  // xSOL assets
+  // Blue chip assets
+  new PublicKey("37Jk2zkz23vkAYBT66HM2gaqJuNg2nYLsCreQAVt5MWK"), /* cbBTC */
+  new PublicKey("4Hyrqb9Mq7y1wkq4YoqHkPdPx3VQyFY3mxMj67naC1Cb"), /* xBTC */
+  new PublicKey("Hcz1o77tF9TpdEHcvrx29tz7SBKoQEwJA1wuJqGZYnTw"), /* tBTC */
+  new PublicKey("HYnVhjsvU1vBKTPsXs1dWe6cJeuU8E4gjoYpmwe81KzN"), /* wBTC */
+  new PublicKey("febGYTnFX4GbSGoFHFeJXUHgNaK53fB23uDins9Jp1E"),  /* ETH */
+  new PublicKey("EAA3VVsxUuQB1Tm5x7TJkq9ATtiX5Qwq8ok7gXwim7oo"), /* JLP */
+  // LST SOL assets
   new PublicKey("H9vmCVd77N1HZa36eBn3UnftYmg4vQzPfm1RxabHAMER"), /* bSOL */
   new PublicKey("FBSyPnxtHKLBZ4UeeUyAnbtFuAmTHLtso9YtsqRDRWpM"), /* MSOL */
   new PublicKey("EVbyPKrHG6WBfm4dLxLMJpUDY43cCAcHSpV3KYjKsktW"), /* JITOSOL */
@@ -112,19 +121,8 @@ const MAIN_MARKET_RESERVES_ORDER = new Map([
   new PublicKey("HV9KsS5mB4b9CFhDJVKdfxWBAomYfUk5PeUsdgMQsUrB"), /* pSOL */
   new PublicKey("64AZMUHLB6NYvQSt41JTer4v8NAFDCz5sUPb7dYpCxa"),  /* adraSOL */
   new PublicKey("J5oj3VKWQNKRZx3heWZx7JZC59AEDQ9UQwqqiy63nCuf"), /* lanternSOL */
-  // Blue chip assets
-  new PublicKey("37Jk2zkz23vkAYBT66HM2gaqJuNg2nYLsCreQAVt5MWK"), /* cbBTC */
-  new PublicKey("4Hyrqb9Mq7y1wkq4YoqHkPdPx3VQyFY3mxMj67naC1Cb"), /* xBTC */
-  new PublicKey("Hcz1o77tF9TpdEHcvrx29tz7SBKoQEwJA1wuJqGZYnTw"), /* tBTC */
-  new PublicKey("HYnVhjsvU1vBKTPsXs1dWe6cJeuU8E4gjoYpmwe81KzN"), /* wBTC */
-  new PublicKey("febGYTnFX4GbSGoFHFeJXUHgNaK53fB23uDins9Jp1E"),  /* ETH */
-  new PublicKey("EAA3VVsxUuQB1Tm5x7TJkq9ATtiX5Qwq8ok7gXwim7oo"), /* JLP */
-  new PublicKey("BHUi32TrEsfN2U821G4FprKrR4hTeK4LCWtA3BFetuqA"), /* USDS */
-  new PublicKey("Bpc4kAh29J3YDQUMJJdGdr1zBAhTQjC48R1B8YTWudsi"), /* FDUSD */
-  new PublicKey("DaGyAQJrdkLCzYZiUWg49NV8vabDnhR7ETwLu5eQgL56"), /* USDH */
-  new PublicKey("GhGPbkWmPjSkbkgZbhNGBTxzwQKjqDpZwNfaf2gQKgdG"), /* UXD */
-  new PublicKey("9Ukd2MSw5RvVFaN8jLhWxjHLEGiF1F6Hf7v3Zq5hZsKB"), /* JTO */
-  new PublicKey("4AFAGAm5G8fkcKy7QerL88E7BiSE22ZRbvJzvaKjayor"), /* JUP */
+  new PublicKey("FMbsZf4HuQ1a8a7VdmALT3S8WRfu3EocphRKPXxRsfGd"), /* cdcSOL */
+  new PublicKey("8gVpWfWDCtCcUX1meSphqqpyWBceLCcrs9yEXwKKjQrL"), /* nxSOL */
   // kTokens assets
   new PublicKey("57U9pEC8NsWvHgWywd2xHTRkGQzWWYsWivxYRhtxZrLB"), /* kSOLBSOLOrca */
   new PublicKey("75WrtSz7rLCdBvAQhtHi8M2jC8HnpT8iUxcYkdeawr37"), /* kSOLJITOSOLRaydium */
@@ -135,6 +133,11 @@ const MAIN_MARKET_RESERVES_ORDER = new Map([
   new PublicKey("Ggn9EUzL5QQPM8JPsyu1MU1uD3rGJty7iXddLQnmxPyS"), /* xSTEP */
   new PublicKey("5YpGenXaAowj4HS33AvirVb8P4tgue7S7YaY6MyYZ7LD"), /* CHAI */
   new PublicKey("9JB9EMxEp9gZy3i1jqD2yvNYWKRZCP6f3drdQw853swH"), /* STSOL */
+  new PublicKey("Bpc4kAh29J3YDQUMJJdGdr1zBAhTQjC48R1B8YTWudsi"), /* FDUSD */
+  new PublicKey("DaGyAQJrdkLCzYZiUWg49NV8vabDnhR7ETwLu5eQgL56"), /* USDH */
+  new PublicKey("GhGPbkWmPjSkbkgZbhNGBTxzwQKjqDpZwNfaf2gQKgdG"), /* UXD */
+  new PublicKey("9Ukd2MSw5RvVFaN8jLhWxjHLEGiF1F6Hf7v3Zq5hZsKB"), /* JTO */
+  new PublicKey("4AFAGAm5G8fkcKy7QerL88E7BiSE22ZRbvJzvaKjayor"), /* JUP */
 ].map((r, i) => [r.toBase58(), i]));
 
 const JLP_MARKET_RESERVE_ORDER = new Map([

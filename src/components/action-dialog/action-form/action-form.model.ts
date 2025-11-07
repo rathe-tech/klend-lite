@@ -18,12 +18,12 @@ export { ActionKind };
 
 export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAddress: PublicKey }) {
   const { connection } = useConnection();
-  const { sendTransaction, signAllTransactions, publicKey } = useWallet();
+  const { signTransaction, publicKey } = useWallet();
   const { notify } = useNotifications();
   const jitoClient = useJitoClient();
 
   Assert.some(publicKey, "Wallet not connected");
-  Assert.some(signAllTransactions, "Wallet not connected");
+  Assert.some(signTransaction, "Wallet not connected");
 
   const { priorityFee, jitoMode } = useSettings();
 
@@ -59,7 +59,6 @@ export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAdd
       Assert.some(inputAmount, "Invalid input amount");
       const amount = computeSubmittedAmount(kind, inputAmount, positionAmount);
       const sig = await processAction(kind, {
-        sendTransaction,
         connection,
         market,
         walletAddress: publicKey,
@@ -69,7 +68,7 @@ export function useActionForm({ kind, mintAddress }: { kind: ActionKind, mintAdd
         priorityFee,
         jitoMode,
         jitoClient,
-        signAllTransactions,
+        signTransaction,
       });
       await refresh();
       notify({ id, kind: NotificationKind.Success, message: `Transaction complete: ${sig}`, closable: true });

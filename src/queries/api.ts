@@ -8,10 +8,8 @@ import {
   Transaction,
   TransactionInstruction,
   TransactionMessage,
-  TransactionSignature,
   VersionedTransaction,
 } from "@solana/web3.js";
-import { SendTransactionOptions } from "@solana/wallet-adapter-base";
 import {
   KaminoMarket,
   KaminoAction,
@@ -30,8 +28,7 @@ import {
 } from "@rathe/jito-block-engine-api";
 
 export interface ActionParams {
-  sendTransaction: SendTransaction;
-  signAllTransactions: <T extends Transaction | VersionedTransaction>(transactions: T[]) => Promise<T[]>,
+  signTransaction: <T extends Transaction | VersionedTransaction>(transactions: T) => Promise<T>,
   connection: Connection;
   market: KaminoMarket;
   mintAddress: PublicKey;
@@ -44,7 +41,6 @@ export interface ActionParams {
 }
 
 export async function supply({
-  sendTransaction,
   connection,
   market,
   mintAddress,
@@ -53,7 +49,7 @@ export async function supply({
   lutAddress,
   priorityFee,
   jitoMode,
-  signAllTransactions,
+  signTransaction,
   jitoClient,
 }: ActionParams): Promise<string> {
   const action = await KaminoAction.buildDepositTxns(
@@ -80,12 +76,11 @@ export async function supply({
     [lutAddress]
   );
   return jitoMode ?
-    await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signAllTransactions, jitoClient) :
-    await sendAndConfirmTransaction(sendTransaction, connection, transaction);
+    await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signTransaction, jitoClient) :
+    await sendAndConfirmTransaction(connection, signTransaction, transaction);
 }
 
 export async function borrow({
-  sendTransaction,
   connection,
   market,
   mintAddress,
@@ -95,7 +90,7 @@ export async function borrow({
   priorityFee,
   jitoMode,
   jitoClient,
-  signAllTransactions,
+  signTransaction,
 }: ActionParams): Promise<string> {
   const action = await KaminoAction.buildBorrowTxns(
     market,
@@ -121,12 +116,11 @@ export async function borrow({
     [lutAddress]
   );
   return jitoMode ?
-    await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signAllTransactions, jitoClient) :
-    await sendAndConfirmTransaction(sendTransaction, connection, transaction);
+    await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signTransaction, jitoClient) :
+    await sendAndConfirmTransaction(connection, signTransaction, transaction);
 }
 
 export async function repay({
-  sendTransaction,
   connection,
   market,
   mintAddress,
@@ -136,7 +130,7 @@ export async function repay({
   priorityFee,
   jitoMode,
   jitoClient,
-  signAllTransactions,
+  signTransaction,
 }: ActionParams): Promise<string> {
   const slot = await connection.getSlot();
   const action = await KaminoAction.buildRepayTxns(
@@ -165,12 +159,11 @@ export async function repay({
     [lutAddress]
   );
   return jitoMode ?
-    await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signAllTransactions, jitoClient) :
-    await sendAndConfirmTransaction(sendTransaction, connection, transaction);
+    await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signTransaction, jitoClient) :
+    await sendAndConfirmTransaction(connection, signTransaction, transaction);
 }
 
 export async function withdraw({
-  sendTransaction,
   connection,
   market,
   mintAddress,
@@ -180,7 +173,7 @@ export async function withdraw({
   priorityFee,
   jitoMode,
   jitoClient,
-  signAllTransactions,
+  signTransaction,
 }: ActionParams): Promise<string> {
   const action = await KaminoAction.buildWithdrawTxns(
     market,
@@ -206,8 +199,8 @@ export async function withdraw({
     [lutAddress]
   );
   return jitoMode ?
-    await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signAllTransactions, jitoClient) :
-    await sendAndConfirmTransaction(sendTransaction, connection, transaction);
+    await sendAndConfirmWithJito(connection, transaction, priorityFee, walletAddress, signTransaction, jitoClient) :
+    await sendAndConfirmTransaction(connection, signTransaction, transaction);
 }
 
 function createPriorityFeeInstructions(units: number, priorityFee: Decimal) {
@@ -223,15 +216,16 @@ function createModifyComputeUnitsInstructions(units: number | null) {
 }
 
 async function sendAndConfirmTransaction(
-  sendTransaction: SendTransaction,
   connection: Connection,
+  signTransaction: <T extends Transaction | VersionedTransaction>(transactions: T) => Promise<T>,
   transaction: VersionedTransaction,
 ): Promise<string> {
   const commitment: Commitment = "confirmed";
   const { context: { slot: minContextSlot }, value: { blockhash, lastValidBlockHeight } } =
     await connection.getLatestBlockhashAndContext({ commitment });
 
-  const transactionId = await sendTransaction(transaction, connection, { minContextSlot });
+  const signedTransaction = await signTransaction(transaction);
+  const transactionId = await connection.sendRawTransaction(signedTransaction.serialize(), { minContextSlot });
   const status = await connection.confirmTransaction({
     signature: transactionId,
     minContextSlot,
@@ -251,7 +245,7 @@ async function sendAndConfirmWithJito(
   transaction: VersionedTransaction,
   priorityFee: Decimal,
   wallet: PublicKey,
-  signAllTransactions: <T extends Transaction | VersionedTransaction>(transactions: T[]) => Promise<T[]>,
+  signTransaction: <T extends Transaction | VersionedTransaction>(transactions: T) => Promise<T>,
   jitoClient: JitBlockEngineClient,
 ) {
   const commitment: Commitment = "confirmed";
@@ -262,18 +256,15 @@ async function sendAndConfirmWithJito(
     lamports: priorityFee.toNumber(),
     recentBlockhash: blockhash,
   });
-  const transactions = await signAllTransactions([transaction, tipTransaction]);
+  const transactions = await Promise.all([
+    signTransaction(transaction),
+    signTransaction(tipTransaction),
+  ]);
   const sendBundleRequest = SendBundleRequest.fromVersionedTransactions(transactions);
   const sendBundleResponse = await jitoClient.sendBundle(sendBundleRequest);
   const bundleId = JsonRpcResponse.tryGetResult(sendBundleResponse);
   return await pollJitoBundleStatus(bundleId, jitoClient, commitment);
 }
-
-type SendTransaction =
-  (transaction: Transaction | VersionedTransaction,
-    connection: Connection,
-    options?: SendTransactionOptions
-  ) => Promise<TransactionSignature>;
 
 function prepareInitialInstructions(action: KaminoAction) {
   return [
