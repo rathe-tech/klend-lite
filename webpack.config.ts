@@ -1,5 +1,5 @@
 import path from "path";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 import module from "node:module";
 import webpack from "webpack";
 import server from "webpack-dev-server";

@@ -1,6 +1,6 @@
 {
   "name": "klend-lite",
-  "version": "1.9.15",
+  "version": "1.9.16",
   "description": "A lightweight dApp for the Kamino lending markets",
   "type": "module",
   "scripts": {

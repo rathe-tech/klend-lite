@@ -123,6 +123,7 @@ const MAIN_MARKET_RESERVES_ORDER = new Map([
   new PublicKey("J5oj3VKWQNKRZx3heWZx7JZC59AEDQ9UQwqqiy63nCuf"), /* lanternSOL */
   new PublicKey("FMbsZf4HuQ1a8a7VdmALT3S8WRfu3EocphRKPXxRsfGd"), /* cdcSOL */
   new PublicKey("8gVpWfWDCtCcUX1meSphqqpyWBceLCcrs9yEXwKKjQrL"), /* nxSOL */
+  new PublicKey("8qnVHjKMcWAdkFnKvmRigj9J7UAVj2ooJ83GfeNn2DpR"), /* fwdSOL */
   // kTokens assets
   new PublicKey("57U9pEC8NsWvHgWywd2xHTRkGQzWWYsWivxYRhtxZrLB"), /* kSOLBSOLOrca */
   new PublicKey("75WrtSz7rLCdBvAQhtHi8M2jC8HnpT8iUxcYkdeawr37"), /* kSOLJITOSOLRaydium */
