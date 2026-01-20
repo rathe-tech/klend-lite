@@ -5,13 +5,12 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { useSettings } from "@components/settings-context";
 import { Section } from "@components/section";
 
+import { UIUtils } from "@misc/utils";
 import { VERSION } from "@misc/config";
 import * as css from "./app-bar.css";
-import { UIUtils } from "@misc/utils";
 
 export const AppBar = () => {
   const { connected } = useWallet();
-
 
   return (
     <Section.Header>

@@ -62,14 +62,12 @@ export module Simulation {
 }
 
 export module UIPercent {
-  export function fromDecimalFraction(value: Decimal | undefined, decimalPlaces: number = 4) {
-    return fromNumberFraction(value ? value.toNumber() : value, decimalPlaces);
+  export function fromDecimalFraction(value: Decimal, decimalPlaces: number = 4) {
+    return fromNumberFraction(value.toNumber(), decimalPlaces);
   }
 
-  export function fromNumberFraction(value: number | undefined, decimalPlaces: number = 4) {
-    if (value == null) {
-      return "-";
-    } else if (value === 0) {
+  export function fromNumberFraction(value: number, decimalPlaces: number = 4) {
+    if (value === 0) {
       return "0%"
     } else if (Number.isNaN(value)) {
       return "-";

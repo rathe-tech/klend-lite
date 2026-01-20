@@ -24,7 +24,7 @@ export function useTokenBalancesQuery(market: KaminoMarket | null | undefined, w
       const { value: token2022Accounts } = await connection.getTokenAccountsByOwner(walletAddress, { programId: TOKEN_2022_PROGRAM_ID });
       const tokenAccounts = [...classicTokenAccounts, ...token2022Accounts];
       const balances = new Map(tokenAccounts
-        .map(x => AccountLayout.decode(x.account.data))
+        .map(x => AccountLayout.decode(x.account.data as unknown as Uint8Array))
         .map(({ amount, mint }) => [mint.toBase58(), new Decimal(amount.toString(10))] as const));
 
       // Add native SOL balance.
